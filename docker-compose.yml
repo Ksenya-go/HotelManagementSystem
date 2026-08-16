@@ -6,7 +6,7 @@ services:
     environment:
       POSTGRES_DB: hotel_management
       POSTGRES_USER: hotel_app
-      POSTGRES_PASSWORD: ${DB_PASSWORD:-changeme_in_env}
+      POSTGRES_PASSWORD: ${DB_PASSWORD:-ChangeMe2026!}
     volumes:
       - hotelmanagementsystem-postgres-data:/var/lib/postgresql/data
     healthcheck:
@@ -24,9 +24,9 @@ services:
       - "8080:8080"
     environment:
       ASPNETCORE_HTTP_PORTS: "8080"
-      ConnectionStrings__DefaultConnection: "Host=postgres;Port=5432;Database=hotel_management;Username=hotel_app;Password=${DB_PASSWORD:-changeme_in_env}"
+      ConnectionStrings__DefaultConnection: "Host=postgres;Port=5432;Database=hotel_management;Username=hotel_app;Password=${DB_PASSWORD:-ChangeMe2026!}"
       SeedAdmin__Email: ${SEED_ADMIN_EMAIL:-admin@hotel.local}
-      SeedAdmin__Password: ${SEED_ADMIN_PASSWORD:-changeme_in_env}
+      SeedAdmin__Password: ${SEED_ADMIN_PASSWORD:-ChangeMe2026!}
       SeedAdmin__FullName: ${SEED_ADMIN_FULLNAME:-Адміністратор}
     depends_on:
       postgres:
