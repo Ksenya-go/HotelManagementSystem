@@ -9,17 +9,15 @@
     <DockerServiceName>hotelmanagementsystem.web</DockerServiceName>
   </PropertyGroup>
   <ItemGroup>
+    <None Remove="frontend\**" />
+    <None Remove="HotelManagementSystem.Api\**" />
+  </ItemGroup>
+  <ItemGroup>
     <None Include=".github\copilot-instructions.md" />
     <None Include="docker-compose.override.yml">
       <DependentUpon>docker-compose.yml</DependentUpon>
     </None>
     <None Include="docker-compose.yml" />
     <None Include=".dockerignore" />
-    <None Include="frontend\src\styles.css" />
-    <None Include="HotelManagementSystem.Api\Controllers\AdminRoomTypesController.cs" />
-    <None Include="HotelManagementSystem.Api\Controllers\AdminSettingsController.cs" />
-    <None Include="HotelManagementSystem.Api\Controllers\AdminUsersController.cs" />
-    <None Include="HotelManagementSystem.Api\HotelManagementSystem.Api.csproj" />
-    <None Include="HotelManagementSystem.Web.Tests\HotelManagementSystem.Web.Tests.csproj" />
   </ItemGroup>
 </Project>
