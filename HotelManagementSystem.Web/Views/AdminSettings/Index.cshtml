@@ -1,0 +1,76 @@
+@inject Microsoft.Extensions.Localization.IStringLocalizer<SharedResource> L
+@model HotelManagementSystem.Web.ViewModels.Admin.AdminSettingsViewModel
+
+@{
+    ViewData["Title"] = L["Settings"];
+}
+
+<div class="page-heading">
+    <div>
+        <h1>@L["SystemSettings"]</h1>
+        <p class="page-subtitle">@L["SystemSettingsDescription"]</p>
+    </div>
+</div>
+
+@if (TempData["Success"] is string success)
+{
+    <div class="alert app-alert alert-success">
+        @success
+    </div>
+}
+
+@if (TempData["Error"] is string error)
+{
+    <div class="alert app-alert alert-danger">
+        @error
+    </div>
+}
+
+<section class="content-card settings-card">
+
+    <div class="settings-header">
+        <div>
+            <h2>@L["Configuration"]</h2>
+        </div>
+    </div>
+
+    <div class="settings-grid">
+
+        @foreach (var setting in Model.Settings)
+        {
+            <form method="post"
+                  asp-controller="AdminSettings"
+                  asp-action="Update"
+                  class="setting-card">
+
+                <input type="hidden"
+                       name="Id"
+                       value="@setting.Id" />
+
+                <div class="setting-card-content">
+
+                    <div class="setting-copy">
+                        <strong>@setting.DisplayName</strong>
+                    </div>
+
+                    <div class="setting-control">
+                        <input class="form-control setting-input"
+                               name="Value"
+                               value="@setting.Value"
+                               aria-label="@setting.DisplayName"
+                               required />
+
+                        <button type="submit"
+                                class="btn btn-teal">
+                            @L["Save"]
+                        </button>
+                    </div>
+
+                </div>
+
+            </form>
+        }
+
+    </div>
+
+</section>

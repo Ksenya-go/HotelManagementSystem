@@ -1,0 +1,51 @@
+@inject Microsoft.Extensions.Localization.IStringLocalizer<SharedResource> L
+@model HotelManagementSystem.Web.ViewModels.Admin.CreateEmployeeViewModel
+@{
+    ViewData["Title"] = L["AddEmployee"];
+}
+
+<div class="page-heading"><div><div class="eyebrow">@L["Users"]</div>
+    <h1>@L["AddEmployee"]</h1>
+    <p class="page-subtitle">@L["CreateEmployeeDescription"]</p></div></div>
+<section class="content-card form-card">
+<form method="post" asp-controller="AdminUsers" asp-action="Create" class="form-narrow">
+    <div asp-validation-summary="ModelOnly" class="validation-summary"></div>
+    <div class="form-field">
+        <label asp-for="FullName" class="form-label"></label>
+        <input asp-for="FullName" class="form-control" />
+        <span asp-validation-for="FullName" class="text-danger"></span>
+    </div>
+    <div class="form-field">
+        <label asp-for="Email" class="form-label"></label>
+        <input asp-for="Email" class="form-control" autocomplete="username" />
+        <span asp-validation-for="Email" class="text-danger"></span>
+    </div>
+    <div class="form-field">
+        <label asp-for="Password" class="form-label"></label>
+        <input asp-for="Password" class="form-control" autocomplete="new-password" />
+        <span asp-validation-for="Password" class="text-danger"></span>
+    </div>
+    <div class="form-field">
+        <label asp-for="Role" class="form-label"></label>
+        <select asp-for="Role" class="form-select">
+            @foreach (var role in Model.AvailableRoles)
+            {
+                <option value="@role">@(role == "Employee" ? L["Employee"] : 
+                    role == "Admin" ? L["Admin"] : role)</option>
+            }
+        </select>
+        <span asp-validation-for="Role" class="text-danger"></span>
+    </div>
+    <div class="form-actions"><button type="submit" class="btn btn-teal">@L["CreateEmployee"]</button>
+            <a asp-controller="AdminUsers"
+               asp-action="Index"
+               class="btn btn-cancel">
+                @L["Cancel"]
+            </a>
+    </div>
+</form>
+</section>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

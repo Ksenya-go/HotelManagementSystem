@@ -1,0 +1,271 @@
+@inject Microsoft.Extensions.Localization.IStringLocalizer<SharedResource> L
+@model HotelManagementSystem.Web.ViewModels.Admin.AdminUsersViewModel
+
+@{
+    ViewData["Title"] = L["Users"];
+
+    var totalUsers = Model.Users.Count;
+    var activeUsers = Model.Users.Count(u => !u.IsLocked);
+    var blockedUsers = Model.Users.Count(u => u.IsLocked);
+    var adminUsers = Model.Users.Count(u => u.Role == "Admin");
+}
+
+<div class="page-heading">
+    <div>
+        <h1>@L["Users"]</h1>
+        <p class="page-subtitle">@L["UsersDescription"]</p>
+    </div>
+</div>
+
+@if (TempData["Error"] is string error)
+{
+    <div class="alert app-alert alert-danger">@error</div>
+}
+
+@if (TempData["Success"] is string success)
+{
+    <div class="alert app-alert alert-success">@success</div>
+}
+
+<div class="stat-grid stat-grid-four">
+
+    <div class="stat-card">
+        <div class="stat-icon teal-icon">
+            <i class="bi bi-people"></i>
+        </div>
+        <span class="stat-label">@L["TotalTeamMembers"]</span>
+        <span class="stat-value">@totalUsers</span>
+        <span class="stat-muted">@L["EveryoneWithAccess"]</span>
+    </div>
+
+    <div class="stat-card">
+        <div class="stat-icon green-icon">
+            <i class="bi bi-person-check"></i>
+        </div>
+        <span class="stat-label">@L["Active"]</span>
+        <span class="stat-value">@activeUsers</span>
+        <span class="stat-trend positive">@L["CanSignInNow"]</span>
+    </div>
+
+    <div class="stat-card">
+        <div class="stat-icon amber-icon">
+            <i class="bi bi-person-x"></i>
+        </div>
+        <span class="stat-label">@L["Blocked"]</span>
+        <span class="stat-value">@blockedUsers</span>
+        <span class="stat-muted">@L["AccessSuspended"]</span>
+    </div>
+
+    <div class="stat-card">
+        <div class="stat-icon blue-icon">
+            <i class="bi bi-shield-check"></i>
+        </div>
+        <span class="stat-label">@L["AdminRole"]</span>
+        <span class="stat-value">@adminUsers</span>
+        <span class="stat-muted">@L["FullAccessRights"]</span>
+    </div>
+
+</div>
+
+<section class="content-card table-card">
+
+    <div class="card-heading">
+        <div>
+            <h2>@L["TeamMembers"]</h2>
+        </div>
+
+        <div class="table-tools d-flex align-items-center gap-2">
+            <input id="userSearchInput"
+                   class="form-control search-input"
+                   placeholder='@L["SearchUsersPlaceholder"]'
+                   aria-label='@L["SearchUsersPlaceholder"]' />
+
+            <a asp-controller="AdminUsers"
+               asp-action="Create"
+               class="btn btn-teal">
+                <i class="bi bi-plus-lg"></i>
+                @L["AddEmployee"]
+            </a>
+        </div>
+    </div>
+
+    <div class="table-responsive">
+        <table class="hotel-table" id="usersTable">
+
+            <thead class="text-center">
+                <tr>
+                    <th>@L["TeamMember"]</th>
+                    <th>@L["Email"]</th>
+                    <th>@L["Role"]</th>
+                    <th>@L["Status"]</th>
+                    <th>@L["ActionColumn"]</th>
+                </tr>
+            </thead>
+
+            <tbody class="text-center">
+
+                @foreach (var user in Model.Users)
+                {
+                    var initial = string.IsNullOrWhiteSpace(user.FullName)
+                        ? "?"
+                        : user.FullName.Trim().Substring(0, 1).ToUpperInvariant();
+
+                    <tr data-search="@($"{user.FullName} {user.Email}".ToLowerInvariant())">
+
+                        <td>
+                            <div class="person-cell ">
+                                <div class="avatar avatar-small @(user.Role == "Admin" ? "avatar-purple" : "")">
+                                    @initial
+                                </div>
+
+                                <strong>@user.FullName</strong>
+                            </div>
+                        </td>
+
+                        <td>
+                            @user.Email
+                        </td>
+
+                        <td>
+                            @if (user.Role == "Admin")
+                            {
+                                <span class="status-badge status-blue">
+                                    @L["AdminRole"]
+                                </span>
+                            }
+                            else if (adminUsers == 0)
+                            {
+                                <form method="post"
+                                      asp-controller="AdminUsers"
+                                      asp-action="ChangeRole"
+                                      asp-route-id="@user.Id"
+                                      class="d-flex  align-items-center gap-2">
+
+                                    <input type="hidden"
+                                           name="id"
+                                           value="@user.Id" />
+
+                                    <select name="role"
+                                            class="form-select form-select-sm">
+                                        <option value="Employee">
+                                            @L["Employee"]
+                                        </option>
+
+                                        <option value="Admin">
+                                            @L["Admin"]
+                                        </option>
+                                    </select>
+
+                                    <button type="submit"
+                                            class="btn btn-teal">
+                                        @L["Save"]
+                                    </button>
+                                </form>
+                            }
+                            else
+                            {
+                                <span class="status-badge status-blue">
+                                    @L["Employee"]
+                                </span>
+                            }
+                        </td>
+
+                        <td>
+                            <span class="status-badge @(user.IsLocked ? "status-red" : "status-green")">
+                                <i class="bi @(user.IsLocked ? "bi-lock-fill" : "bi-check-circle-fill")"></i>
+                                @(user.IsLocked ? L["Blocked"] : L["Active"])
+                            </span>
+                        </td>
+
+                        <td>
+                            <div class="d-flex align-items-center gap-2">
+
+                                <a asp-controller="AdminUsers"
+                                   asp-action="Edit"
+                                   asp-route-id="@user.Id"
+                                   class="btn btn-teal">
+                                    @L["Edit"]
+                                </a>
+
+                                <form method="post"
+                                      asp-controller="AdminUsers"
+                                      asp-action="ToggleLockout"
+                                      asp-route-id="@user.Id">
+
+                                    <input type="hidden"
+                                           name="id"
+                                           value="@user.Id" />
+
+                                    <button class="btn btn-danger @(user.IsLocked ? "btn-outline-success" : "btn-outline-danger")"
+                                            type="submit">
+                                        @(user.IsLocked
+                                            ? L["Unblock"]
+                                            : L["Block"])
+                                    </button>
+
+                                </form>
+
+                            </div>
+                        </td>
+
+                    </tr>
+                }
+
+            </tbody>
+
+        </table>
+
+        @if (!Model.Users.Any())
+        {
+            <div class="notice-card">
+                <div class="notice-icon">
+                    <i class="bi bi-people"></i>
+                </div>
+
+                <div>
+                    <strong>@L["NoUsersYetTitle"]</strong>
+                    <p>@L["NoUsersYetHint"]</p>
+                </div>
+
+                <a asp-controller="AdminUsers"
+                   asp-action="Create"
+                   class="btn btn-teal">
+                    <i class="bi bi-plus-lg"></i>
+                    @L["AddEmployee"]
+                </a>
+            </div>
+        }
+
+    </div>
+
+</section>
+
+@section Scripts {
+    <script>
+        (function () {
+            var input = document.getElementById('userSearchInput');
+            var rows = document.querySelectorAll('#usersTable tbody tr');
+            
+
+            if (!input) {
+                return;
+            }
+
+            input.addEventListener('input', function () {
+                var query = input.value.trim().toLowerCase();
+                var visibleCount = 0;
+
+                rows.forEach(function (row) {
+                    var haystack = row.getAttribute('data-search') || '';
+                    var match = haystack.indexOf(query) !== -1;
+
+                    row.style.display = match ? '' : 'none';
+
+                    if (match) {
+                        visibleCount++;
+                    }
+                });
+            });
+        })();
+    </script>
+}

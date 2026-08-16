@@ -1,0 +1,397 @@
+@inject Microsoft.Extensions.Localization.IStringLocalizer<SharedResource> L
+@model HotelManagementSystem.Web.ViewModels.ManagerReportViewModel
+
+@{
+    ViewData["Title"] = L["Analytics"];
+}
+
+<div class="page-heading">
+    <div>
+        <h1>@L["HotelAnalytics"]</h1>
+
+        <p class="page-subtitle">
+            @L["ReportsDescription"]
+        </p>
+    </div>
+</div>
+
+<section class="content-card report-filter-card">
+
+    <form method="get"
+          asp-action="Index"
+          class="report-filter-form">
+
+        <div class="report-date-field">
+            <label asp-for="From" class="form-label">
+                @L["From"]
+            </label>
+
+            <input asp-for="From"
+                   class="form-control" />
+        </div>
+
+        <div class="report-date-field">
+            <label asp-for="To" class="form-label">
+                @L["To"]
+            </label>
+
+            <input asp-for="To"
+                   class="form-control" />
+        </div>
+
+        <button type="submit"
+                class="btn btn-teal report-generate-btn">
+            @L["Generate"]
+            <span>→</span>
+        </button>
+
+    </form>
+
+</section>
+
+
+@if (Model.Report is not null)
+{
+    var freeRoomDays = Math.Max(
+        0,
+        Model.Report.AvailableRoomDays - Model.Report.OccupiedRoomDays
+    );
+
+    var activePercent = Model.Report.Reservations == 0
+        ? 0
+        : Math.Round(
+            (decimal)Model.Report.ActiveReservations /
+            Model.Report.Reservations * 100,
+            1
+        );
+
+    var completedPercent = Model.Report.Reservations == 0
+        ? 0
+        : Math.Round(
+            (decimal)Model.Report.CompletedReservations /
+            Model.Report.Reservations * 100,
+            1
+        );
+
+    var cancelledPercent = Model.Report.Reservations == 0
+        ? 0
+        : Math.Round(
+            (decimal)Model.Report.CancelledReservations /
+            Model.Report.Reservations * 100,
+            1
+        );
+    <section class="report-dashboard">
+
+        <div class="report-heading">
+
+            <div>
+                <span class="report-section-label">
+                    @L["OperationalReport"]
+                </span>
+            </div>
+
+            <div class="report-period-value">
+                @Model.Report.From — @Model.Report.To
+            </div>
+
+        </div>
+        <div class="report-analytics-grid">
+            <article class="report-analytics-card">
+                <div class="report-card-header">
+
+                    <div>
+                        <span class="report-section-label">
+                            @L["RoomInventory"]
+                        </span>
+
+                        <h3>
+                            @L["RoomOccupancy"]
+                        </h3>
+                    </div>
+
+                </div>
+
+
+                <div class="report-chart-content">
+
+                    <div class="donut-chart report-donut"
+                         aria-label='@L["RoomOccupancyAria", Model.Report.OccupancyRate]'>
+
+                        <svg viewBox="0 0 42 42" role="img">
+
+                            <circle class="donut-track"
+                                    cx="21"
+                                    cy="21"
+                                    r="15.915" />
+
+                            <circle class="donut-segment donut-teal"
+                                    cx="21"
+                                    cy="21"
+                                    r="15.915"
+                                    pathLength="100"
+                                    stroke-dasharray="@Model.Report.OccupancyRate 100" />
+
+                        </svg>
+
+                        <strong>
+                            @Model.Report.OccupancyRate%
+                        </strong>
+
+                    </div>
+
+
+                    <div class="report-chart-info">
+
+                        <span class="report-stat-number">
+                            @Model.Report.OccupiedRoomDays
+                        </span>
+
+                        <span class="report-stat-text">
+                            @L["OccupiedRoomDays"]
+                        </span>
+
+                        <span class="report-stat-muted">
+                            @L["FreeCapacity"] @freeRoomDays @L["RoomDays"]
+                        </span>
+
+                    </div>
+
+                </div>
+
+            </article>
+
+            <article class="report-analytics-card">
+
+                <div class="report-card-header">
+
+                    <div>
+                        <span class="report-section-label">
+                            @L["Reservations"]
+                        </span>
+
+                        <h3>
+                            @L["ReservationStatusBreakdown"]
+                        </h3>
+                    </div>
+
+                </div>
+
+
+                <div class="report-chart-content">
+
+                    <div class="donut-chart report-donut"
+                         aria-label='@L["ReservationStructure"]'>
+
+                        <svg viewBox="0 0 42 42" role="img">
+
+                            <circle class="donut-track"
+                                    cx="21"
+                                    cy="21"
+                                    r="15.915" />
+
+                            <circle class="donut-segment donut-teal"
+                                    cx="21"
+                                    cy="21"
+                                    r="15.915"
+                                    pathLength="100"
+                                    stroke-dasharray="@activePercent 100" />
+
+                            <circle class="donut-segment donut-blue"
+                                    cx="21"
+                                    cy="21"
+                                    r="15.915"
+                                    pathLength="100"
+                                    stroke-dasharray="@completedPercent 100"
+                                    stroke-dashoffset="-@activePercent" />
+
+                            <circle class="donut-segment donut-red"
+                                    cx="21"
+                                    cy="21"
+                                    r="15.915"
+                                    pathLength="100"
+                                    stroke-dasharray="@cancelledPercent 100"
+                                    stroke-dashoffset="-@(activePercent + completedPercent)" />
+
+                        </svg>
+
+                        <strong>
+                            @Model.Report.Reservations
+                        </strong>
+
+                    </div>
+
+
+                    <div class="report-chart-legend">
+
+                        <div class="report-legend-item">
+                            <span>
+                                <i class="legend-dot legend-teal"></i>
+                                @L["Active"]
+                            </span>
+
+                            <strong>
+                                @Model.Report.ActiveReservations
+                            </strong>
+                        </div>
+
+
+                        <div class="report-legend-item">
+                            <span>
+                                <i class="legend-dot legend-blue"></i>
+                                @L["Completed"]
+                            </span>
+
+                            <strong>
+                                @Model.Report.CompletedReservations
+                            </strong>
+                        </div>
+
+
+                        <div class="report-legend-item">
+                            <span>
+                                <i class="legend-dot legend-red"></i>
+                                @L["Cancelled"]
+                            </span>
+
+                            <strong>
+                                @Model.Report.CancelledReservations
+                            </strong>
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </article>
+
+            <article class="report-analytics-card">
+
+                <div class="report-card-header">
+
+                    <div>
+                        <span class="report-section-label">
+                            @L["Risk"]
+                        </span>
+
+                        <h3>
+                            @L["ReservationCancellations"]
+                        </h3>
+                    </div>
+
+                </div>
+
+                <div class="report-chart-content">
+
+                    <div class="donut-chart report-donut"
+                         aria-label='@L["CancellationRateAria", Model.Report.CancellationRate]'>
+
+                        <svg viewBox="0 0 42 42" role="img">
+
+                            <circle class="donut-track"
+                                    cx="21"
+                                    cy="21"
+                                    r="15.915" />
+
+                            <circle class="donut-segment donut-red"
+                                    cx="21"
+                                    cy="21"
+                                    r="15.915"
+                                    pathLength="100"
+                                    stroke-dasharray="@Model.Report.CancellationRate 100" />
+
+                        </svg>
+
+                        <strong>
+                            @Model.Report.CancellationRate%
+                        </strong>
+
+                    </div>
+
+
+                    <div class="report-chart-info">
+
+                        <span class="report-stat-number">
+                            @Model.Report.CancelledReservations
+                        </span>
+
+                        <span class="report-stat-text">
+                            @L["CancelledReservations"]
+                        </span>
+
+                        <span class="report-stat-muted">
+                            @L["OfTotalReservations", Model.Report.Reservations]
+                        </span>
+
+                    </div>
+
+                </div>
+
+            </article>
+            <article class="report-analytics-card">
+
+                <div class="report-card-header">
+
+                    <div>
+                        <span class="report-section-label">
+                            @L["GuestsAndDemand"]
+                        </span>
+
+                        <h3>
+                            @L["GuestBehavior"]
+                        </h3>
+                    </div>
+
+                </div>
+
+
+                <div class="guest-stat-content">
+
+                    <div class="guest-stat-main">
+
+                        <span class="guest-stat-number">
+                            @Model.Report.TotalGuests
+                        </span>
+
+                        <span class="guest-stat-label">
+                            @L["GuestsForPeriod"]
+                        </span>
+
+                    </div>
+
+
+                    <div class="guest-stat-divider"></div>
+
+
+                    <div class="guest-stat-meta">
+
+                        <span>
+                            @L["AverageStay"]
+                        </span>
+
+                        <strong>
+                            @L["Days", Model.Report.AverageStayDays]
+                        </strong>
+
+                    </div>
+
+
+                    <div class="guest-stat-meta">
+
+                        <span>
+                            @L["FreeCapacity"]
+                        </span>
+
+                        <strong>
+                            @freeRoomDays @L["RoomDays"]
+                        </strong>
+
+                    </div>
+
+                </div>
+
+            </article>
+
+        </div>
+
+    </section>
+}

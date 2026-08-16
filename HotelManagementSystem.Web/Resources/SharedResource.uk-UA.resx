@@ -1,0 +1,1038 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="Dashboard" xml:space="preserve">
+    <value>Панель керування</value>
+  </data>
+  <data name="Reservations" xml:space="preserve">
+    <value>Список бронювань</value>
+  </data>
+  <data name="Rooms" xml:space="preserve">
+    <value>Список номерів</value>
+  </data>
+  <data name="Guests" xml:space="preserve">
+    <value>Гості</value>
+  </data>
+  <data name="Analytics" xml:space="preserve">
+    <value>Аналітика</value>
+  </data>
+  <data name="Users" xml:space="preserve">
+    <value>Користувачі</value>
+  </data>
+  <data name="RolesPermissions" xml:space="preserve">
+    <value>Ролі та права</value>
+  </data>
+  <data name="RoomTypes" xml:space="preserve">
+    <value>Типи номерів</value>
+  </data>
+  <data name="Settings" xml:space="preserve">
+    <value>Налаштування</value>
+  </data>
+  <data name="SignOut" xml:space="preserve">
+    <value>Вийти з системи</value>
+  </data>
+  <data name="SignIn" xml:space="preserve">
+    <value>Увійти</value>
+  </data>
+  <data name="Employee" xml:space="preserve">
+    <value>Працівник готелю</value>
+  </data>
+  <data name="Admin" xml:space="preserve">
+    <value>Системний адміністратор</value>
+  </data>
+  <data name="Language" xml:space="preserve">
+    <value>Мова</value>
+  </data>
+  <data name="English" xml:space="preserve">
+    <value>Англійська</value>
+  </data>
+  <data name="Ukrainian" xml:space="preserve">
+    <value>Українська</value>
+  </data>
+  <data name="WelcomeBack" xml:space="preserve">
+    <value>З поверненням</value>
+  </data>
+  <data name="SignInAccount" xml:space="preserve">
+    <value>Увійдіть у системи</value>
+  </data>
+  <data name="Email" xml:space="preserve">
+    <value>Електронна пошта</value>
+  </data>
+  <data name="Password" xml:space="preserve">
+    <value>Пароль</value>
+  </data>
+  <data name="RememberMe" xml:space="preserve">
+    <value>Запам’ятати мене</value>
+  </data>
+  <data name="Administration" xml:space="preserve">
+    <value>Адміністрування</value>
+  </data>
+  <data name="AddEmployee" xml:space="preserve">
+    <value>Додати працівника</value>
+  </data>
+  <data name="TeamMembers" xml:space="preserve">
+    <value>Працівники</value>
+  </data>
+  <data name="Active" xml:space="preserve">
+    <value>Активний</value>
+  </data>
+  <data name="Blocked" xml:space="preserve">
+    <value>Заблокований</value>
+  </data>
+  <data name="Save" xml:space="preserve">
+    <value>Зберегти</value>
+  </data>
+  <data name="Block" xml:space="preserve">
+    <value>Заблокувати</value>
+  </data>
+  <data name="Unblock" xml:space="preserve">
+    <value>Розблокувати</value>
+  </data>
+  <data name="Cancel" xml:space="preserve">
+    <value>Скасувати</value>
+  </data>
+  <data name="Create" xml:space="preserve">
+    <value>Створити</value>
+  </data>
+  <data name="RoomType" xml:space="preserve">
+    <value>Тип номера</value>
+  </data>
+  <data name="SystemSettings" xml:space="preserve">
+    <value>Системні налаштування</value>
+  </data>
+  <data name="Management" xml:space="preserve">
+    <value>УПРАВЛІННЯ</value>
+  </data>
+  <data name="NewReservation" xml:space="preserve">
+    <value>Нове бронювання</value>
+  </data>
+  <data name="AddGuest" xml:space="preserve">
+    <value>Додати гостя</value>
+  </data>
+  <data name="Generate" xml:space="preserve">
+    <value>Сформувати</value>
+  </data>
+  <data name="Workspace" xml:space="preserve">
+    <value>Робочий простір</value>
+  </data>
+  <data name="NeedHelp" xml:space="preserve">
+    <value>Потрібна допомога?</value>
+  </data>
+  <data name="ContactSupport" xml:space="preserve">
+    <value>Зверніться до підтримки</value>
+  </data>
+  <data name="HotelOperations" xml:space="preserve">
+    <value>Операції готелю</value>
+  </data>
+  <data name="GoodMorning" xml:space="preserve">
+    <value>Доброго ранку</value>
+  </data>
+  <data name="HotelOverview" xml:space="preserve">
+    <value>Огляд готелю</value>
+  </data>
+  <data name="FrontDeskOverview" xml:space="preserve">
+    <value>Огляд рецепції</value>
+  </data>
+  <data name="SystemOverview" xml:space="preserve">
+    <value>Огляд системи</value>
+  </data>
+  <data name="RoomsOperationsDescription" xml:space="preserve">
+    <value>Контролюйте доступність і робочий статус номерів.</value>
+  </data>
+  <data name="GuestOperationsDescription" xml:space="preserve">
+    <value>Переглядайте інформацію та контакти гостей.</value>
+  </data>
+  <data name="ReservationOperationsDescription" xml:space="preserve">
+    <value>Створюйте, змінюйте та скасовуйте бронювання.</value>
+  </data>
+  <data name="Search" xml:space="preserve">
+    <value>Пошук</value>
+  </data>
+  <data name="SearchGuests" xml:space="preserve">
+    <value>Пошук за ім’ям, електронною поштою або телефоном</value>
+  </data>
+  <data name="AllReservations" xml:space="preserve">
+    <value>Усі бронювання</value>
+  </data>
+  <data name="GuestDirectory" xml:space="preserve">
+    <value>Каталог гостей</value>
+  </data>
+  <data name="RoomInventory" xml:space="preserve">
+    <value>Номери готелю</value>
+  </data>
+  <data name="CheckIn" xml:space="preserve">
+    <value>Заселення</value>
+  </data>
+  <data name="CheckOut" xml:space="preserve">
+    <value>Виселення</value>
+  </data>
+  <data name="Guest" xml:space="preserve">
+    <value>Гість</value>
+  </data>
+  <data name="UpdateStatus" xml:space="preserve">
+    <value>Змінити статус</value>
+  </data>
+  <data name="Status" xml:space="preserve">
+    <value>Статус</value>
+  </data>
+  <data name="HospitalityMadeSimple" xml:space="preserve">
+    <value>Готелем легко керувати</value>
+  </data>
+  <data name="RunHotelWithConfidence" xml:space="preserve">
+    <value>Керуйте готелем впевнено.</value>
+  </data>
+  <data name="HotelDescription" xml:space="preserve">
+    <value>Єдиний огляд номерів, гостей і бронювань. Усе необхідне для якісного обслуговування гостей.</value>
+  </data>
+  <data name="DesignedForHotelTeams" xml:space="preserve">
+    <value>Створено для готельних команд</value>
+  </data>
+  <data name="BuiltAroundYourWork" xml:space="preserve">
+    <value>Побудовано відповідно до вашої роботи.</value>
+  </data>
+  <data name="EnterDetails" xml:space="preserve">
+    <value>Введіть дані для входу до системи.</value>
+  </data>
+  <data name="EnterPassword" xml:space="preserve">
+    <value>Введіть пароль</value>
+  </data>
+  <data name="DataProtected" xml:space="preserve">
+    <value>Ваші дані захищені корпоративними засобами безпеки.</value>
+  </data>
+  <data name="SystemSettingsDescription" xml:space="preserve">
+    <value>Керуйте параметрами конфігурації готельної платформи.</value>
+  </data>
+  <data name="Configuration" xml:space="preserve">
+    <value>Конфігурація</value>
+  </data>
+  <data name="AdminSettingsNotice" xml:space="preserve">
+    <value>Змінювати системні налаштування можуть лише адміністратори.</value>
+  </data>
+  <data name="RoomTypesDescription" xml:space="preserve">
+    <value>Визначайте доступні категорії номерів у готелі.</value>
+  </data>
+  <data name="ConfiguredRoomTypes" xml:space="preserve">
+    <value>Налаштовані типи номерів</value>
+  </data>
+  <data name="Name" xml:space="preserve">
+    <value>Назва</value>
+  </data>
+  <data name="Description" xml:space="preserve">
+    <value>Опис</value>
+  </data>
+  <data name="BasePrice" xml:space="preserve">
+    <value>Базова ціна</value>
+  </data>
+  <data name="MaxGuests" xml:space="preserve">
+    <value>Максимум гостей</value>
+  </data>
+  <data name="Action" xml:space="preserve">
+    <value>Дія</value>
+  </data>
+  <data name="Delete" xml:space="preserve">
+    <value>Видалити</value>
+  </data>
+  <data name="DeleteReservationConfirm" xml:space="preserve">
+    <value>Видалити це бронювання?</value>
+  </data>
+  <data name="DeleteRoomTypeConfirm" xml:space="preserve">
+    <value>Видалити цей тип номера?</value>
+  </data>
+  <data name="AddRoomType" xml:space="preserve">
+    <value>Додати тип номера</value>
+  </data>
+  <data name="RoomTypeDescription" xml:space="preserve">
+    <value>Створіть категорію для налаштування номерів і бронювань.</value>
+  </data>
+  <data name="RoomTypeExample" xml:space="preserve">
+    <value>наприклад, Люкс</value>
+  </data>
+  <data name="CreateRoomType" xml:space="preserve">
+    <value>Створити тип номера</value>
+  </data>
+  <data name="UsersAccess" xml:space="preserve">
+    <value>Користувачі та доступ</value>
+  </data>
+  <data name="UsersDescription" xml:space="preserve">
+    <value>Керуйте працівниками готелю та їхніми дозволами.</value>
+  </data>
+  <data name="ActiveAccounts" xml:space="preserve">
+    <value>активних облікових записів у системі</value>
+  </data>
+  <data name="SearchUsers" xml:space="preserve">
+    <value>Пошук користувачів...</value>
+  </data>
+  <data name="TeamMember" xml:space="preserve">
+    <value>Працівник</value>
+  </data>
+  <data name="HotelOverviewDescription" xml:space="preserve">
+    <value>Контролюйте сьогоднішні операції та заповненість готелю.</value>
+  </data>
+  <data name="TotalRooms" xml:space="preserve">
+    <value>Усього номерів</value>
+  </data>
+  <data name="InMaintenance" xml:space="preserve">
+    <value>на обслуговуванні</value>
+  </data>
+  <data name="TodaysReservations" xml:space="preserve">
+    <value>Сьогоднішні бронювання</value>
+  </data>
+  <data name="PendingReservations" xml:space="preserve">
+    <value>Очікують підтвердження</value>
+  </data>
+  <data name="OccupancyRate" xml:space="preserve">
+    <value>Заповненість</value>
+  </data>
+  <data name="RecentReservations" xml:space="preserve">
+    <value>Останні бронювання</value>
+  </data>
+  <data name="LatestBookingActivity" xml:space="preserve">
+    <value>Остання активність бронювань</value>
+  </data>
+  <data name="ViewAll" xml:space="preserve">
+    <value>Переглянути всі</value>
+  </data>
+  <data name="Dates" xml:space="preserve">
+    <value>Дати</value>
+  </data>
+  <data name="ReportsDescription" xml:space="preserve">
+    <value>Аналізуйте бронювання та заповненість за вибраний період.</value>
+  </data>
+  <data name="From" xml:space="preserve">
+    <value>Від</value>
+  </data>
+  <data name="To" xml:space="preserve">
+    <value>До</value>
+  </data>
+  <data name="HotelAnalytics" xml:space="preserve">
+    <value>Аналітика готелю</value>
+  </data>
+  <data name="OccupiedRoomDays" xml:space="preserve">
+    <value>Зайнято номеро-днів</value>
+  </data>
+  <data name="ErrorTitle" xml:space="preserve">
+    <value>Помилка.</value>
+  </data>
+  <data name="ErrorDescription" xml:space="preserve">
+    <value>Під час обробки запиту сталася помилка.</value>
+  </data>
+  <data name="RequestId" xml:space="preserve">
+    <value>Ідентифікатор запиту:</value>
+  </data>
+  <data name="Access" xml:space="preserve">
+    <value>Доступ</value>
+  </data>
+  <data name="SearchUsersPlaceholder" xml:space="preserve">
+    <value>Пошук користувачів...</value>
+  </data>
+  <data name="Role" xml:space="preserve">
+    <value>Роль</value>
+  </data>
+  <data name="ActionColumn" xml:space="preserve">
+    <value>Дія</value>
+  </data>
+  <data name="AdminRole" xml:space="preserve">
+    <value>Адміністратор</value>
+  </data>
+  <data name="CreateEmployeeDescription" xml:space="preserve">
+    <value>Створіть обліковий запис і призначте рівень доступу.</value>
+  </data>
+  <data name="OperationsGuests" xml:space="preserve">
+    <value>Операції / Гості</value>
+  </data>
+  <data name="AddGuestTitle" xml:space="preserve">
+    <value>Додати гостя</value>
+  </data>
+  <data name="OperationsRoomTypes" xml:space="preserve">
+    <value>Адміністрування / Типи номерів</value>
+  </data>
+  <data name="PhysicalRoomsDescription" xml:space="preserve">
+    <value>Фізичні номери готелю та їхній поточний статус.</value>
+  </data>
+  <data name="RoomCategoriesDescription" xml:space="preserve">
+    <value>Категорії номерів із ціною, описом і максимальною кількістю гостей.</value>
+  </data>
+  <data name="EmailPlaceholder" xml:space="preserve">
+    <value>електронна пошта</value>
+  </data>
+  <data name="EmptyState" xml:space="preserve">
+    <value>Дані відсутні.</value>
+  </data>
+  <data name="DevelopmentMode" xml:space="preserve">
+    <value>Режим розробки</value>
+  </data>
+  <data name="DevelopmentErrorDescription" xml:space="preserve">
+    <value>Перехід у середовище розробки показує детальну інформацію про помилку.</value>
+  </data>
+  <data name="DevelopmentWarning" xml:space="preserve">
+    <value>Середовище розробки не слід використовувати для розгорнутих застосунків.</value>
+  </data>
+  <data name="LocalDebugging" xml:space="preserve">
+    <value>Для локального налагодження встановіть змінну середовища ASPNETCORE_ENVIRONMENT у значення «Development».</value>
+  </data>
+  <data name="SensitiveErrorInformation" xml:space="preserve">
+    <value>Це може призвести до відображення кінцевим користувачам конфіденційної інформації з винятків.</value>
+  </data>
+  <data name="BrandMark" xml:space="preserve">
+    <value>Г</value>
+  </data>
+  <data name="BrandName" xml:space="preserve">
+    <value>Готель</value>
+  </data>
+  <data name="BrandNameAccent" xml:space="preserve">
+    <value>Плюс</value>
+  </data>
+  <data name="CreateEmployee" xml:space="preserve">
+    <value>Створити працівника</value>
+  </data>
+  <data name="ManagementPlatform" xml:space="preserve">
+    <value>Платформа управління</value>
+  </data>
+  <data name="OpenMenu" xml:space="preserve">
+    <value>Відкрити меню</value>
+  </data>
+  <data name="DashboardDescription" xml:space="preserve">
+    <value>Керуйте операціями готелю в одному місці.</value>
+  </data>
+  <data name="DashboardDataLoadedFromSystem" xml:space="preserve">
+    <value>Актуальні дані панелі з’являться, коли будуть доступні.</value>
+  </data>
+  <data name="Edit" xml:space="preserve">
+    <value>Редагувати</value>
+  </data>
+  <data name="EditRoom" xml:space="preserve">
+    <value>Редагувати номер</value>
+  </data>
+  <data name="EditRoomType" xml:space="preserve">
+    <value>Редагувати тип номера</value>
+  </data>
+  <data name="SaveChanges" xml:space="preserve">
+    <value>Зберегти зміни</value>
+  </data>
+  <data name="RoomNumber" xml:space="preserve">
+    <value>Номер кімнати</value>
+  </data>
+  <data name="Price" xml:space="preserve">
+    <value>Ціна</value>
+  </data>
+  <data name="Actions" xml:space="preserve">
+    <value>Дії</value>
+  </data>
+  <data name="Available" xml:space="preserve">
+    <value>Вільний</value>
+  </data>
+  <data name="Occupied" xml:space="preserve">
+    <value>Зайнятий</value>
+  </data>
+  <data name="Cleaning" xml:space="preserve">
+    <value>Прибирається</value>
+  </data>
+  <data name="Maintenance" xml:space="preserve">
+    <value>На обслуговуванні</value>
+  </data>
+  <data name="Pending" xml:space="preserve">
+    <value>Очікує підтвердження</value>
+  </data>
+  <data name="Confirmed" xml:space="preserve">
+    <value>Підтверджено</value>
+  </data>
+  <data name="CheckedIn" xml:space="preserve">
+    <value>Заселено</value>
+  </data>
+  <data name="CheckedOut" xml:space="preserve">
+    <value>Виселено</value>
+  </data>
+  <data name="Cancelled" xml:space="preserve">
+    <value>Скасовано</value>
+  </data>
+  <data name="FullName" xml:space="preserve">
+    <value>ПІБ</value>
+  </data>
+  <data name="EditEmployee" xml:space="preserve">
+    <value>Редагувати працівника</value>
+  </data>
+  <data name="SelectGuest" xml:space="preserve">
+    <value>Оберіть гостя</value>
+  </data>
+  <data name="SelectRoom" xml:space="preserve">
+    <value>Оберіть номер</value>
+  </data>
+  <data name="Room" xml:space="preserve">
+    <value>Номер</value>
+  </data>
+  <data name="CreateReservation" xml:space="preserve">
+    <value>Створити бронювання</value>
+  </data>
+  <data name="EditReservation" xml:space="preserve">
+    <value>Редагувати бронювання</value>
+  </data>
+  <data name="ReservationGuest" xml:space="preserve">
+    <value>Гість, на якого оформлено бронювання</value>
+  </data>
+  <data name="SelectGuestOrEnterNew" xml:space="preserve">
+    <value>Оберіть гостя або введіть нового</value>
+  </data>
+  <data name="FirstName" xml:space="preserve">
+    <value>Ім’я</value>
+  </data>
+  <data name="LastName" xml:space="preserve">
+    <value>Прізвище</value>
+  </data>
+  <data name="Phone" xml:space="preserve">
+    <value>Телефон</value>
+  </data>
+  <data name="GuestsCount" xml:space="preserve">
+    <value>Кількість гостей</value>
+  </data>
+  <data name="PrivacyPolicy" xml:space="preserve">
+    <value>Політика конфіденційності</value>
+  </data>
+  <data name="PrivacyPolicyDescription" xml:space="preserve">
+    <value>Інформація про політику конфіденційності готелю.</value>
+  </data>
+  <data name="Notifications" xml:space="preserve">
+    <value>Сповіщення</value>
+  </data>
+  <data name="AddRoom" xml:space="preserve">
+    <value>Додати кімнату</value>
+  </data>
+  <data name="SelectRoomType" xml:space="preserve">
+    <value>Виберіть тип кімнати</value>
+  </data>
+  <data name="PricePerNight" xml:space="preserve">
+    <value>Ціна за ніч</value>
+  </data>
+  <data name="RoomQuantity" xml:space="preserve">
+    <value>Кількість кімнат</value>
+  </data>
+  <data name="Floor" xml:space="preserve">
+    <value>Поверх</value>
+  </data>
+  <data name="SelectFloor" xml:space="preserve">
+    <value>Виберіть поверх</value>
+  </data>
+  <data name="RoomStatus" xml:space="preserve">
+    <value>Статус кімнати</value>
+  </data>
+  <data name="BackToRoomList" xml:space="preserve">
+    <value>Повернутися до списку кімнат</value>
+  </data>
+  <data name="ViewRoomStatuses" xml:space="preserve">
+    <value>Переглянути статус кімнат</value>
+  </data>
+  <data name="RoomStatuses" xml:space="preserve">
+    <value>Статус кімнат</value>
+  </data>
+  <data name="Book" xml:space="preserve">
+    <value>Забронювати</value>
+  </data>
+  <data name="RoomBooking" xml:space="preserve">
+    <value>Бронювання номерів</value>
+  </data>
+  <data name="RoomBookingDescription" xml:space="preserve">
+    <value>Оберіть дати та знайдіть доступні номери для бронювання.</value>
+  </data>
+  <data name="StartDate" xml:space="preserve">
+    <value>Дата початку</value>
+  </data>
+  <data name="EndDate" xml:space="preserve">
+    <value>Дата закінчення</value>
+  </data>
+  <data name="ShowAvailableRooms" xml:space="preserve">
+    <value>Показати доступні номери</value>
+  </data>
+  <data name="AvailableRooms" xml:space="preserve">
+    <value>Доступні номери</value>
+  </data>
+  <data name="OperationalStatus" xml:space="preserve">
+    <value>Статус кімнати</value>
+  </data>
+  <data name="Availability" xml:space="preserve">
+    <value>Доступність</value>
+  </data>
+  <data name="Previous" xml:space="preserve">
+    <value>Попередня</value>
+  </data>
+  <data name="Next" xml:space="preserve">
+    <value>Наступна</value>
+  </data>
+  <data name="AvailableRoomsPagination" xml:space="preserve">
+    <value>Навігація сторінками доступних номерів</value>
+  </data>
+  <data name="ReservationsRoom" xml:space="preserve">
+    <value>Бронювання номерів</value>
+  </data>
+  <data name="TotalTeamMembers" xml:space="preserve">
+    <value>Людей у команді</value>
+  </data>
+  <data name="CanSignInNow" xml:space="preserve">
+    <value>онлайн</value>
+  </data>
+  <data name="AccessSuspended" xml:space="preserve">
+    <value>без доступу</value>
+  </data>
+  <data name="EveryoneWithAccess" xml:space="preserve">
+    <value>з доступом</value>
+  </data>
+  <data name="FullAccessRights" xml:space="preserve">
+    <value>повні права</value>
+  </data>
+  <data name="EditEmployeeDescription" xml:space="preserve">
+    <value>Редагувати обліковий запис</value>
+  </data>
+  <data name="SettingValue" xml:space="preserve">
+    <value>Значення параметра</value>
+  </data>
+  <data name="ReportPeriod" xml:space="preserve">
+    <value>Період звіту</value>
+  </data>
+  <data name="ReservationList" xml:space="preserve">
+    <value>Список бронювань</value>
+  </data>
+  <data name="RoomCreateSuccess" xml:space="preserve">
+    <value>Кімнати додано.</value>
+  </data>
+  <data name="RoomUpdateSuccess" xml:space="preserve">
+    <value>Номер оновлено.</value>
+  </data>
+  <data name="RoomDeleteSuccess" xml:space="preserve">
+    <value>Номер видалено.</value>
+  </data>
+  <data name="RoomDeleteError" xml:space="preserve">
+    <value>Номер не знайдено або має бронювання.</value>
+  </data>
+  <data name="RoomStatusUpdateSuccess" xml:space="preserve">
+    <value>Статус номера оновлено.</value>
+  </data>
+  <data name="RoomNotFoundError" xml:space="preserve">
+    <value>Номер не знайдено.</value>
+  </data>
+  <data name="RoomDuplicateNumberError" xml:space="preserve">
+    <value>Номер кімнати вже існує.</value>
+  </data>
+  <data name="InvalidRoomDateRangeError" xml:space="preserve">
+    <value>Дата закінчення має бути пізнішою за дату початку.</value>
+  </data>
+  <data name="UnexpectedRoomError" xml:space="preserve">
+    <value>Не вдалося виконати операцію з номером.</value>
+  </data>
+  <data name="ReservationRoomUnavailable" xml:space="preserve">
+    <value>Обраний номер недоступний для бронювання на вибрані дати.</value>
+  </data>
+  <data name="ReservationRoomCapacityExceeded" xml:space="preserve">
+    <value>Цей номер розрахований максимум на {0} гостей.</value>
+  </data>
+  <data name="GuestDataRequired" xml:space="preserve">
+    <value>Введіть дані гостя.</value>
+  </data>
+  <data name="GuestDataInvalid" xml:space="preserve">
+    <value>Дані гостя мають некоректний формат.</value>
+  </data>
+  <data name="ReservationCreateSuccess" xml:space="preserve">
+    <value>Бронювання створено.</value>
+  </data>
+  <data name="ReservationUpdateSuccess" xml:space="preserve">
+    <value>Бронювання оновлено.</value>
+  </data>
+  <data name="ReservationCheckInSuccess" xml:space="preserve">
+    <value>Гостя заселено.</value>
+  </data>
+  <data name="ReservationCheckOutSuccess" xml:space="preserve">
+    <value>Гостя виселено.</value>
+  </data>
+  <data name="ReservationStatusUpdateSuccess" xml:space="preserve">
+    <value>Статус бронювання оновлено.</value>
+  </data>
+  <data name="ReservationCancelSuccess" xml:space="preserve">
+    <value>Бронювання скасовано.</value>
+  </data>
+  <data name="ReservationDeleteSuccess" xml:space="preserve">
+    <value>Бронювання видалено.</value>
+  </data>
+  <data name="ReservationNotFoundError" xml:space="preserve">
+    <value>Бронювання не знайдено.</value>
+  </data>
+  <data name="ReservationCheckInError" xml:space="preserve">
+    <value>Не вдалося заселити гостя.</value>
+  </data>
+  <data name="ReservationCheckOutError" xml:space="preserve">
+    <value>Не вдалося виселити гостя.</value>
+  </data>
+  <data name="ReservationInvalidError" xml:space="preserve">
+    <value>Не вдалося виконати операцію з бронюванням.</value>
+  </data>
+  <data name="UnexpectedReservationError" xml:space="preserve">
+    <value>Не вдалося виконати операцію з бронюванням.</value>
+  </data>
+  <data name="FullNameRequired" xml:space="preserve">
+    <value>Вкажіть ПІБ.</value>
+  </data>
+  <data name="FullNameLength" xml:space="preserve">
+    <value>ПІБ не може перевищувати 120 символів.</value>
+  </data>
+  <data name="EmailRequired" xml:space="preserve">
+    <value>Вкажіть електронну пошту.</value>
+  </data>
+  <data name="EmailInvalid" xml:space="preserve">
+    <value>Вкажіть коректну електронну пошту.</value>
+  </data>
+  <data name="RoleRequired" xml:space="preserve">
+    <value>Оберіть роль.</value>
+  </data>
+  <data name="PasswordRequired" xml:space="preserve">
+    <value>Вкажіть пароль.</value>
+  </data>
+  <data name="PasswordLength" xml:space="preserve">
+    <value>Пароль має містити від 8 до 100 символів.</value>
+  </data>
+  <data name="NewPassword" xml:space="preserve">
+    <value>Новий пароль</value>
+  </data>
+  <data name="NewPasswordHelp" xml:space="preserve">
+    <value>Залиште поле порожнім, якщо не потрібно змінювати пароль.</value>
+  </data>
+  <data name="InvalidRoleError" xml:space="preserve">
+    <value>Оберіть доступну роль.</value>
+  </data>
+  <data name="EmployeeCreateSuccess" xml:space="preserve">
+    <value>Працівника створено.</value>
+  </data>
+  <data name="EmployeeUpdateSuccess" xml:space="preserve">
+    <value>Працівника оновлено.</value>
+  </data>
+  <data name="SelfLockoutError" xml:space="preserve">
+    <value>Не можна заблокувати власний обліковий запис.</value>
+  </data>
+  <data name="UserAlreadyExistsError" xml:space="preserve">
+    <value>Користувач із такими даними вже існує.</value>
+  </data>
+  <data name="PasswordInvalidError" xml:space="preserve">
+    <value>Пароль не відповідає вимогам безпеки.</value>
+  </data>
+  <data name="UserOperationError" xml:space="preserve">
+    <value>Не вдалося виконати операцію з користувачем.</value>
+  </data>
+  <data name="Setting_CheckInTime" xml:space="preserve">
+    <value>Час заселення</value>
+  </data>
+  <data name="Setting_CheckOutTime" xml:space="preserve">
+    <value>Час виселення</value>
+  </data>
+  <data name="Setting_Currency" xml:space="preserve">
+    <value>Валюта</value>
+  </data>
+  <data name="Setting_HotelName" xml:space="preserve">
+    <value>Назва готелю</value>
+  </data>
+  <data name="SettingValueRequired" xml:space="preserve">
+    <value>Вкажіть значення налаштування.</value>
+  </data>
+  <data name="SettingUpdateSuccess" xml:space="preserve">
+    <value>Налаштування оновлено.</value>
+  </data>
+  <data name="SettingNotFoundError" xml:space="preserve">
+    <value>Налаштування не знайдено.</value>
+  </data>
+  <data name="UnexpectedSettingError" xml:space="preserve">
+    <value>Не вдалося оновити налаштування.</value>
+  </data>
+  <data name="AccountLockedOut" xml:space="preserve">
+    <value>Обліковий запис заблоковано.</value>
+  </data>
+  <data name="InvalidCredentials" xml:space="preserve">
+    <value>Невірний email або пароль.</value>
+  </data>
+  <data name="RoomListDescription" xml:space="preserve">
+    <value>Список номерів, редагування та фільтрація.</value>
+  </data>
+  <data name="RoomList" xml:space="preserve">
+    <value>Список кімнат</value>
+  </data>
+  <data name="RoomCount" xml:space="preserve">
+    <value>{0} номерів</value>
+  </data>
+  <data name="Type" xml:space="preserve">
+    <value>Тип</value>
+  </data>
+  <data name="Capacity" xml:space="preserve">
+    <value>Місткість</value>
+  </data>
+  <data name="MinPrice" xml:space="preserve">
+    <value>Ціна від</value>
+  </data>
+  <data name="MaxPrice" xml:space="preserve">
+    <value>Ціна до</value>
+  </data>
+  <data name="Filter" xml:space="preserve">
+    <value>Фільтрувати</value>
+  </data>
+  <data name="Clear" xml:space="preserve">
+    <value>Очистити</value>
+  </data>
+  <data name="EmptyValue" xml:space="preserve">
+    <value>—</value>
+  </data>
+  <data name="Close" xml:space="preserve">
+    <value>Закрити</value>
+  </data>
+  <data name="DeleteRoomConfirm" xml:space="preserve">
+    <value>Видалити номер?</value>
+  </data>
+  <data name="DeleteRoomPrompt" xml:space="preserve">
+    <value>Ви впевнені, що хочете видалити цей номер?</value>
+  </data>
+  <data name="DeleteRoomWarning" xml:space="preserve">
+    <value>Після видалення номер неможливо буде відновити.</value>
+  </data>
+  <data name="DeleteRoom" xml:space="preserve">
+    <value>Видалити номер</value>
+  </data>
+  <data name="RoomPagination" xml:space="preserve">
+    <value>Навігація сторінками номерів</value>
+  </data>
+  <data name="RoomType_Standard" xml:space="preserve">
+    <value>Стандарт</value>
+  </data>
+  <data name="RoomType_Deluxe" xml:space="preserve">
+    <value>Делюкс</value>
+  </data>
+  <data name="RoomType_DeluxeKing" xml:space="preserve">
+    <value>Делюкс king-size</value>
+  </data>
+  <data name="RoomType_Suite" xml:space="preserve">
+    <value>Люкс</value>
+  </data>
+  <data name="RoomType_Single" xml:space="preserve">
+    <value>Одномісний</value>
+  </data>
+  <data name="RoomType_Double" xml:space="preserve">
+    <value>Двомісний</value>
+  </data>
+  <data name="RoomStatus_Clean" xml:space="preserve">
+    <value>Доступний</value>
+  </data>
+  <data name="RoomStatus_Cleaning" xml:space="preserve">
+    <value>Потребує прибирання</value>
+  </data>
+  <data name="RoomStatus_InMaintenance" xml:space="preserve">
+    <value>На обслуговуванні</value>
+  </data>
+  <data name="RoomStatus_Unknown" xml:space="preserve">
+    <value>Невідомий статус</value>
+  </data>
+  <data name="Optional" xml:space="preserve">
+    <value>Необов’язково</value>
+  </data>
+  <data name="MainNavigation" xml:space="preserve">
+    <value>Основна навігація</value>
+  </data>
+  <data name="DefaultAvatarLetter" xml:space="preserve">
+    <value>К</value>
+  </data>
+  <data name="SelectedRoom" xml:space="preserve">
+    <value>Обраний номер</value>
+  </data>
+  <data name="RoomCapacity" xml:space="preserve">
+    <value>Місткість номера</value>
+  </data>
+  <data name="CheckInTime" xml:space="preserve">
+    <value>Час заселення</value>
+  </data>
+  <data name="CheckOutTime" xml:space="preserve">
+    <value>Час виселення</value>
+  </data>
+  <data name="ReservationsDescription" xml:space="preserve">
+    <value>Перегляд та редагування бронювань.</value>
+  </data>
+  <data name="AllStatuses" xml:space="preserve">
+    <value>Усі статуси</value>
+  </data>
+  <data name="GuestSearchPlaceholder" xml:space="preserve">
+    <value>Ім’я або прізвище</value>
+  </data>
+  <data name="ReservationCount" xml:space="preserve">
+    <value>{0} бронювань</value>
+  </data>
+  <data name="NotSpecified" xml:space="preserve">
+    <value>Не вказано</value>
+  </data>
+  <data name="DeleteReservationWarning" xml:space="preserve">
+    <value>Після видалення бронювання його неможливо буде відновити.</value>
+  </data>
+  <data name="DeleteReservation" xml:space="preserve">
+    <value>Видалити бронювання</value>
+  </data>
+  <data name="ReservationPagination" xml:space="preserve">
+    <value>Навігація сторінками бронювань</value>
+  </data>
+  <data name="OperationalReport" xml:space="preserve">
+    <value>ОПЕРАЦІЙНИЙ ЗВІТ</value>
+  </data>
+  <data name="RoomOccupancy" xml:space="preserve">
+    <value>Завантаженість номерів</value>
+  </data>
+  <data name="RoomOccupancyAria" xml:space="preserve">
+    <value>Завантаженість номерів: {0}%</value>
+  </data>
+  <data name="FreeCapacity" xml:space="preserve">
+    <value>Вільний потенціал</value>
+  </data>
+  <data name="RoomDays" xml:space="preserve">
+    <value>номеро-днів</value>
+  </data>
+  <data name="ReservationStatusBreakdown" xml:space="preserve">
+    <value>Структура статусів</value>
+  </data>
+  <data name="ReservationStructure" xml:space="preserve">
+    <value>Структура бронювань</value>
+  </data>
+  <data name="Completed" xml:space="preserve">
+    <value>Завершені</value>
+  </data>
+  <data name="Risk" xml:space="preserve">
+    <value>РИЗИК</value>
+  </data>
+  <data name="ReservationCancellations" xml:space="preserve">
+    <value>Скасування бронювань</value>
+  </data>
+  <data name="CancellationRateAria" xml:space="preserve">
+    <value>Скасування: {0}%</value>
+  </data>
+  <data name="CancelledReservations" xml:space="preserve">
+    <value>скасованих бронювань</value>
+  </data>
+  <data name="OfTotalReservations" xml:space="preserve">
+    <value>із {0} загальних бронювань</value>
+  </data>
+  <data name="GuestsAndDemand" xml:space="preserve">
+    <value>ГОСТІ ТА ПОПИТ</value>
+  </data>
+  <data name="GuestBehavior" xml:space="preserve">
+    <value>Поведінка гостей</value>
+  </data>
+  <data name="GuestsForPeriod" xml:space="preserve">
+    <value>гостей за період</value>
+  </data>
+  <data name="AverageStay" xml:space="preserve">
+    <value>Середнє проживання</value>
+  </data>
+  <data name="Days" xml:space="preserve">
+    <value>{0} дн.</value>
+  </data>
+</root>

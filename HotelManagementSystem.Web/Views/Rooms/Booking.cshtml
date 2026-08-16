@@ -1,0 +1,115 @@
+@model HotelManagementSystem.Web.ViewModels.Rooms.RoomPeriodStatusViewModel
+@inject Microsoft.Extensions.Localization.IStringLocalizer<SharedResource> L
+@{
+    ViewData["Title"] = L["RoomBooking"];
+}
+<div class="page-heading">
+    <div>
+        <h1>@L["RoomBooking"]</h1>
+        <p class="page-subtitle">@L["RoomBookingDescription"]</p>
+    </div>
+</div>
+
+@if (TempData["Success"] is string success)
+{
+    <div class="alert app-alert alert-success">@success</div>
+}
+@if (TempData["Error"] is string error)
+{
+    <div class="alert app-alert alert-danger">@error</div>
+}
+
+<section class="content-card form-card mb-4">
+    <form method="get" asp-action="Booking">
+        <div asp-validation-summary="ModelOnly" class="validation-summary"></div>
+        <div class="row g-3 align-items-end">
+            <div class="col-12 col-md-3">
+                <label asp-for="StartDate" class="form-label">@L["StartDate"]</label>
+                <input asp-for="StartDate" type="date" value="@Model.StartDate.ToString("yyyy-MM-dd")" class="form-control" required />
+            </div>
+            <div class="col-12 col-md-3">
+                <label asp-for="EndDate" class="form-label">@L["EndDate"]</label>
+                <input asp-for="EndDate" type="date" value="@Model.EndDate.ToString("yyyy-MM-dd")" class="form-control" required />
+            </div>
+            <div class="col-12 col-md-3">
+                <label asp-for="GuestsCount" class="form-label"></label>
+                <input asp-for="GuestsCount" type="number" min="1" max="20" class="form-control" placeholder='@L["Optional"]' />
+                <span asp-validation-for="GuestsCount" class="text-danger"></span>
+            </div>
+            <div class="col-12 col-md-3">
+                <button type="submit" class="btn btn-teal w-100">@L["ShowAvailableRooms"]</button>
+            </div>
+        </div>
+        <input type="hidden" name="pageNumber" value="1" />
+    </form>
+</section>
+
+<section class="content-card table-card mb-4">
+    <div class="card-heading">
+        <div>
+            <h2>@L["AvailableRooms"]</h2>
+            <p>@Model.Rooms.Count @L["Rooms"].Value.ToLowerInvariant()</p>
+        </div>
+    </div>
+    <div class="table-responsive">
+        <table class="hotel-table">
+            <thead class="text-center">
+                <tr>
+                    <th>@L["RoomNumber"]</th>
+                    <th>@L["Floor"]</th>
+                    <th>@L["RoomType"]</th>
+                    <th>@L["Description"]</th>
+                    <th>@L["PricePerNight"]</th>
+                    <th>@L["Capacity"]</th>
+                    <th>@L["RoomQuantity"]</th>
+                    <th>@L["OperationalStatus"]</th>
+                    <th>@L["Actions"]</th>
+                </tr>
+            </thead>
+            <tbody class="text-center">
+                @foreach (var room in Model.Rooms)
+                {
+                    <tr>
+                        <td><strong>@room.RoomNumber</strong></td>
+                        <td>@room.Floor</td>
+                        <td>@room.Type</td>
+                        <td>@(string.IsNullOrWhiteSpace(room.Description) ? L["EmptyValue"] : room.Description)</td>
+                        <td>@room.PricePerDay.ToString("N2")</td>
+                        <td>@room.Capacity</td>
+                        <td>@room.RoomCount</td>
+                        <td>@room.OperationalStatus</td>
+                        <td>
+                            <a asp-controller="Reservations" asp-action="Create" asp-route-roomId="@room.Id" asp-route-checkIn="@Model.StartDate.ToString("yyyy-MM-dd")" asp-route-checkOut="@Model.EndDate.ToString("yyyy-MM-dd")" asp-route-guestsCount="@Model.GuestsCount" class="btn btn-teal">@L["Book"]</a>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+    @if (Model.TotalPages > 1)
+    {
+        <nav class="pagination-nav" aria-label='@L["AvailableRoomsPagination"]'>
+            <a class="btn btn-sm btn-outline-teal @(Model.PageNumber <= 1 ? "disabled" : "")"
+               asp-action="Booking"
+               asp-route-startDate="@Model.StartDate.ToString("yyyy-MM-dd")"
+               asp-route-endDate="@Model.EndDate.ToString("yyyy-MM-dd")"
+               asp-route-guestsCount="@Model.GuestsCount"
+               asp-route-pageNumber="@(Model.PageNumber - 1)">@L["Previous"]</a>
+            @for (var currentPage = 1; currentPage <= Model.TotalPages; currentPage++)
+            {
+                <a class="btn btn-sm @(currentPage == Model.PageNumber ? "btn-teal" : "btn-outline-teal")"
+                   asp-action="Booking"
+                    asp-route-startDate="@Model.StartDate.ToString("yyyy-MM-dd")"
+                    asp-route-endDate="@Model.EndDate.ToString("yyyy-MM-dd")"
+                    asp-route-guestsCount="@Model.GuestsCount"
+                   asp-route-pageNumber="@currentPage">@currentPage</a>
+            }
+            <a class="btn btn-sm btn-outline-teal @(Model.PageNumber >= Model.TotalPages ? "disabled" : "")"
+               asp-action="Booking"
+               asp-route-startDate="@Model.StartDate.ToString("yyyy-MM-dd")"
+               asp-route-endDate="@Model.EndDate.ToString("yyyy-MM-dd")"
+               asp-route-guestsCount="@Model.GuestsCount"
+               asp-route-pageNumber="@(Model.PageNumber + 1)">@L["Next"]</a>
+        </nav>
+    }
+</section>

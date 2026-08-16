@@ -1,0 +1,19 @@
+﻿@model HotelManagementSystem.Web.ViewModels.ErrorViewModel
+@{
+    ViewData["Title"] = L["ErrorTitle"];
+}
+
+@inject Microsoft.Extensions.Localization.IStringLocalizer<SharedResource> L
+<h1 class="text-danger">@L["ErrorTitle"]</h1>
+<h2 class="text-danger">@L["ErrorDescription"]</h2>
+
+@if (Model.ShowRequestId)
+{
+    <p>
+        <strong>@L["RequestId"]</strong> <code>@Model.RequestId</code>
+    </p>
+}
+
+<h3>@L["DevelopmentMode"]</h3>
+<p>@L["DevelopmentErrorDescription"]</p>
+<p><strong>@L["DevelopmentWarning"]</strong> @L["SensitiveErrorInformation"] @L["LocalDebugging"]</p>

@@ -1,0 +1,122 @@
+@inject Microsoft.Extensions.Localization.IStringLocalizer<SharedResource> L
+@model HotelManagementSystem.Web.ViewModels.Reservation.ReservationEditViewModel
+
+@{
+    ViewData["Title"] = L["EditReservation"];
+}
+
+<div class="page-heading">
+    <div>
+        <h1>@L["EditReservation"]</h1>
+    </div>
+</div>
+
+<section class="content-card form-card">
+    <form method="post"
+          asp-action="Edit"
+          asp-route-id="@Model.Id"
+          class="form-narrow">
+
+        <input type="hidden" asp-for="GuestId" />
+
+        <div asp-validation-summary="ModelOnly" class="validation-summary"></div>
+
+        <div class="form-field">
+            <label class="form-label">@L["RoomNumber"]</label>
+            <input class="form-control" value="@Model.RoomNumber" readonly />
+        </div>
+
+        <div class="form-field">
+            <label class="form-label">@L["Floor"]</label>
+            <input class="form-control" value="@Model.RoomFloor" readonly />
+        </div>
+
+        <div class="form-field">
+            <label class="form-label">@L["RoomType"]</label>
+            <input class="form-control" value="@Model.RoomType" readonly />
+        </div>
+
+        <div class="form-field">
+            <label class="form-label">@L["PricePerNight"]</label>
+            <input class="form-control" value="@Model.RoomPricePerDay.ToString("N2")" readonly />
+        </div>
+
+        <div class="form-field">
+            <label class="form-label">@L["RoomCapacity"]</label>
+            <input class="form-control" value="@Model.RoomCapacity" readonly />
+        </div>
+
+        <div class="form-field">
+            <label asp-for="NewGuestFirstName" class="form-label">
+                @L["FirstName"]
+            </label>
+            <input asp-for="NewGuestFirstName"
+                   class="form-control"
+                   required />
+        </div>
+
+        <div class="form-field">
+            <label asp-for="NewGuestLastName" class="form-label">
+                @L["LastName"]
+            </label>
+            <input asp-for="NewGuestLastName"
+                   class="form-control"
+                   required />
+        </div>
+
+        <div class="form-field">
+            <label asp-for="NewGuestEmail" class="form-label">
+                @L["Email"]
+            </label>
+            <input asp-for="NewGuestEmail"
+                   class="form-control"
+                   required />
+        </div>
+
+        <div class="form-field">
+            <label asp-for="NewGuestPhone" class="form-label">
+                @L["Phone"]
+            </label>
+            <input asp-for="NewGuestPhone"
+                   class="form-control" />
+        </div>
+
+        <div class="form-field">
+            <label asp-for="CheckIn" class="form-label">
+                @L["CheckIn"]
+            </label>
+            <input asp-for="CheckIn"
+                   class="form-control" />
+            <div class="form-text">@L["CheckInTime"]: @Model.CheckInTime</div>
+        </div>
+
+        <div class="form-field">
+            <label asp-for="CheckOut" class="form-label">
+                @L["CheckOut"]
+            </label>
+            <input asp-for="CheckOut"
+                   class="form-control" />
+            <div class="form-text">@L["CheckOutTime"]: @Model.CheckOutTime</div>
+        </div>
+
+        <div class="form-field">
+            <label asp-for="GuestsCount" class="form-label">
+                @L["GuestsCount"]
+            </label>
+            <input asp-for="GuestsCount"
+                   class="form-control" />
+        </div>
+
+        <div class="form-actions">
+            <button type="submit" class="btn btn-teal">
+                @L["SaveChanges"]
+            </button>
+
+            <a asp-action="Index"
+               class="btn btn-cancel">
+                @L["Cancel"]
+            </a>
+        </div>
+
+    </form>
+</section>

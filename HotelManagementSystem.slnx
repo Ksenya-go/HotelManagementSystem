@@ -1,0 +1,12 @@
+<Solution>
+  <Project Path="docker-compose.dcproj">
+    <Build />
+  </Project>
+  <Project Path="HotelManagementSystem.Domain/HotelManagementSystem.Domain.csproj" />
+  <Project Path="HotelManagementSystem.Persistence.EfCore/HotelManagementSystem.Persistence.EfCore.csproj" />
+  <Project Path="HotelManagementSystem.Web.Tests/HotelManagementSystem.Web.Tests.csproj">
+    <Build Solution="Debug|*" Project="false" />
+  </Project>
+  <Project Path="HotelManagementSystem.Web/HotelManagementSystem.Web.csproj" />
+  <Project Path="HotelManagementSystem/HotelManagementSystem.Application.csproj" />
+</Solution>

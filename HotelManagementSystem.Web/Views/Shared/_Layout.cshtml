@@ -1,0 +1,186 @@
+@inject Microsoft.Extensions.Localization.IStringLocalizer<SharedResource> L
+
+@{
+    var isAuthenticated = User.Identity?.IsAuthenticated == true;
+    var isAdmin = User.IsInRole("Admin");
+    var roleName = isAdmin ? L["Admin"] : L["Employee"];
+    var currentCulture = "uk-UA";
+}
+
+<!DOCTYPE html>
+<html lang="@currentCulture">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <title>@ViewData["Title"]</title>
+
+    <script type="importmap"></script>
+
+    <link rel="stylesheet"
+          href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+
+    <link rel="stylesheet"
+          href="~/lib/bootstrap-icons/font/bootstrap-icons.min.css" />
+
+    
+
+    <link rel="stylesheet"
+          href="~/css/site.css"
+          asp-append-version="true" />
+
+    <link rel="stylesheet"
+          href="~/HotelManagementSystem.Web.styles.css"
+          asp-append-version="true" />
+</head>
+
+<body class="@(isAuthenticated ? "app-body" : "auth-body")">
+
+    @if (isAuthenticated)
+    {
+        <aside class="app-sidebar" id="app-sidebar">
+
+            <div class="brand-lockup">
+                <div class="brand-mark" aria-hidden="true">
+                    @L["BrandMark"]
+                </div>
+
+                <div>
+                    <strong>
+                        @L["BrandName"]<span>@L["BrandNameAccent"]</span>
+                    </strong>
+
+                    <small>
+                        @L["ManagementPlatform"]
+                    </small>
+                </div>
+            </div>
+
+            <div class="sidebar-section-label">
+                @L["Management"]
+            </div>
+
+            <nav class="sidebar-nav" aria-label='@L["MainNavigation"]'>
+
+                <a class="sidebar-link"
+                   asp-controller="Reservations"
+                   asp-action="Index"
+                   active-menu>
+                    <i class="bi bi-calendar-check"></i>
+                    @L["Reservations"]
+                </a>
+
+                <a class="sidebar-link"
+                   asp-controller="Rooms"
+                   asp-action="Booking"
+                   active-menu>
+                    <i class="bi bi-calendar2-plus"></i>
+                    @L["ReservationsRoom"]
+                </a>
+
+                <a class="sidebar-link"
+                   asp-controller="Rooms"
+                   asp-action="Index"
+                   active-menu>
+                    <i class="bi bi-door-open"></i>
+                    @L["Rooms"]
+                </a>
+
+                @if (isAdmin || User.IsInRole("Employee"))
+                {
+                    <a class="sidebar-link"
+                       asp-controller="ManagerReports"
+                       asp-action="Index"
+                       active-menu>
+                        <i class="bi bi-bar-chart-line"></i>
+                        @L["Analytics"]
+                    </a>
+                }
+
+                @if (isAdmin)
+                {
+                    <div class="sidebar-section-label sidebar-section-spaced">
+                        @L["Administration"]
+                    </div>
+
+                    <a class="sidebar-link"
+                       asp-controller="AdminUsers"
+                       asp-action="Index"
+                       active-menu>
+                        <i class="bi bi-people"></i>
+                        @L["Users"]
+                    </a>
+
+                    <a class="sidebar-link"
+                       asp-controller="AdminSettings"
+                       asp-action="Index"
+                       active-menu>
+                        <i class="bi bi-gear"></i>
+                        @L["Settings"]
+                    </a>
+                }
+
+            </nav>
+        </aside>
+
+        <div class="app-main">
+
+            <header class="app-topbar">
+
+                <button class="mobile-menu-button"
+                        type="button"
+                        aria-label='@L["OpenMenu"]'
+                        onclick="document.getElementById('app-sidebar').classList.toggle('sidebar-open')">
+                    <i class="bi bi-list"></i>
+                </button>
+
+                <div class="topbar-actions">
+
+                    <form method="post"
+                          asp-controller="Account"
+                          asp-action="Logout"
+                          class="logout-form">
+
+                        <button type="submit" class="logout-button">
+                            <i class="bi bi-box-arrow-right"></i>
+                            <span>@L["SignOut"]</span>
+                        </button>
+                    </form>
+
+                    <div class="user-menu">
+
+                        <div class="avatar">
+                            @(User.Identity?.Name?.FirstOrDefault().ToString().ToUpperInvariant() ?? L["DefaultAvatarLetter"].Value)
+                        </div>
+
+                        <div class="user-copy">
+                            <strong>@User.Identity?.Name</strong>
+                            <small>@roleName</small>
+                        </div>
+
+                    </div>
+                </div>
+
+            </header>
+
+            <main class="app-content" role="main">
+                @RenderBody()
+            </main>
+
+        </div>
+    }
+    else
+    {
+        <main class="auth-content" role="main">
+            @RenderBody()
+        </main>
+    }
+
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+
+    @await RenderSectionAsync("Scripts", required: false)
+
+</body>
+</html>

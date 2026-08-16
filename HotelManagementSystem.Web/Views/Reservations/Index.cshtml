@@ -1,0 +1,418 @@
+@inject Microsoft.Extensions.Localization.IStringLocalizer<SharedResource> L
+@model HotelManagementSystem.Web.ViewModels.Reservation.ReservationsIndexViewModel
+@using HotelManagementSystem.Domain.Reservation
+
+@{
+    ViewData["Title"] = L["Reservations"];
+}
+
+<div class="page-heading">
+    <div>
+        <h1>@L["ReservationList"]</h1>
+        <p class="page-subtitle">
+            @L["ReservationsDescription"]
+        </p>
+    </div>
+</div>
+
+
+@if (TempData["Success"] is string success)
+{
+    <div class="alert app-alert alert-success">
+        @success
+    </div>
+}
+
+@if (TempData["Error"] is string error)
+{
+    <div class="alert app-alert alert-danger">
+        @error
+    </div>
+}
+
+<section class="content-card reservation-filter-card">
+
+    <form method="get" asp-action="Index">
+
+        <div class="reservation-filter-row">
+
+            <div class="form-field reservation-status-field">
+                <label asp-for="Status" class="form-label">
+                    @L["Status"]
+                </label>
+
+                <select asp-for="Status" class="form-select">
+                    <option value="">@L["AllStatuses"]</option>
+
+                    <option value="Pending">
+                        @L["Pending"]
+                    </option>
+
+                    <option value="Confirmed">
+                        @L["Confirmed"]
+                    </option>
+
+                    <option value="CheckedIn">
+                        @L["CheckedIn"]
+                    </option>
+
+                    <option value="CheckedOut">
+                        @L["CheckedOut"]
+                    </option>
+
+                    <option value="Cancelled">
+                        @L["Cancelled"]
+                    </option>
+                </select>
+            </div>
+
+
+            <div class="form-field reservation-guest-field">
+                <label asp-for="GuestSearch" class="form-label">
+                    @L["Guest"]
+                </label>
+
+                <input asp-for="GuestSearch"
+                       class="form-control"
+                        placeholder='@L["GuestSearchPlaceholder"]' />
+            </div>
+
+
+            <div class="form-field reservation-room-field">
+                <label asp-for="RoomNumber" class="form-label">
+                    @L["Room"]
+                </label>
+
+                <input asp-for="RoomNumber"
+                       class="form-control" />
+            </div>
+
+
+            <div class="reservation-filter-actions">
+
+                <button type="submit"
+                        class="btn btn-teal">
+                    @L["Filter"]
+                </button>
+
+                <a asp-action="Index"
+                   class="btn btn-cancel">
+                    @L["Clear"]
+                </a>
+
+            </div>
+
+        </div>
+
+        <input type="hidden"
+               name="pageNumber"
+               value="1" />
+
+    </form>
+
+</section>
+
+<section class="content-card table-card reservations-table-card">
+
+    <div class="reservations-table-heading">
+
+        <div>
+            <h2>@L["Reservations"]</h2>
+
+            <span class="table-count">
+                @Model.TotalCount
+                @L["ReservationCount", Model.TotalCount]
+            </span>
+        </div>
+
+    </div>
+
+
+    <div class="table-responsive">
+
+        <table class="hotel-table reservations-table">
+
+            <thead class="text-center">
+                <tr>
+                    <th>@L["Guest"]</th>
+                    <th>@L["Email"]</th>
+                    <th>@L["Room"]</th>
+                    <th>@L["CheckIn"]</th>
+                    <th>@L["CheckOut"]</th>
+                    <th>@L["Status"]</th>
+                    <th class="reservation-actions-header">
+                        @L["Actions"]
+                    </th>
+                </tr>
+            </thead>
+
+
+            <tbody class="text-center">
+
+                @foreach (var reservation in Model.Reservations)
+                {
+                    <tr>
+
+                        <td >
+                            <span class="reservation-guest-name">
+                                @(string.IsNullOrWhiteSpace(reservation.GuestName)
+                                    ? L["NotSpecified"]
+                                    : reservation.GuestName)
+                            </span>
+                        </td>
+
+
+                        <td>
+                            <span class="reservation-email">
+                                @(string.IsNullOrWhiteSpace(reservation.GuestEmail)
+                                    ? L["NotSpecified"]
+                                    : reservation.GuestEmail)
+                            </span>
+                        </td>
+
+
+                        <td>
+                            <span class="reservation-room">
+                                @(string.IsNullOrWhiteSpace(reservation.RoomNumber)
+                                    ? L["EmptyValue"]
+                                    : reservation.RoomNumber)
+                            </span>
+                        </td>
+
+
+                        <td class="reservation-date">
+                            <span>@reservation.CheckIn</span>
+                            <small>@Model.CheckInTime</small>
+                        </td>
+
+
+                        <td class="reservation-date">
+                            <span>@reservation.CheckOut</span>
+                            <small>@Model.CheckOutTime</small>
+                        </td>
+
+
+                        <td class="reservation-status-cell">
+
+                            <form method="post"
+                                  asp-action="ChangeStatus"
+                                  asp-route-id="@reservation.Id"
+                                  class="reservation-status-form">
+
+                                <select name="Status"
+                                        class="form-select form-select-sm reservation-status-select">
+
+                                    <option value="Pending"
+                                            selected="@(reservation.Status == ReservationStatus.Pending)">
+                                        @L["Pending"]
+                                    </option>
+
+                                    <option value="Confirmed"
+                                            selected="@(reservation.Status == ReservationStatus.Confirmed)">
+                                        @L["Confirmed"]
+                                    </option>
+
+                                    <option value="CheckedIn"
+                                            selected="@(reservation.Status == ReservationStatus.CheckedIn)">
+                                        @L["CheckedIn"]
+                                    </option>
+
+                                    <option value="CheckedOut"
+                                            selected="@(reservation.Status == ReservationStatus.CheckedOut)">
+                                        @L["CheckedOut"]
+                                    </option>
+
+                                    <option value="Cancelled"
+                                            selected="@(reservation.Status == ReservationStatus.Cancelled)">
+                                        @L["Cancelled"]
+                                    </option>
+
+                                </select>
+
+                                <button type="submit"
+                                        class="btn btn-teal">
+                                    @L["SaveChanges"]
+                                </button>
+
+                            </form>
+
+                        </td>
+
+
+                        <td>
+
+                            <div class="reservation-actions">
+
+                                <a asp-action="Edit"
+                                   asp-route-id="@reservation.Id"
+                                   class="btn btn-teal">
+                                    @L["Edit"]
+                                </a>
+
+
+                                @if (User.IsInRole("Admin"))
+                                {
+                                    <button type="button"
+                                            class="btn btn-danger"
+                                            data-bs-toggle="modal"
+                                            data-bs-target="#delete-reservation-@reservation.Id">
+                                        @L["Delete"]
+                                    </button>
+                                }
+
+                            </div>
+
+                            @if (User.IsInRole("Admin"))
+                            {
+                                <div class="modal fade"
+                                     id="delete-reservation-@reservation.Id"
+                                     tabindex="-1"
+                                     aria-labelledby="delete-reservation-title-@reservation.Id"
+                                     aria-hidden="true">
+
+                                    <div class="modal-dialog modal-dialog-centered reservation-delete-modal">
+
+                                        <div class="modal-content">
+
+                                            <div class="modal-header">
+                                                <div>
+                                                    <h2 class="modal-title"
+                                                        id="delete-reservation-title-@reservation.Id">
+                                                         @L["DeleteReservationConfirm"]
+                                                    </h2>
+                                                </div>
+
+                                                <button type="button"
+                                                        class="btn-close"
+                                                        data-bs-dismiss="modal"
+                                                         aria-label='@L["Close"]'>
+                                                </button>
+                                            </div>
+
+                                            <div class="modal-body">
+                                                <div class="delete-reservation-info">
+
+                                                    <div class="delete-info-item">
+                                                         <span>@L["Guest"]</span>
+                                                        <strong>
+                                                            @(string.IsNullOrWhiteSpace(reservation.GuestName)
+                                                                 ? L["NotSpecified"]
+                                                                : reservation.GuestName)
+                                                        </strong>
+                                                    </div>
+
+                                                    <div class="delete-info-item">
+                                                         <span>@L["Room"]</span>
+                                                        <strong>
+                                                            @(string.IsNullOrWhiteSpace(reservation.RoomNumber)
+                                                                 ? L["EmptyValue"]
+                                                                : reservation.RoomNumber)
+                                                        </strong>
+                                                    </div>
+
+                                                    <div class="delete-info-item">
+                                                         <span>@L["CheckIn"]</span>
+                                                        <strong>
+                                                            @reservation.CheckIn
+                                                        </strong>
+                                                    </div>
+
+                                                    <div class="delete-info-item">
+                                                         <span>@L["CheckOut"]</span>
+                                                        <strong>
+                                                            @reservation.CheckOut
+                                                        </strong>
+                                                    </div>
+
+                                                </div>
+
+                                                <div class="delete-warning">
+                                                    <span class="delete-warning-icon">!</span>
+
+                                                    <span>
+                                                         @L["DeleteReservationWarning"]
+                                                    </span>
+                                                </div>
+
+                                            </div>
+
+                                            <div class="modal-footer">
+
+                                                <button type="button"
+                                                        class="btn btn-cancel"
+                                                        data-bs-dismiss="modal">
+                                                     @L["Cancel"]
+                                                </button>
+
+                                                <form method="post"
+                                                      asp-action="Delete"
+                                                      asp-route-id="@reservation.Id">
+
+                                                    <button type="submit"
+                                                            class="btn btn-danger">
+                                                         @L["DeleteReservation"]
+                                                    </button>
+
+                                                </form>
+
+                                            </div>
+
+                                        </div>
+
+                                    </div>
+                                </div>
+                            }
+
+                        </td>
+
+                    </tr>
+                }
+
+            </tbody>
+        </table>
+    </div>
+
+
+    @if (Model.TotalPages > 1)
+    {
+        <nav class="pagination-nav"
+             aria-label='@L["ReservationPagination"]'>
+
+            <a class="btn btn-sm btn-outline-teal @(Model.PageNumber <= 1 ? "disabled" : "")"
+               asp-action="Index"
+               asp-route-status="@Model.Status"
+               asp-route-guestSearch="@Model.GuestSearch"
+               asp-route-roomNumber="@Model.RoomNumber"
+               asp-route-pageNumber="@(Model.PageNumber - 1)">
+                 @L["Previous"]
+            </a>
+
+
+            @for (var currentPage = 1; currentPage <= Model.TotalPages; currentPage++)
+            {
+                <a class="btn btn-sm @(currentPage == Model.PageNumber
+                                                         ? "btn-teal"
+                                                         : "btn-outline-teal")"
+           asp-action="Index"
+           asp-route-status="@Model.Status"
+           asp-route-guestSearch="@Model.GuestSearch"
+           asp-route-roomNumber="@Model.RoomNumber"
+           asp-route-pageNumber="@currentPage">
+            @currentPage
+        </a>
+    }
+
+
+    <a class="btn btn-sm btn-outline-teal @(Model.PageNumber >= Model.TotalPages ? "disabled" : "")"
+       asp-action="Index"
+       asp-route-status="@Model.Status"
+       asp-route-guestSearch="@Model.GuestSearch"
+       asp-route-roomNumber="@Model.RoomNumber"
+       asp-route-pageNumber="@(Model.PageNumber + 1)">
+         @L["Next"]
+    </a>
+
+</nav>
+    }
+
+</section>
