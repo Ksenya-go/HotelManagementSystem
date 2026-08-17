@@ -23,14 +23,14 @@
 
         <input type="hidden" asp-for="Id" />
 
-        <div asp-validation-summary="ModelOnly"class="validation-summary"></div>
+        <div asp-validation-summary="ModelOnly" class="validation-summary"></div>
 
         <div class="form-field">
             <label asp-for="FullName" class="form-label">
                 @L["FullName"]
             </label>
 
-            <input asp-for="FullName" class="form-control" />
+            <input asp-for="FullName" class="form-control" required />
 
             <span asp-validation-for="FullName" class="text-danger"></span>
         </div>
@@ -39,8 +39,8 @@
             <label asp-for="Email" class="form-label">
                 @L["Email"]
             </label>
-            <input asp-for="Email"class="form-control"autocomplete="username" />
-            <span asp-validation-for="Email"class="text-danger"></span>
+            <input asp-for="Email" class="form-control" autocomplete="username" required />
+            <span asp-validation-for="Email" class="text-danger"></span>
         </div>
 
         <div class="form-field">
@@ -48,7 +48,7 @@
                 @L["Role"]
             </label>
 
-            <select asp-for="Role" class="form-select">
+            <select asp-for="Role" class="form-select" required>
                 @foreach (var role in Model.AvailableRoles)
                 {
                     <option value="@role">
@@ -58,11 +58,13 @@
 
             </select>
 
-            <span asp-validation-for="Role"class="text-danger"></span>
+            <span asp-validation-for="Role" class="text-danger"></span>
         </div>
 
         <div class="form-field">
-            <label asp-for="NewPassword" class="form-label"></label>
+            <label asp-for="NewPassword" class="form-label">
+                @L["NewPassword"]
+            </label>
             <input asp-for="NewPassword"
                    class="form-control"
                    autocomplete="new-password"
@@ -70,11 +72,11 @@
             <div id="new-password-help" class="form-text">
                 @L["NewPasswordHelp"]
             </div>
-            <span asp-validation-for="NewPassword"class="text-danger"></span>
+            <span asp-validation-for="NewPassword" class="text-danger"></span>
         </div>
 
         <div class="form-actions">
-            <button type="submit"class="btn btn-teal">@L["SaveChanges"]</button>
+            <button type="submit" class="btn btn-teal">@L["SaveChanges"]</button>
 
             <a asp-controller="AdminUsers"
                asp-action="Index"

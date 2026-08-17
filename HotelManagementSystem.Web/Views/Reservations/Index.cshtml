@@ -120,7 +120,6 @@
             <h2>@L["Reservations"]</h2>
 
             <span class="table-count">
-                @Model.TotalCount
                 @L["ReservationCount", Model.TotalCount]
             </span>
         </div>
@@ -241,7 +240,7 @@
 
                         <td>
 
-                            <div class="reservation-actions">
+                            <div class="d-flex align-items-center justify-content-center gap-2 reservation-actions">
 
                                 <a asp-action="Edit"
                                    asp-route-id="@reservation.Id"

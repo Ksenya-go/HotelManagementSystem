@@ -469,7 +469,7 @@
     <value>Категорії номерів із ціною, описом і максимальною кількістю гостей.</value>
   </data>
   <data name="EmailPlaceholder" xml:space="preserve">
-    <value>електронна пошта</value>
+    <value>Введіть електронну пошту</value>
   </data>
   <data name="EmptyState" xml:space="preserve">
     <value>Дані відсутні.</value>
@@ -529,7 +529,7 @@
     <value>Номер кімнати</value>
   </data>
   <data name="Price" xml:space="preserve">
-    <value>Ціна</value>
+    <value>Ціна (грн)</value>
   </data>
   <data name="Actions" xml:space="preserve">
     <value>Дії</value>
@@ -616,7 +616,7 @@
     <value>Виберіть тип кімнати</value>
   </data>
   <data name="PricePerNight" xml:space="preserve">
-    <value>Ціна за ніч</value>
+    <value>Ціна за ніч (грн)</value>
   </data>
   <data name="RoomQuantity" xml:space="preserve">
     <value>Кількість кімнат</value>

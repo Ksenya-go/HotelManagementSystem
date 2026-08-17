@@ -53,7 +53,7 @@
             </div>
 
             <a asp-action="Create" class="btn btn-teal rooms-add-btn">
-                ＋ @L["AddRoom"]
+                @L["AddRoom"]
             </a>
         </div>
         <input type="hidden" name="pageNumber" value="1" />
@@ -95,7 +95,7 @@
                         <td>@room.RoomCount</td>
                         <td>@GetRoomStatusText(room.OperationalStatus)</td>
                         <td>
-                            <div class="d-flex gap-2 text-center">
+                            <div class="d-flex align-items-center justify-content-center gap-2">
                                 <a asp-action="Edit" asp-route-id="@room.Id" class="btn btn-teal">@L["Edit"]</a>
                                 @if (User.IsInRole("Admin"))
                                 {

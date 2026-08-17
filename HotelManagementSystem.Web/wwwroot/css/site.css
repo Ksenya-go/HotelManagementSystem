@@ -985,6 +985,20 @@ a {
     background: var(--white);
 }
 
+.form-control-readonly {
+    color: var(--muted);
+    background: #f4f7f9;
+    cursor: not-allowed;
+}
+
+
+.form-field:has(input[required]) .form-label::after,
+.form-field:has(select[required]) .form-label::after,
+.form-field:has(textarea[required]) .form-label::after {
+    content: " *";
+    color: var(--red);
+    font-weight: 700;
+}
 
 /* =========================
    Reservation status column

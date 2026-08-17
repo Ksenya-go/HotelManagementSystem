@@ -32,51 +32,58 @@
 
         <div class="form-field">
             <label class="form-label">@L["SelectedRoom"]</label>
-            <input class="form-control"
+            <input class="form-control form-control-readonly"
                    value="@Model.RoomNumber"
-                   readonly />
+                   readonly
+                   tabindex="-1" />
         </div>
 
         <div class="form-field">
             <label class="form-label">@L["Floor"]</label>
-            <input class="form-control"
+            <input class="form-control form-control-readonly"
                    value="@Model.RoomFloor"
-                   readonly />
+                   readonly
+                   tabindex="-1" />
         </div>
 
         <div class="form-field">
             <label class="form-label">@L["RoomType"]</label>
-            <input class="form-control"
+            <input class="form-control form-control-readonly"
                    value="@Model.RoomType"
-                   readonly />
+                   readonly
+                   tabindex="-1" />
         </div>
 
         <div class="form-field">
             <label class="form-label">@L["PricePerNight"]</label>
-            <input class="form-control"
+            <input class="form-control form-control-readonly"
                    value="@Model.RoomPricePerDay.ToString("N2")"
-                   readonly />
+                   readonly
+                   tabindex="-1" />
         </div>
 
         <div class="form-field">
             <label class="form-label">@L["RoomCapacity"]</label>
-            <input class="form-control"
+            <input class="form-control form-control-readonly"
                    value="@Model.RoomCapacity"
-                   readonly />
+                   readonly
+                   tabindex="-1" />
         </div>
 
         <div class="form-field">
             <label class="form-label">@L["CheckIn"]</label>
-            <input class="form-control"
+            <input class="form-control form-control-readonly"
                    value="@Model.CheckIn @Model.CheckInTime"
-                   readonly />
+                   readonly
+                   tabindex="-1" />
         </div>
 
         <div class="form-field">
             <label class="form-label">@L["CheckOut"]</label>
-            <input class="form-control"
+            <input class="form-control form-control-readonly"
                    value="@Model.CheckOut @Model.CheckOutTime"
-                   readonly />
+                   readonly
+                   tabindex="-1" />
         </div>
 
         <div class="form-field">
@@ -111,7 +118,8 @@
                 @L["Phone"]
             </label>
             <input asp-for="NewGuestPhone"
-                   class="form-control" />
+                   class="form-control"
+                   required />
         </div>
 
         <div class="form-actions">

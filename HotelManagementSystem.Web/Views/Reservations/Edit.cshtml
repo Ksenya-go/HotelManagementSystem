@@ -78,7 +78,8 @@
                 @L["Phone"]
             </label>
             <input asp-for="NewGuestPhone"
-                   class="form-control" />
+                   class="form-control"
+                   required />
         </div>
 
         <div class="form-field">
@@ -86,7 +87,8 @@
                 @L["CheckIn"]
             </label>
             <input asp-for="CheckIn"
-                   class="form-control" />
+                   class="form-control"
+                   required />
             <div class="form-text">@L["CheckInTime"]: @Model.CheckInTime</div>
         </div>
 
@@ -95,7 +97,8 @@
                 @L["CheckOut"]
             </label>
             <input asp-for="CheckOut"
-                   class="form-control" />
+                   class="form-control"
+                   required />
             <div class="form-text">@L["CheckOutTime"]: @Model.CheckOutTime</div>
         </div>
 
@@ -104,7 +107,8 @@
                 @L["GuestsCount"]
             </label>
             <input asp-for="GuestsCount"
-                   class="form-control" />
+                   class="form-control"
+                   required />
         </div>
 
         <div class="form-actions">
@@ -120,3 +124,7 @@
 
     </form>
 </section>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

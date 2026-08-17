@@ -31,7 +31,7 @@
 
         <div class="form-field">
             <label asp-for="Description" class="form-label">@L["Description"]</label>
-            <textarea asp-for="Description" class="form-control" rows="3"></textarea>
+            <textarea asp-for="Description" class="form-control" rows="3" required></textarea>
             <span asp-validation-for="Description" class="text-danger"></span>
         </div>
 
@@ -68,7 +68,7 @@
         </div>
 
         <div class="form-field">
-                <label asp-for="OperationalStatus" class="form-label">@L["RoomStatus"]</label>
+            <label asp-for="OperationalStatus" class="form-label">@L["RoomStatus"]</label>
 
             <select asp-for="OperationalStatus" class="form-select" required>
                 <option value="Clean">@L["RoomStatus_Clean"]</option>
