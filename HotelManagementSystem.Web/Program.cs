@@ -152,6 +152,7 @@ if (!app.Environment.IsEnvironment("Testing"))
 {
     using var scope = app.Services.CreateScope();
     await IdentitySeed.SeedAsync(scope.ServiceProvider, app.Configuration);
+    await DemoDataSeed.SeedAsync(scope.ServiceProvider, app.Configuration);
 }
 app.Use(async (context, next) =>
 {
