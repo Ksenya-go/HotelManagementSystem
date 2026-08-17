@@ -80,7 +80,7 @@ public static class DemoDataSeed
             CreateReservation(guests[3], rooms[10], new DateOnly(2026, 8, 24), new DateOnly(2026, 8, 29), 2, ReservationStatus.CheckedIn),
             CreateReservation(guests[4], rooms[9], new DateOnly(2026, 8, 10), new DateOnly(2026, 8, 13), 3, ReservationStatus.Cancelled),
             CreateReservation(guests[5], rooms[2], new DateOnly(2026, 8, 4), new DateOnly(2026, 8, 9), 1, ReservationStatus.CheckedOut),
-            CreateReservation(guests[6], rooms[5], new DateOnly(2026, 8, 3), new DateOnly(2026, 8, 5), 2, ReservationStatus.CheckedOut),
+            CreateReservation(guests[6],rooms[7],new DateOnly(2026, 8, 3),new DateOnly(2026, 8, 5),2,ReservationStatus.CheckedOut),
             CreateReservation(guests[7], rooms[1], new DateOnly(2026, 7, 18), new DateOnly(2026, 7, 21), 2, ReservationStatus.Confirmed)
         };
 
