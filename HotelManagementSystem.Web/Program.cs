@@ -11,11 +11,7 @@ using HotelManagementSystem.Application.RoomTypes.Handlers;
 using HotelManagementSystem.Application.Rooms.Handlers;
 using HotelManagementSystem.Application.SystemSettings.Handlers;
 using FluentValidation;
-using Microsoft.Extensions.Localization;
 using CreateGuestCqrs = HotelManagementSystem.Application.Guests.Commands.CreateGuestCommand;
-using CreateReservationCqrs = HotelManagementSystem.Application.Reservations.Commands.CreateReservationCommand;
-using UpdateReservationCqrs = HotelManagementSystem.Application.Reservations.Commands.UpdateReservationCommand;
-using UpdateGuestCqrs = HotelManagementSystem.Application.Guests.Commands.UpdateGuestCommand;
 using GetRoomTypesQuery = HotelManagementSystem.Application.RoomTypes.Queries.GetRoomTypesQuery;
 using CreateRoomTypeCommand = HotelManagementSystem.Application.RoomTypes.Commands.CreateRoomTypeCommand;
 using UpdateRoomTypeCommand = HotelManagementSystem.Application.RoomTypes.Commands.UpdateRoomTypeCommand;
@@ -131,6 +127,21 @@ if (!app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 
+app.Use(async (context, next) =>
+{
+    context.Response.Headers["X-Content-Type-Options"] = "nosniff";
+    context.Response.Headers["X-Frame-Options"] = "DENY";
+    context.Response.Headers["Content-Security-Policy"] =
+        "default-src 'self'; " +
+        "script-src 'self' 'unsafe-inline'; " +
+        "style-src 'self' 'unsafe-inline'; " +
+        "img-src 'self' data:; " +
+        "font-src 'self';";
+    context.Response.Headers["Referrer-Policy"] = "strict-origin-when-cross-origin";
+    await next();
+});
+
+
 app.UseRouting();
 
 
@@ -156,8 +167,12 @@ if (!app.Environment.IsEnvironment("Testing"))
 }
 app.Use(async (context, next) =>
 {
-    context.Response.Headers["Content-Type"] = "text/html; charset=utf-8";
     await next();
+    if (context.Response.ContentType?.StartsWith("text/html") == true &&
+        !context.Response.ContentType.Contains("charset"))
+    {
+        context.Response.ContentType += "; charset=utf-8";
+    }
 });
 
 
