@@ -1,8 +1,9 @@
 using FluentValidation;
-using HotelManagementSystem.Application.Common.Cqrs.Abstractions;
+
 using HotelManagementSystem.Application.Common.Cqrs.Results;
-using HotelManagementSystem.Application.RoomTypes;
+
 using HotelManagementSystem.Domain.Room;
+using Mediator;
 
 namespace HotelManagementSystem.Application.Rooms.Commands;
 

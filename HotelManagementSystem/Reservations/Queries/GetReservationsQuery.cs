@@ -1,7 +1,7 @@
 using HotelManagementSystem.Domain.Reservation;
-using HotelManagementSystem.Application.Common.Cqrs.Abstractions;
 using HotelManagementSystem.Application.Common.Cqrs.Results;
 using HotelManagementSystem.Application.Common.Pagination;
+using Mediator;
 
 namespace HotelManagementSystem.Application.Reservations.Queries;
 

@@ -1,5 +1,5 @@
-using HotelManagementSystem.Application.Common.Cqrs.Abstractions;
 using HotelManagementSystem.Application.Guests.Queries;
+using Mediator;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 

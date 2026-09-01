@@ -1,8 +1,9 @@
-using HotelManagementSystem.Application.Common.Cqrs.Abstractions;
+
 using HotelManagementSystem.Application.Common.Cqrs.Results;
 using HotelManagementSystem.Application.Rooms.Commands;
 using HotelManagementSystem.Application.RoomTypes;
 using HotelManagementSystem.Application.Services;
+using Mediator;
 
 namespace HotelManagementSystem.Application.Rooms.Handlers;
 

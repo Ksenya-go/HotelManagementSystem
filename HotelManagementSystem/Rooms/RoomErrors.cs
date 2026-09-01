@@ -1,5 +1,6 @@
 using HotelManagementSystem.Application.Common.Cqrs.Results;
 using HotelManagementSystem.Application.RoomTypes;
+using Mediator;
 
 namespace HotelManagementSystem.Application.Rooms;
 

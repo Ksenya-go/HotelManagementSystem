@@ -1,10 +1,9 @@
-using HotelManagementSystem.Application.Common.Cqrs.Abstractions;
 using HotelManagementSystem.Application.Common.Cqrs.Results;
-using HotelManagementSystem.Application.RoomTypes;
 using HotelManagementSystem.Application.RoomTypes.Commands;
 using HotelManagementSystem.Application.RoomTypes.Queries;
 using HotelManagementSystem.Web.Extensions;
 using HotelManagementSystem.Web.ViewModels.Admin;
+using Mediator;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Localization;

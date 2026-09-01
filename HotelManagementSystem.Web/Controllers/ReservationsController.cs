@@ -5,13 +5,13 @@ using Microsoft.AspNetCore.Mvc;
 using CreateReservationCqrs = HotelManagementSystem.Application.Reservations.Commands.CreateReservationCommand;
 using UpdateReservationCqrs = HotelManagementSystem.Application.Reservations.Commands.UpdateReservationCommand;
 using HotelManagementSystem.Domain.Reservation;
-using HotelManagementSystem.Application.Common.Cqrs.Abstractions;
 using HotelManagementSystem.Application.Reservations.Commands;
 using HotelManagementSystem.Application.Services;
 using HotelManagementSystem.Application.Common.Cqrs.Results;
 using HotelManagementSystem.Web.Extensions;
 using HotelManagementSystem.Web.ViewModels.Reservation;
 using Microsoft.Extensions.Localization;
+using Mediator;
 
 namespace HotelManagementSystem.Web.Controllers;
 

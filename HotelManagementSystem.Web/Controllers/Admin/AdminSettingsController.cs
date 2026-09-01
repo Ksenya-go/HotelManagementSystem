@@ -4,10 +4,10 @@ using HotelManagementSystem.Application.Common.Cqrs.Results;
 using HotelManagementSystem.Application.SystemSettings.Queries;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using HotelManagementSystem.Application.Common.Cqrs.Abstractions;
 using HotelManagementSystem.Web.ViewModels.Admin;
 using HotelManagementSystem.Web.Extensions;
 using Microsoft.Extensions.Localization;
+using Mediator;
 
 namespace HotelManagementSystem.Web.Controllers.Admin;
 

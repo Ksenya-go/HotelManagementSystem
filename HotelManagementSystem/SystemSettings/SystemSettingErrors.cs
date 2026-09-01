@@ -1,4 +1,5 @@
 using HotelManagementSystem.Application.Common.Cqrs.Results;
+using Mediator;
 
 namespace HotelManagementSystem.Application.SystemSettings;
 

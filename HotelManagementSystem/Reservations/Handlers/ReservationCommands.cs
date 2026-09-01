@@ -1,8 +1,8 @@
-using HotelManagementSystem.Application.Common.Cqrs.Abstractions;
 using HotelManagementSystem.Application.Common.Cqrs.Results;
 using HotelManagementSystem.Application.Common.Errors;
 using HotelManagementSystem.Application.Reservations.Commands;
 using HotelManagementSystem.Application.Services;
+using Mediator;
 
 namespace HotelManagementSystem.Application.Reservations.Handlers;
 
