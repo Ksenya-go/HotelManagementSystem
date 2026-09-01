@@ -1,4 +1,5 @@
-using HotelManagementSystem.Application.Common.Cqrs.Results;
+using FluentResults;
+using HotelManagementSystem.Application.Common.Errors;
 using HotelManagementSystem.Application.RoomTypes.Commands;
 using HotelManagementSystem.Application.RoomTypes.Queries;
 using HotelManagementSystem.Web.Extensions;
@@ -119,7 +120,7 @@ public sealed class AdminRoomTypesController(
 
         if (!updateResult.IsSuccess)
         {
-            if (updateResult.Error?.Code == "RoomType.NotFound")
+            if (updateResult.GetCode() == "RoomType.NotFound")
             {
                 return NotFound();
             }
@@ -177,7 +178,7 @@ public sealed class AdminRoomTypesController(
 
     private string GetResultErrorMessage<T>(Result<T> result)
     {
-        return result.Error?.Code switch
+        return result.GetCode() switch
         {
             "RoomType.NotFound" =>
                 sharedLocalizer["RoomTypeNotFoundError"].Value,

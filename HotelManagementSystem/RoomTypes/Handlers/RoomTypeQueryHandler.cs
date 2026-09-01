@@ -1,5 +1,5 @@
 
-using HotelManagementSystem.Application.Common.Cqrs.Results;
+using FluentResults;
 using HotelManagementSystem.Application.RoomTypes.Queries;
 using Mediator;
 
@@ -14,6 +14,6 @@ public sealed class RoomTypeQueryHandler(IRoomTypeService service)
     {
         var roomTypes = await service.GetAllAsync(cancellationToken);
 
-        return Result<IReadOnlyList<RoomTypeDto>>.Ok(roomTypes);
+        return Result.Ok(roomTypes);
     }
 }

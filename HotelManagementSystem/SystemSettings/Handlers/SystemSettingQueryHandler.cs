@@ -1,4 +1,4 @@
-using HotelManagementSystem.Application.Common.Cqrs.Results;
+using FluentResults;
 using Mediator;
 
 namespace HotelManagementSystem.Application.SystemSettings.Handlers;
@@ -9,5 +9,5 @@ public sealed class SystemSettingQueryHandler(ISystemSettingService service) :
     public async ValueTask<Result<IReadOnlyList<SystemSettingDto>>> Handle(
         Queries.GetSystemSettingsQuery request,
         CancellationToken cancellationToken) =>
-        Result<IReadOnlyList<SystemSettingDto>>.Ok(await service.GetAllAsync(cancellationToken));
+        Result.Ok(await service.GetAllAsync(cancellationToken));
 }

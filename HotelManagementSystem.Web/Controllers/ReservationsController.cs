@@ -1,17 +1,18 @@
 using HotelManagementSystem.Application.Reservations.Queries;
 using HotelManagementSystem.Application.SystemSettings;
 using Microsoft.AspNetCore.Authorization;
+using HotelManagementSystem.Application.Common.Errors;
 using Microsoft.AspNetCore.Mvc;
 using CreateReservationCqrs = HotelManagementSystem.Application.Reservations.Commands.CreateReservationCommand;
 using UpdateReservationCqrs = HotelManagementSystem.Application.Reservations.Commands.UpdateReservationCommand;
 using HotelManagementSystem.Domain.Reservation;
 using HotelManagementSystem.Application.Reservations.Commands;
 using HotelManagementSystem.Application.Services;
-using HotelManagementSystem.Application.Common.Cqrs.Results;
 using HotelManagementSystem.Web.Extensions;
 using HotelManagementSystem.Web.ViewModels.Reservation;
 using Microsoft.Extensions.Localization;
 using Mediator;
+using FluentResults;
 
 namespace HotelManagementSystem.Web.Controllers;
 
@@ -523,7 +524,7 @@ public sealed class ReservationsController(
 
     private string GetResultErrorMessage<T>(Result<T> result)
     {
-        return result.Error?.Code switch
+        return result.GetCode() switch
         {
             "Reservation.NotFound" =>
                 sharedLocalizer["ReservationNotFoundError"].Value,

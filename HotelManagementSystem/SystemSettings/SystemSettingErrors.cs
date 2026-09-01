@@ -1,4 +1,5 @@
-using HotelManagementSystem.Application.Common.Cqrs.Results;
+using FluentResults;
+using HotelManagementSystem.Application.Common.Errors;
 using Mediator;
 
 namespace HotelManagementSystem.Application.SystemSettings;
@@ -6,7 +7,8 @@ namespace HotelManagementSystem.Application.SystemSettings;
 public static class SystemSettingErrors
 {
     public static Result<Unit> NotFound() =>
-        Result<Unit>.Fail(
-            "SystemSetting.NotFound",
-            "Налаштування не знайдено.");
+        Result.Fail<Unit>(
+            new AppError(
+                "SystemSetting.NotFound",
+                "Налаштування не знайдено."));
 }

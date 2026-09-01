@@ -1,5 +1,5 @@
 
-using HotelManagementSystem.Application.Common.Cqrs.Results;
+using FluentResults;
 using HotelManagementSystem.Application.Rooms.Commands;
 using HotelManagementSystem.Application.RoomTypes;
 using HotelManagementSystem.Application.Services;
@@ -21,7 +21,7 @@ public sealed class RoomCommandHandler(IRoomService service)
 
         return rooms.Count == 0
             ? RoomErrors.DuplicateRoomNumber()
-            : Result<IReadOnlyList<RoomDto>>.Ok(rooms);
+            : Result.Ok(rooms);
     }
 
     public async ValueTask<Result<Unit>> Handle(
@@ -31,7 +31,7 @@ public sealed class RoomCommandHandler(IRoomService service)
         var updated = await service.UpdateAsync(request, cancellationToken);
 
         return updated
-            ? Result<Unit>.Ok(Unit.Value)
+            ? Result.Ok(Unit.Value)
             : RoomErrors.NotFound();
     }
 
@@ -44,7 +44,7 @@ public sealed class RoomCommandHandler(IRoomService service)
             cancellationToken);
 
         return room
-            ? Result<Unit>.Ok(Unit.Value)
+            ? Result.Ok(Unit.Value)
             : RoomErrors.DeleteFailed();
     }
 
@@ -58,7 +58,7 @@ public sealed class RoomCommandHandler(IRoomService service)
             cancellationToken);
 
         return updated
-            ? Result<Unit>.Ok(Unit.Value)
+            ? Result.Ok(Unit.Value)
             : RoomErrors.NotFound();
     }
 }

@@ -1,6 +1,6 @@
 using FluentValidation;
 using HotelManagementSystem.Domain.Reservation;
-using HotelManagementSystem.Application.Common.Cqrs.Results;
+using FluentResults;
 using Mediator;
 
 namespace HotelManagementSystem.Application.Reservations.Commands;

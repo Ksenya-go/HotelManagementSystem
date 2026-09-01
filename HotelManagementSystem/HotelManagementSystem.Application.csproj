@@ -8,6 +8,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\HotelManagementSystem.Domain\HotelManagementSystem.Domain.csproj" />
+    <PackageReference Include="FluentResults" Version="4.0.0" />
     <PackageReference Include="FluentValidation" Version="12.0.0" />
     <PackageReference Include="FluentValidation.DependencyInjectionExtensions" Version="12.0.0" />
     <PackageReference Include="Mediator.Abstractions" Version="3.0.2" />

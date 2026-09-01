@@ -18,7 +18,7 @@ using UpdateRoomTypeCommand = HotelManagementSystem.Application.RoomTypes.Comman
 using DeleteRoomTypeCommand = HotelManagementSystem.Application.RoomTypes.Commands.DeleteRoomTypeCommand;
 using GetSystemSettingsQuery = HotelManagementSystem.Application.SystemSettings.Queries.GetSystemSettingsQuery;
 using UpdateSystemSettingCommand = HotelManagementSystem.Application.SystemSettings.Commands.UpdateSystemSettingCommand;
-using HotelManagementSystem.Application.Common.Cqrs.Results;
+using FluentResults;
 using HotelManagementSystem.Application.Guests.Queries;
 using HotelManagementSystem.Application.Guests.Handlers;
 using HotelManagementSystem.Application.Guests;

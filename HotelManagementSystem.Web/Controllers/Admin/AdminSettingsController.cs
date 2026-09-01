@@ -1,6 +1,7 @@
 using HotelManagementSystem.Application.SystemSettings;
 using HotelManagementSystem.Application.SystemSettings.Commands;
-using HotelManagementSystem.Application.Common.Cqrs.Results;
+using FluentResults;
+using HotelManagementSystem.Application.Common.Errors;
 using HotelManagementSystem.Application.SystemSettings.Queries;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -107,7 +108,7 @@ public sealed class AdminSettingsController(
 
     private string GetResultErrorMessage<T>(Result<T> result)
     {
-        return result.Error?.Code switch
+        return result.GetCode() switch
         {
             "SystemSetting.NotFound" =>
                 sharedLocalizer["SettingNotFoundError"].Value,

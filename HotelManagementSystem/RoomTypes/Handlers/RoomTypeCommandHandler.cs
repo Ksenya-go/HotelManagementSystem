@@ -1,4 +1,4 @@
-using HotelManagementSystem.Application.Common.Cqrs.Results;
+using FluentResults;
 using HotelManagementSystem.Application.RoomTypes.Commands;
 using Mediator;
 
@@ -15,7 +15,7 @@ public sealed class RoomTypeCommandHandler(IRoomTypeService service)
     {
         var roomType = await service.CreateAsync(request, cancellationToken);
 
-        return Result<RoomTypeDto>.Ok(roomType);
+        return Result.Ok(roomType);
     }
 
     public async ValueTask<Result<Unit>> Handle(UpdateRoomTypeCommand request,
@@ -24,7 +24,7 @@ public sealed class RoomTypeCommandHandler(IRoomTypeService service)
         var updated = await service.UpdateAsync(request, cancellationToken);
 
         return updated
-            ? Result<Unit>.Ok(Unit.Value)
+            ? Result.Ok(Unit.Value)
             : RoomTypeErrors.NotFound();
     }
 
@@ -36,7 +36,7 @@ public sealed class RoomTypeCommandHandler(IRoomTypeService service)
             cancellationToken);
 
         return deleted
-            ? Result<Unit>.Ok(Unit.Value)
+            ? Result.Ok(Unit.Value)
             : RoomTypeErrors.DeleteFailed();
     }
 }

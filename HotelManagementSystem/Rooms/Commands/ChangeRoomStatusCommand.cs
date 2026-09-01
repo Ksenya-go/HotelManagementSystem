@@ -1,5 +1,4 @@
-
-using HotelManagementSystem.Application.Common.Cqrs.Results;
+using FluentResults;
 using HotelManagementSystem.Domain.Room;
 using Mediator;
 

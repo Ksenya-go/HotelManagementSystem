@@ -1,4 +1,4 @@
-﻿using HotelManagementSystem.Application.Common.Cqrs.Results;
+﻿using FluentResults;
 using HotelManagementSystem.Application.Common.Pagination;
 using HotelManagementSystem.Application.Reservations.Queries;
 using HotelManagementSystem.Application.Services;
@@ -26,6 +26,6 @@ public sealed class GetReservationsQueryHandler(
             request.PageSize,
             cancellationToken);
 
-        return Result<PagedResult<ReservationDto>>.Ok(reservations);
+        return Result.Ok(reservations);
     }
 }

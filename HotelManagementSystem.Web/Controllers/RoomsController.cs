@@ -1,5 +1,5 @@
 using HotelManagementSystem.Application.Common.Errors;
-using HotelManagementSystem.Application.Common.Cqrs.Results;
+using FluentResults;
 using HotelManagementSystem.Application.Services;
 using HotelManagementSystem.Application.Rooms.Commands;
 using HotelManagementSystem.Application.RoomTypes.Queries;
@@ -246,7 +246,7 @@ public sealed class RoomsController(
 
         if (TryAddError(result))
         {
-            if (result.Error?.Code == "Room.NotFound")
+            if (result.GetCode() == "Room.NotFound")
             {
                 return NotFound();
             }
@@ -300,7 +300,7 @@ public sealed class RoomsController(
         {
             TempData.SetErrorMessage(message);
         }
-        else if (result.Error?.Code == "Room.DuplicateRoomNumber")
+        else if (result.GetCode() == "Room.DuplicateRoomNumber")
         {
             ModelState.AddModelError(
                 nameof(RoomCreateViewModel.RoomNumber),
@@ -318,7 +318,7 @@ public sealed class RoomsController(
 
     private string GetResultErrorMessage<T>(Result<T> result)
     {
-        return result.Error?.Code switch
+        return result.GetCode() switch
         {
             "Room.DuplicateRoomNumber" =>
                 sharedLocalizer["RoomDuplicateNumberError"].Value,

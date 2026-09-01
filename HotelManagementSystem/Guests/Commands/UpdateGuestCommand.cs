@@ -1,6 +1,5 @@
 using FluentValidation;
-
-using HotelManagementSystem.Application.Common.Cqrs.Results;
+using FluentResults;
 using Mediator;
 
 namespace HotelManagementSystem.Application.Guests.Commands;

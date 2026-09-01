@@ -1,4 +1,5 @@
-using HotelManagementSystem.Application.Common.Cqrs.Results;
+using FluentResults;
+using HotelManagementSystem.Application.Common.Errors;
 using Mediator;
 
 namespace HotelManagementSystem.Application.Guests;
@@ -6,7 +7,8 @@ namespace HotelManagementSystem.Application.Guests;
 public static class GuestErrors
 {
     public static Result<Unit> NotFound() =>
-        Result<Unit>.Fail(
-            "Guest.NotFound",
-            "Гостя не знайдено.");
+        Result.Fail<Unit>(
+            new AppError(
+                "Guest.NotFound",
+                "Гостя не знайдено."));
 }
