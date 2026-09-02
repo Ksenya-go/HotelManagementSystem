@@ -132,6 +132,21 @@ if (!app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 
+app.Use(async (context, next) =>
+{
+    context.Response.Headers["X-Content-Type-Options"] = "nosniff";
+    context.Response.Headers["X-Frame-Options"] = "DENY";
+    context.Response.Headers["Content-Security-Policy"] =
+        "default-src 'self'; " +
+        "script-src 'self' 'unsafe-inline'; " +
+        "style-src 'self' 'unsafe-inline'; " +
+        "img-src 'self' data:; " +
+        "font-src 'self';";
+    context.Response.Headers["Referrer-Policy"] = "strict-origin-when-cross-origin";
+    await next();
+});
+
+
 app.UseRouting();
 
 
@@ -157,8 +172,12 @@ if (!app.Environment.IsEnvironment("Testing"))
 }
 app.Use(async (context, next) =>
 {
-    context.Response.Headers["Content-Type"] = "text/html; charset=utf-8";
     await next();
+    if (context.Response.ContentType?.StartsWith("text/html") == true &&
+        !context.Response.ContentType.Contains("charset"))
+    {
+        context.Response.ContentType += "; charset=utf-8";
+    }
 });
 
 
