@@ -1,6 +1,6 @@
-using ReservationEntity = HotelManagementSystem.Domain.Reservation.Reservation;
+using HotelManagementSystem.Domain.Reservations;
 
-namespace HotelManagementSystem.Domain.Guest;
+namespace HotelManagementSystem.Domain.Guests;
 
 public sealed class Guest
 {
@@ -29,8 +29,8 @@ public sealed class Guest
 
     public DateTime CreatedAtUtc { get; private set; } = DateTime.UtcNow;
 
-    public ICollection<ReservationEntity> Reservations { get; private set; } =
-        new List<ReservationEntity>();
+    public ICollection<Reservation> Reservations { get; private set; } =
+        new List<Reservation>();
 
     public void Update(
         string firstName,
@@ -51,21 +51,21 @@ public sealed class Guest
         if (string.IsNullOrWhiteSpace(firstName))
         {
             throw new ArgumentException(
-                "Ім’я є обов’язковим.",
+                GuestValidationMessages.FirstNameRequired,
                 nameof(firstName));
         }
 
         if (string.IsNullOrWhiteSpace(lastName))
         {
             throw new ArgumentException(
-                "Прізвище є обов’язковим.",
+                GuestValidationMessages.LastNameRequired,
                 nameof(lastName));
         }
 
         if (string.IsNullOrWhiteSpace(email))
         {
             throw new ArgumentException(
-                "Електронна пошта є обов’язковою.",
+                GuestValidationMessages.EmailRequired,
                 nameof(email));
         }
     }

@@ -1,7 +1,7 @@
 using HotelManagementSystem.Application.Common.Pagination;
 using HotelManagementSystem.Application.RoomTypes;
 using HotelManagementSystem.Application.Rooms.Commands;
-using HotelManagementSystem.Domain.Room;
+using HotelManagementSystem.Domain.Rooms;
 
 namespace HotelManagementSystem.Application.Services;
 

@@ -1,10 +1,7 @@
-﻿using HotelManagementSystem.Application.Common.Cqrs.Abstractions;
-using HotelManagementSystem.Application.Common.Cqrs.Results;
+﻿using FluentResults;
 using HotelManagementSystem.Application.Common.Pagination;
 using HotelManagementSystem.Application.Services;
-using System;
-using System.Collections.Generic;
-using System.Text;
+using Mediator;
 
 namespace HotelManagementSystem.Application.RoomTypes.Queries;
 
@@ -25,6 +22,6 @@ public sealed class GetRoomsQueryHandler(
             request.PageSize,
             cancellationToken);
 
-        return Result<PagedResult<RoomDto>>.Ok(rooms);
+        return Result.Ok(rooms);
     }
 }

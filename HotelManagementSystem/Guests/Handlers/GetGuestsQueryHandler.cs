@@ -1,10 +1,8 @@
-﻿using HotelManagementSystem.Application.Common.Cqrs.Abstractions;
-using HotelManagementSystem.Application.Common.Cqrs.Results;
+﻿using FluentResults;
 using HotelManagementSystem.Application.Guests.Queries;
 using HotelManagementSystem.Application.Services;
-using System;
-using System.Collections.Generic;
-using System.Text;
+using Mediator;
+
 
 namespace HotelManagementSystem.Application.Guests.Handlers;
 
@@ -20,6 +18,6 @@ public sealed class GetGuestsQueryHandler(
             request.Search,
             cancellationToken);
 
-        return Result<IReadOnlyList<GuestDto>>.Ok(guests);
+        return Result.Ok(guests);
     }
 }

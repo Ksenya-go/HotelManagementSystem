@@ -1,16 +1,20 @@
-using HotelManagementSystem.Application.Common.Cqrs.Results;
+using FluentResults;
+using HotelManagementSystem.Application.Common.Errors;
+using Mediator;
 
 namespace HotelManagementSystem.Application.RoomTypes;
 
 public static class RoomTypeErrors
 {
     public static Result<Unit> NotFound() =>
-        Result<Unit>.Fail(
-            "RoomType.NotFound",
-            "Тип номера не знайдено.");
+        Result.Fail<Unit>(
+            new AppError(
+                "RoomType.NotFound",
+                "Тип номера не знайдено."));
 
     public static Result<Unit> DeleteFailed() =>
-        Result<Unit>.Fail(
-            "RoomType.DeleteFailed",
-            "Тип номера не знайдено або він використовується номерами.");
+        Result.Fail<Unit>(
+            new AppError(
+                "RoomType.DeleteFailed",
+                "Тип номера не знайдено або він використовується номерами."));
 }

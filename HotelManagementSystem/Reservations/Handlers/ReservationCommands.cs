@@ -1,8 +1,8 @@
-using HotelManagementSystem.Application.Common.Cqrs.Abstractions;
-using HotelManagementSystem.Application.Common.Cqrs.Results;
+using FluentResults;
 using HotelManagementSystem.Application.Common.Errors;
 using HotelManagementSystem.Application.Reservations.Commands;
 using HotelManagementSystem.Application.Services;
+using Mediator;
 
 namespace HotelManagementSystem.Application.Reservations.Handlers;
 
@@ -22,7 +22,7 @@ public sealed class ReservationCommandHandler(IReservationService service)
         {
             var reservation = await service.CreateAsync(request, cancellationToken);
 
-            return Result<ReservationDto>.Ok(reservation);
+            return Result.Ok(reservation);
         }
         catch (PersistenceOperationException exception)
         {
@@ -44,7 +44,7 @@ public sealed class ReservationCommandHandler(IReservationService service)
             var updated = await service.UpdateAsync(request, cancellationToken);
 
             return updated
-                ? Result<Unit>.Ok(Unit.Value)
+                ? Result.Ok(Unit.Value)
                 : ReservationErrors.NotFound();
         }
         catch (PersistenceOperationException exception)
@@ -60,7 +60,7 @@ public sealed class ReservationCommandHandler(IReservationService service)
         var updated = await service.ChangeStatusAsync(request, cancellationToken);
 
         return updated
-            ? Result<Unit>.Ok(Unit.Value)
+            ? Result.Ok(Unit.Value)
             : ReservationErrors.NotFound();
     }
 
@@ -73,7 +73,7 @@ public sealed class ReservationCommandHandler(IReservationService service)
             cancellationToken);
 
         return cancelled
-            ? Result<Unit>.Ok(Unit.Value)
+            ? Result.Ok(Unit.Value)
             : ReservationErrors.NotFound();
     }
 
@@ -85,7 +85,7 @@ public sealed class ReservationCommandHandler(IReservationService service)
             cancellationToken);
 
         return deleted
-            ? Result<Unit>.Ok(Unit.Value)
+            ? Result.Ok(Unit.Value)
             : ReservationErrors.NotFound();
     }
 
@@ -97,7 +97,7 @@ public sealed class ReservationCommandHandler(IReservationService service)
             cancellationToken);
 
         return checkedIn
-            ? Result<Unit>.Ok(Unit.Value)
+            ? Result.Ok(Unit.Value)
             : ReservationErrors.CheckInFailed();
     }
 
@@ -110,7 +110,7 @@ public sealed class ReservationCommandHandler(IReservationService service)
             cancellationToken);
 
         return checkedOut
-            ? Result<Unit>.Ok(Unit.Value)
+            ? Result.Ok(Unit.Value)
             : ReservationErrors.CheckOutFailed();
     }
 }

@@ -1,4 +1,4 @@
-namespace HotelManagementSystem.Domain.Reservation;
+namespace HotelManagementSystem.Domain.Reservations;
 
 public enum ReservationStatus
 {

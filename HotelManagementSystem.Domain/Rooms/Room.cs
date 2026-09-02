@@ -1,4 +1,4 @@
-namespace HotelManagementSystem.Domain.Room;
+namespace HotelManagementSystem.Domain.Rooms;
 
 public sealed class Room
 {
@@ -79,17 +79,17 @@ public sealed class Room
     }
 
     private static void Validate(
-        string roomNumber,
-        int floor,
-        string type,
-        decimal pricePerDay,
-        int capacity,
-        int roomCount)
+    string roomNumber,
+    int floor,
+    string type,
+    decimal pricePerDay,
+    int capacity,
+    int roomCount)
     {
         if (string.IsNullOrWhiteSpace(roomNumber))
         {
             throw new ArgumentException(
-                "Номер кімнати є обов’язковим.",
+                RoomValidationMessages.RoomNumberRequired,
                 nameof(roomNumber));
         }
 
@@ -97,13 +97,13 @@ public sealed class Room
         {
             throw new ArgumentOutOfRangeException(
                 nameof(floor),
-                "Поверх має бути щонайменше 1.");
+                RoomValidationMessages.FloorTooLow);
         }
 
         if (string.IsNullOrWhiteSpace(type))
         {
             throw new ArgumentException(
-                "Тип кімнати є обов’язковим.",
+                RoomValidationMessages.TypeRequired,
                 nameof(type));
         }
 
@@ -111,21 +111,21 @@ public sealed class Room
         {
             throw new ArgumentOutOfRangeException(
                 nameof(pricePerDay),
-                "Ціна за добу не може бути від’ємною.");
+                RoomValidationMessages.PriceNegative);
         }
 
         if (capacity < 1)
         {
             throw new ArgumentOutOfRangeException(
                 nameof(capacity),
-                "Місткість номера має бути щонайменше 1.");
+                RoomValidationMessages.CapacityTooLow);
         }
 
         if (roomCount < 1)
         {
             throw new ArgumentOutOfRangeException(
                 nameof(roomCount),
-                "Кількість кімнат має бути щонайменше 1.");
+                RoomValidationMessages.RoomCountTooLow);
         }
     }
 }

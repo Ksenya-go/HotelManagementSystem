@@ -1,7 +1,7 @@
-using HotelManagementSystem.Application.Common.Cqrs.Abstractions;
-using HotelManagementSystem.Application.Common.Cqrs.Results;
+using FluentResults;
 using HotelManagementSystem.Application.Guests.Commands;
 using HotelManagementSystem.Application.Services;
+using Mediator;
 
 namespace HotelManagementSystem.Application.Guests.Handlers;
 
@@ -15,7 +15,7 @@ public sealed class GuestCommandHandler(IGuestService service)
     {
         var guest = await service.CreateAsync(request, cancellationToken);
 
-        return Result<GuestDto>.Ok(guest);
+        return Result.Ok(guest);
     }
 
     public async ValueTask<Result<Unit>> Handle(
@@ -25,7 +25,7 @@ public sealed class GuestCommandHandler(IGuestService service)
         var updated = await service.UpdateAsync(request, cancellationToken);
 
         return updated
-            ? Result<Unit>.Ok(Unit.Value)
+            ? Result.Ok(Unit.Value)
             : GuestErrors.NotFound();
     }
 }

@@ -1,46 +1,41 @@
-using HotelManagementSystem.Application.RoomTypes;
-using HotelManagementSystem.Application.SystemSettings;
-using HotelManagementSystem.Persistence.EfCore.Identity;
-using HotelManagementSystem.Persistence.EfCore.SystemSettings;
-using Microsoft.AspNetCore.Localization;
-using System.Globalization;
-using HotelManagementSystem.Web;
-using Microsoft.AspNetCore.Identity;
-using Microsoft.EntityFrameworkCore;
-using HotelManagementSystem.Application.RoomTypes.Handlers;
-using HotelManagementSystem.Application.Rooms.Handlers;
-using HotelManagementSystem.Application.SystemSettings.Handlers;
+using FluentResults;
 using FluentValidation;
-using CreateGuestCqrs = HotelManagementSystem.Application.Guests.Commands.CreateGuestCommand;
-using GetRoomTypesQuery = HotelManagementSystem.Application.RoomTypes.Queries.GetRoomTypesQuery;
-using CreateRoomTypeCommand = HotelManagementSystem.Application.RoomTypes.Commands.CreateRoomTypeCommand;
-using UpdateRoomTypeCommand = HotelManagementSystem.Application.RoomTypes.Commands.UpdateRoomTypeCommand;
-using DeleteRoomTypeCommand = HotelManagementSystem.Application.RoomTypes.Commands.DeleteRoomTypeCommand;
-using GetSystemSettingsQuery = HotelManagementSystem.Application.SystemSettings.Queries.GetSystemSettingsQuery;
-using UpdateSystemSettingCommand = HotelManagementSystem.Application.SystemSettings.Commands.UpdateSystemSettingCommand;
-using HotelManagementSystem.Application.Common.Cqrs.Abstractions;
-using HotelManagementSystem.Application.Common.Cqrs.Results;
-using HotelManagementSystem.Application.Guests.Queries;
-using HotelManagementSystem.Application.Guests.Handlers;
+using HotelManagementSystem.Application.Common.Behaviors;
+using HotelManagementSystem.Application.Common.Pagination;
 using HotelManagementSystem.Application.Guests;
+using HotelManagementSystem.Application.Guests.Commands;
+using HotelManagementSystem.Application.Guests.Handlers;
+using HotelManagementSystem.Application.Guests.Queries;
+using HotelManagementSystem.Application.Reservations;
 using HotelManagementSystem.Application.Reservations.Commands;
 using HotelManagementSystem.Application.Reservations.Handlers;
-using HotelManagementSystem.Application.Services;
-using HotelManagementSystem.Application.RoomTypes.Queries;
-using HotelManagementSystem.Application.Rooms.Commands;
 using HotelManagementSystem.Application.Reservations.Queries;
-using HotelManagementSystem.Application.Reservations;
-using HotelManagementSystem.Application.Common.Pagination;
-using CreateGuest = HotelManagementSystem.Application.Guests.Commands.CreateGuestCommand;
-using UpdateGuest = HotelManagementSystem.Application.Guests.Commands.UpdateGuestCommand;
-using CreateReservation = HotelManagementSystem.Application.Reservations.Commands.CreateReservationCommand;
-using UpdateReservation = HotelManagementSystem.Application.Reservations.Commands.UpdateReservationCommand;
-using HotelManagementSystem.Persistence.EfCore.Guests;
-using HotelManagementSystem.Persistence.EfCore.Rooms;
-using HotelManagementSystem.Persistence.EfCore.Reservations;
+using HotelManagementSystem.Application.Rooms.Commands;
+using HotelManagementSystem.Application.Rooms.Handlers;
+using HotelManagementSystem.Application.RoomTypes;
+using HotelManagementSystem.Application.RoomTypes.Commands;
+using HotelManagementSystem.Application.RoomTypes.Handlers;
+using HotelManagementSystem.Application.RoomTypes.Queries;
+using HotelManagementSystem.Application.Services;
+using HotelManagementSystem.Application.SystemSettings;
+using HotelManagementSystem.Application.SystemSettings.Commands;
+using HotelManagementSystem.Application.SystemSettings.Handlers;
+using HotelManagementSystem.Application.SystemSettings.Queries;
+using HotelManagementSystem.Persistence.EfCore.Common;
 using HotelManagementSystem.Persistence.EfCore.Dashboard;
-using HotelManagementSystem.Web.ViewModels.Rooms;
+using HotelManagementSystem.Persistence.EfCore.Guests;
+using HotelManagementSystem.Persistence.EfCore.Identity;
+using HotelManagementSystem.Persistence.EfCore.Reservations;
+using HotelManagementSystem.Persistence.EfCore.Rooms;
+using HotelManagementSystem.Persistence.EfCore.SystemSettings;
+using HotelManagementSystem.Web;
 using HotelManagementSystem.Web.ViewModels.Admin;
+using HotelManagementSystem.Web.ViewModels.Rooms;
+using Mediator;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Localization;
+using Microsoft.EntityFrameworkCore;
+using System.Globalization;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -76,11 +71,10 @@ builder.Services.AddScoped<IReservationService, ReservationService>();
 builder.Services.AddScoped<IManagerReportingService, ManagerReportingService>();
 builder.Services.AddScoped<RoomListItemViewModelFactory>();
 builder.Services.AddScoped<SystemSettingItemViewModelFactory>();
-builder.Services.AddScoped<ISender, Sender>();
-builder.Services.AddScoped<ICommandHandler<CreateGuest, Result<GuestDto>>, GuestCommandHandler>();
-builder.Services.AddScoped<ICommandHandler<UpdateGuest, Result<Unit>>, GuestCommandHandler>();
-builder.Services.AddScoped<ICommandHandler<CreateReservation, Result<ReservationDto>>, ReservationCommandHandler>();
-builder.Services.AddScoped<ICommandHandler<UpdateReservation, Result<Unit>>, ReservationCommandHandler>();
+builder.Services.AddScoped<ICommandHandler<CreateGuestCommand, Result<GuestDto>>, GuestCommandHandler>();
+builder.Services.AddScoped<ICommandHandler<UpdateGuestCommand, Result<Unit>>, GuestCommandHandler>();
+builder.Services.AddScoped<ICommandHandler<CreateReservationCommand, Result<ReservationDto>>, ReservationCommandHandler>();
+builder.Services.AddScoped<ICommandHandler<UpdateReservationCommand, Result<Unit>>, ReservationCommandHandler>();
 builder.Services.AddScoped<ICommandHandler<ChangeReservationStatusCommand, Result<Unit>>, ReservationCommandHandler>();
 builder.Services.AddScoped<ICommandHandler<CancelReservationCommand, Result<Unit>>, ReservationCommandHandler>();
 builder.Services.AddScoped<ICommandHandler<DeleteReservationCommand, Result<Unit>>, ReservationCommandHandler>();
@@ -99,9 +93,20 @@ builder.Services.AddScoped<ICommandHandler<UpdateRoomTypeCommand, Result<Unit>>,
 builder.Services.AddScoped<ICommandHandler<DeleteRoomTypeCommand, Result<Unit>>, RoomTypeCommandHandler>();
 builder.Services.AddScoped<IQueryHandler<GetSystemSettingsQuery, Result<IReadOnlyList<SystemSettingDto>>>, SystemSettingQueryHandler>();
 builder.Services.AddScoped<ICommandHandler<UpdateSystemSettingCommand, Result<Unit>>, SystemSettingCommandHandler>();
-builder.Services.AddValidatorsFromAssemblyContaining<CreateGuestCqrs.Validator>();
+builder.Services.AddValidatorsFromAssemblyContaining<CreateGuestCommand.Validator>();
 
 var app = builder.Build();
+
+
+builder.Services.AddMediator(options =>
+{
+    options.ServiceLifetime = ServiceLifetime.Scoped;
+    options.PipelineBehaviors =
+    [
+        typeof(LoggingBehavior<,>),
+        typeof(TransactionBehavior<,>)
+    ];
+});
 
 var supportedCultures = new[] { new CultureInfo("uk-UA") };
 app.UseRequestLocalization(new RequestLocalizationOptions

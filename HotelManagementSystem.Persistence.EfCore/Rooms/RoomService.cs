@@ -4,8 +4,8 @@ using HotelManagementSystem.Application.Common.Presentation;
 using HotelManagementSystem.Application.Rooms.Commands;
 using HotelManagementSystem.Application.RoomTypes;
 using HotelManagementSystem.Application.Services;
-using HotelManagementSystem.Domain.Reservation;
-using HotelManagementSystem.Domain.Room;
+using HotelManagementSystem.Domain.Reservations;
+using HotelManagementSystem.Domain.Rooms;
 using HotelManagementSystem.Persistence.EfCore.Identity;
 using Microsoft.EntityFrameworkCore;
 

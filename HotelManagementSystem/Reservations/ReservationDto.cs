@@ -1,4 +1,4 @@
-using HotelManagementSystem.Domain.Reservation;
+using HotelManagementSystem.Domain.Reservations;
 
 namespace HotelManagementSystem.Application.Reservations;
 

@@ -1,5 +1,5 @@
-using HotelManagementSystem.Application.Common.Cqrs.Abstractions;
-using HotelManagementSystem.Application.Common.Cqrs.Results;
+using FluentResults;
+using Mediator;
 
 namespace HotelManagementSystem.Application.SystemSettings.Handlers;
 
@@ -11,7 +11,7 @@ public sealed class SystemSettingCommandHandler(ISystemSettingService service) :
         var updated = await service.UpdateAsync(
             new Commands.UpdateSystemSettingCommand(request.Id, request.Value), cancellationToken);
         return updated
-            ? Result<Unit>.Ok(Unit.Value)
+            ? Result.Ok(Unit.Value)
             : SystemSettingErrors.NotFound();
     }
 }

@@ -1,5 +1,5 @@
 using FluentValidation.TestHelper;
-using HotelManagementSystem.Application.Common.Cqrs.Results;
+using HotelManagementSystem.Application.Common.Errors;
 using HotelManagementSystem.Application.SystemSettings.Commands;
 using HotelManagementSystem.Application.SystemSettings.Handlers;
 using HotelManagementSystem.Application.SystemSettings.Queries;
@@ -90,7 +90,7 @@ public sealed class SettingsServiceTests
         var saved = await verificationContext.SystemSettings.FindAsync(setting.Id);
 
         Assert.False(result.IsSuccess);
-        Assert.Equal("SystemSetting.NotFound", result.Error!.Code);
+        Assert.Equal("SystemSetting.NotFound", result.GetCode());
         Assert.Equal("14:00", saved!.Value);
     }
 

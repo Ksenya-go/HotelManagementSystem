@@ -1,5 +1,6 @@
-using HotelManagementSystem.Application.Common.Cqrs.Abstractions;
-using HotelManagementSystem.Application.Common.Cqrs.Results;
+
+using FluentResults;
+using Mediator;
 
 namespace HotelManagementSystem.Application.SystemSettings.Queries;
 

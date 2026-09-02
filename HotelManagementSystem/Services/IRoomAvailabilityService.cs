@@ -1,4 +1,4 @@
-using HotelManagementSystem.Domain.Room;
+using HotelManagementSystem.Domain.Rooms;
 
 namespace HotelManagementSystem.Application.Services;
 
