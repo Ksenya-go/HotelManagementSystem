@@ -1,7 +1,7 @@
-using GuestEntity = HotelManagementSystem.Domain.Guest.Guest;
-using RoomEntity = HotelManagementSystem.Domain.Room.Room;
+using HotelManagementSystem.Domain.Guests;
+using HotelManagementSystem.Domain.Rooms;
 
-namespace HotelManagementSystem.Domain.Reservation;
+namespace HotelManagementSystem.Domain.Reservations;
 
 public sealed class Reservation
 {
@@ -31,11 +31,11 @@ public sealed class Reservation
 
     public int GuestId { get; private set; }
 
-    public GuestEntity Guest { get; private set; } = null!;
+    public Guest Guest { get; private set; } = null!;
 
     public int RoomId { get; private set; }
 
-    public RoomEntity Room { get; private set; } = null!;
+    public Room Room { get; private set; } = null!;
 
     public DateOnly CheckIn { get; private set; }
 
@@ -66,22 +66,19 @@ public sealed class Reservation
         Status = status;
     }
 
-    private static void Validate(
-        DateOnly checkIn,
-        DateOnly checkOut,
-        int guestsCount)
+    private static void Validate(DateOnly checkIn,DateOnly checkOut,int guestsCount)
     {
         if (checkOut <= checkIn)
         {
             throw new ArgumentException(
-                "Дата виселення має бути пізнішою за дату заселення.");
+                ReservationValidationMessages.CheckOutBeforeCheckIn);
         }
 
         if (guestsCount < 1)
         {
             throw new ArgumentOutOfRangeException(
                 nameof(guestsCount),
-                "Кількість гостей має бути щонайменше 1.");
+                ReservationValidationMessages.GuestsCountTooLow);
         }
     }
 }

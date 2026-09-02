@@ -1,4 +1,4 @@
-namespace HotelManagementSystem.Domain.Room;
+namespace HotelManagementSystem.Domain.Rooms;
 
 public enum RoomOperationalStatus
 {

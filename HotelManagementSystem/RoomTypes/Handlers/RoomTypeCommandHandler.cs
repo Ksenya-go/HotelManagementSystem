@@ -2,7 +2,6 @@ using FluentResults;
 using HotelManagementSystem.Application.RoomTypes.Commands;
 using Mediator;
 
-
 namespace HotelManagementSystem.Application.RoomTypes.Handlers;
 
 public sealed class RoomTypeCommandHandler(IRoomTypeService service)

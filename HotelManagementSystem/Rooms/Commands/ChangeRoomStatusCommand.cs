@@ -1,5 +1,5 @@
 using FluentResults;
-using HotelManagementSystem.Domain.Room;
+using HotelManagementSystem.Domain.Rooms;
 using Mediator;
 
 namespace HotelManagementSystem.Application.Rooms.Commands;
