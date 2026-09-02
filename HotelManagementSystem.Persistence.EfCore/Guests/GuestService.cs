@@ -3,7 +3,7 @@ using HotelManagementSystem.Application.Guests.Commands;
 using HotelManagementSystem.Application.Services;
 using HotelManagementSystem.Persistence.EfCore.Identity;
 using Microsoft.EntityFrameworkCore;
-using GuestEntity = HotelManagementSystem.Domain.Guest.Guest;
+using HotelManagementSystem.Domain.Guests;
 
 namespace HotelManagementSystem.Persistence.EfCore.Guests;
 
@@ -40,7 +40,7 @@ public sealed class GuestService(ApplicationDbContext dbContext)
         CreateGuestCommand command,
         CancellationToken cancellationToken = default)
     {
-        var guest = new GuestEntity(
+        var guest = new Guest(
             command.FirstName,
             command.LastName,
             command.Email,

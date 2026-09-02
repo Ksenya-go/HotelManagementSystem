@@ -3,8 +3,8 @@ using HotelManagementSystem.Application.Common.Errors;
 using HotelManagementSystem.Application.Reservations;
 using HotelManagementSystem.Application.Reservations.Commands;
 using HotelManagementSystem.Application.Services;
-using HotelManagementSystem.Domain.Reservation;
-using HotelManagementSystem.Domain.Room;
+using HotelManagementSystem.Domain.Reservations;
+using HotelManagementSystem.Domain.Rooms;
 using HotelManagementSystem.Persistence.EfCore.Identity;
 using Microsoft.EntityFrameworkCore;
 

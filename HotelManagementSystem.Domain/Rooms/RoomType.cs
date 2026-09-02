@@ -46,7 +46,7 @@ public sealed class RoomType
         if (string.IsNullOrWhiteSpace(name))
         {
             throw new ArgumentException(
-                "Назва типу номера є обов’язковою.",
+                RoomValidationMessages.RoomTypeNameRequired,
                 nameof(name));
         }
 
@@ -54,14 +54,14 @@ public sealed class RoomType
         {
             throw new ArgumentOutOfRangeException(
                 nameof(basePrice),
-                "Базова ціна не може бути від’ємною.");
+                RoomValidationMessages.RoomTypeBasePriceNegative);
         }
 
         if (maxGuests < 1)
         {
             throw new ArgumentOutOfRangeException(
                 nameof(maxGuests),
-                "Максимальна кількість гостей має бути щонайменше 1.");
+                RoomValidationMessages.RoomTypeMaxGuestsTooLow);
         }
     }
 }

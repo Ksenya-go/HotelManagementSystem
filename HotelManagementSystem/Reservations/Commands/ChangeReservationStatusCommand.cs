@@ -1,5 +1,5 @@
 using FluentValidation;
-using HotelManagementSystem.Domain.Reservation;
+using HotelManagementSystem.Domain.Reservations;
 using FluentResults;
 using Mediator;
 

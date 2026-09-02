@@ -1,9 +1,8 @@
 using HotelManagementSystem.Application.RoomTypes;
 using HotelManagementSystem.Application.RoomTypes.Commands;
-using HotelManagementSystem.Domain.Room;
+using HotelManagementSystem.Domain.Rooms;
 using HotelManagementSystem.Persistence.EfCore.Identity;
 using Microsoft.EntityFrameworkCore;
-using RoomTypeEntity = HotelManagementSystem.Domain.Room.RoomType;
 
 namespace HotelManagementSystem.Persistence.EfCore.Rooms;
 
@@ -54,7 +53,7 @@ public sealed class RoomTypeService(ApplicationDbContext dbContext)
         CreateRoomTypeCommand command,
         CancellationToken cancellationToken = default)
     {
-        var roomType = new RoomTypeEntity(
+        var roomType = new RoomType(
             command.Name,
             command.Description,
             command.BasePrice,

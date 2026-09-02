@@ -1,7 +1,7 @@
 using HotelManagementSystem.Application.Common.Pagination;
 using HotelManagementSystem.Application.Reservations;
 using HotelManagementSystem.Application.Reservations.Commands;
-using HotelManagementSystem.Domain.Reservation;
+using HotelManagementSystem.Domain.Reservations;
 
 namespace HotelManagementSystem.Application.Services;
 

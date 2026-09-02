@@ -1,10 +1,7 @@
 using HotelManagementSystem.Domain.Entities;
-using HotelManagementSystem.Domain.Guest;
-using HotelManagementSystem.Domain.Reservation;
-using HotelManagementSystem.Domain.Room;
-using GuestEntity = HotelManagementSystem.Domain.Guest.Guest;
-using RoomEntity = HotelManagementSystem.Domain.Room.Room;
-using ReservationEntity = HotelManagementSystem.Domain.Reservation.Reservation;
+using HotelManagementSystem.Domain.Guests;
+using HotelManagementSystem.Domain.Rooms;
+using HotelManagementSystem.Domain.Reservations;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
@@ -17,9 +14,9 @@ public sealed class ApplicationDbContext(DbContextOptions<ApplicationDbContext> 
 {
     public DbSet<RoomType> RoomTypes => Set<RoomType>();
     public DbSet<SystemSetting> SystemSettings => Set<SystemSetting>();
-    public DbSet<GuestEntity> Guests => Set<GuestEntity>();
-    public DbSet<RoomEntity> Rooms => Set<RoomEntity>();
-    public DbSet<ReservationEntity> Reservations => Set<ReservationEntity>();
+    public DbSet<Guest> Guests => Set<Guest>();
+    public DbSet<Room> Rooms => Set<Room>();
+    public DbSet<Reservation> Reservations => Set<Reservation>();
 
     protected override void OnModelCreating(ModelBuilder builder)
     {
@@ -33,7 +30,7 @@ public sealed class ApplicationDbContext(DbContextOptions<ApplicationDbContext> 
             entity.Property(roomType => roomType.BasePrice).HasPrecision(12, 2);
         });
 
-        builder.Entity<GuestEntity>(entity =>
+        builder.Entity<Guest>(entity =>
         {
             entity.Property(guest => guest.FirstName).HasMaxLength(100).IsRequired();
             entity.Property(guest => guest.LastName).HasMaxLength(100).IsRequired();
@@ -41,7 +38,7 @@ public sealed class ApplicationDbContext(DbContextOptions<ApplicationDbContext> 
             entity.Property(guest => guest.Phone).HasMaxLength(40);
         });
 
-        builder.Entity<RoomEntity>(entity =>
+        builder.Entity<Room>(entity =>
         {
             var bookedDatesComparer = new ValueComparer<List<DateTime>>(
                 (left, right) => left!.SequenceEqual(right!),
@@ -80,7 +77,7 @@ public sealed class ApplicationDbContext(DbContextOptions<ApplicationDbContext> 
                 .HasColumnName("Status");
         });
 
-        builder.Entity<ReservationEntity>(entity =>
+        builder.Entity<Reservation>(entity =>
         {
             entity.Property(reservation => reservation.Status)
                 .HasConversion<string>()

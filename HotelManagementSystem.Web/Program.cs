@@ -1,39 +1,41 @@
-using HotelManagementSystem.Application.RoomTypes;
-using HotelManagementSystem.Application.SystemSettings;
-using HotelManagementSystem.Persistence.EfCore.Identity;
-using HotelManagementSystem.Persistence.EfCore.SystemSettings;
-using Microsoft.AspNetCore.Localization;
-using System.Globalization;
-using HotelManagementSystem.Web;
-using Microsoft.AspNetCore.Identity;
-using Microsoft.EntityFrameworkCore;
-using HotelManagementSystem.Application.RoomTypes.Handlers;
-using HotelManagementSystem.Application.Rooms.Handlers;
-using HotelManagementSystem.Application.SystemSettings.Handlers;
-using FluentValidation;
-using HotelManagementSystem.Application.RoomTypes.Queries;
-using HotelManagementSystem.Application.RoomTypes.Commands;
-using HotelManagementSystem.Application.SystemSettings.Queries;
-using HotelManagementSystem.Application.SystemSettings.Commands;
 using FluentResults;
-using HotelManagementSystem.Application.Guests.Queries;
-using HotelManagementSystem.Application.Guests.Handlers;
+using FluentValidation;
+using HotelManagementSystem.Application.Common.Behaviors;
+using HotelManagementSystem.Application.Common.Pagination;
 using HotelManagementSystem.Application.Guests;
+using HotelManagementSystem.Application.Guests.Commands;
+using HotelManagementSystem.Application.Guests.Handlers;
+using HotelManagementSystem.Application.Guests.Queries;
+using HotelManagementSystem.Application.Reservations;
 using HotelManagementSystem.Application.Reservations.Commands;
 using HotelManagementSystem.Application.Reservations.Handlers;
-using HotelManagementSystem.Application.Services;
-using HotelManagementSystem.Application.Rooms.Commands;
 using HotelManagementSystem.Application.Reservations.Queries;
-using HotelManagementSystem.Application.Reservations;
-using HotelManagementSystem.Application.Common.Pagination;
-using HotelManagementSystem.Application.Guests.Commands;
-using HotelManagementSystem.Persistence.EfCore.Guests;
-using HotelManagementSystem.Persistence.EfCore.Rooms;
-using HotelManagementSystem.Persistence.EfCore.Reservations;
+using HotelManagementSystem.Application.Rooms.Commands;
+using HotelManagementSystem.Application.Rooms.Handlers;
+using HotelManagementSystem.Application.RoomTypes;
+using HotelManagementSystem.Application.RoomTypes.Commands;
+using HotelManagementSystem.Application.RoomTypes.Handlers;
+using HotelManagementSystem.Application.RoomTypes.Queries;
+using HotelManagementSystem.Application.Services;
+using HotelManagementSystem.Application.SystemSettings;
+using HotelManagementSystem.Application.SystemSettings.Commands;
+using HotelManagementSystem.Application.SystemSettings.Handlers;
+using HotelManagementSystem.Application.SystemSettings.Queries;
+using HotelManagementSystem.Persistence.EfCore.Common;
 using HotelManagementSystem.Persistence.EfCore.Dashboard;
-using HotelManagementSystem.Web.ViewModels.Rooms;
+using HotelManagementSystem.Persistence.EfCore.Guests;
+using HotelManagementSystem.Persistence.EfCore.Identity;
+using HotelManagementSystem.Persistence.EfCore.Reservations;
+using HotelManagementSystem.Persistence.EfCore.Rooms;
+using HotelManagementSystem.Persistence.EfCore.SystemSettings;
+using HotelManagementSystem.Web;
 using HotelManagementSystem.Web.ViewModels.Admin;
+using HotelManagementSystem.Web.ViewModels.Rooms;
 using Mediator;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Localization;
+using Microsoft.EntityFrameworkCore;
+using System.Globalization;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -94,6 +96,17 @@ builder.Services.AddScoped<ICommandHandler<UpdateSystemSettingCommand, Result<Un
 builder.Services.AddValidatorsFromAssemblyContaining<CreateGuestCommand.Validator>();
 
 var app = builder.Build();
+
+
+builder.Services.AddMediator(options =>
+{
+    options.ServiceLifetime = ServiceLifetime.Scoped;
+    options.PipelineBehaviors =
+    [
+        typeof(LoggingBehavior<,>),
+        typeof(TransactionBehavior<,>)
+    ];
+});
 
 var supportedCultures = new[] { new CultureInfo("uk-UA") };
 app.UseRequestLocalization(new RequestLocalizationOptions
