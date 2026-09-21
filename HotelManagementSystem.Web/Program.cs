@@ -1,6 +1,5 @@
 using FluentResults;
 using FluentValidation;
-using HotelManagementSystem.Application.Common.Behaviors;
 using HotelManagementSystem.Application.Common.Pagination;
 using HotelManagementSystem.Application.Guests;
 using HotelManagementSystem.Application.Guests.Commands;
@@ -21,7 +20,7 @@ using HotelManagementSystem.Application.SystemSettings;
 using HotelManagementSystem.Application.SystemSettings.Commands;
 using HotelManagementSystem.Application.SystemSettings.Handlers;
 using HotelManagementSystem.Application.SystemSettings.Queries;
-using HotelManagementSystem.Persistence.EfCore.Common;
+using HotelManagementSystem.Persistence.EfCore.DependencyInjection;
 using HotelManagementSystem.Persistence.EfCore.Dashboard;
 using HotelManagementSystem.Persistence.EfCore.Guests;
 using HotelManagementSystem.Persistence.EfCore.Identity;
@@ -94,19 +93,11 @@ builder.Services.AddScoped<ICommandHandler<DeleteRoomTypeCommand, Result<Unit>>,
 builder.Services.AddScoped<IQueryHandler<GetSystemSettingsQuery, Result<IReadOnlyList<SystemSettingDto>>>, SystemSettingQueryHandler>();
 builder.Services.AddScoped<ICommandHandler<UpdateSystemSettingCommand, Result<Unit>>, SystemSettingCommandHandler>();
 builder.Services.AddValidatorsFromAssemblyContaining<CreateGuestCommand.Validator>();
+builder.Services.AddApplicationMediator();
 
 var app = builder.Build();
 
 
-builder.Services.AddMediator(options =>
-{
-    options.ServiceLifetime = ServiceLifetime.Scoped;
-    options.PipelineBehaviors =
-    [
-        typeof(LoggingBehavior<,>),
-        typeof(TransactionBehavior<,>)
-    ];
-});
 
 var supportedCultures = new[] { new CultureInfo("uk-UA") };
 app.UseRequestLocalization(new RequestLocalizationOptions

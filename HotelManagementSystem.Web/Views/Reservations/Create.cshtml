@@ -108,9 +108,13 @@
             <label asp-for="NewGuestEmail" class="form-label">
                 @L["Email"]
             </label>
+
             <input asp-for="NewGuestEmail"
                    class="form-control"
                    required />
+
+            <span asp-validation-for="NewGuestEmail"
+                  class="text-danger"></span>
         </div>
 
         <div class="form-field">

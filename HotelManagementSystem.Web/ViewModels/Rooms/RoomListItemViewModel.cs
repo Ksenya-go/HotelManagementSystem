@@ -1,5 +1,4 @@
-using HotelManagementSystem.Application.RoomTypes;
-using HotelManagementSystem.Domain.Room;
+using HotelManagementSystem.Domain.Rooms;
 
 namespace HotelManagementSystem.Web.ViewModels.Rooms;
 

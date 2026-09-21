@@ -1,4 +1,5 @@
 using FluentResults;
+using HotelManagementSystem.Application.Common.Errors;
 using HotelManagementSystem.Application.Guests.Commands;
 using HotelManagementSystem.Application.Services;
 using Mediator;
@@ -10,12 +11,20 @@ public sealed class GuestCommandHandler(IGuestService service)
       ICommandHandler<UpdateGuestCommand, Result<Unit>>
 {
     public async ValueTask<Result<GuestDto>> Handle(
-        CreateGuestCommand request,
-        CancellationToken cancellationToken)
+    CreateGuestCommand request,
+    CancellationToken cancellationToken)
     {
-        var guest = await service.CreateAsync(request, cancellationToken);
+        try
+        {
+            var guest = await service.CreateAsync(request, cancellationToken);
 
-        return Result.Ok(guest);
+            return Result.Ok(guest);
+        }
+        catch (PersistenceOperationException exception)
+        {
+            return GuestErrors.Invalid(
+                PersistenceErrorMessages.GetMessage(exception));
+        }
     }
 
     public async ValueTask<Result<Unit>> Handle(

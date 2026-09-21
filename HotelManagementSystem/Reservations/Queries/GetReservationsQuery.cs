@@ -1,4 +1,4 @@
-using HotelManagementSystem.Domain.Reservation;
+using HotelManagementSystem.Domain.Reservations;
 using FluentResults;
 using HotelManagementSystem.Application.Common.Pagination;
 using Mediator;

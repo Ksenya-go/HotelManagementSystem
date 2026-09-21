@@ -1035,4 +1035,7 @@
   <data name="Days" xml:space="preserve">
     <value>{0} дн.</value>
   </data>
+  <data name="GuestDuplicateEmailError" xml:space="preserve">
+    <value>Гість із такою електронною поштою вже існує.</value>
+  </data>
 </root>

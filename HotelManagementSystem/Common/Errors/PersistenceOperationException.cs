@@ -6,7 +6,8 @@ public enum PersistenceErrorCode
     InvalidReservationPeriod,
     RoomUnavailable,
     RoomCapacityExceeded,
-    RoomAlreadyReserved
+    RoomAlreadyReserved,
+    DuplicateGuestEmail
 }
 
 public sealed class PersistenceOperationException(

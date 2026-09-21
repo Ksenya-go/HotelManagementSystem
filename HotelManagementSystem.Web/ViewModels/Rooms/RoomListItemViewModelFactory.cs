@@ -1,5 +1,5 @@
 using HotelManagementSystem.Application.RoomTypes;
-using HotelManagementSystem.Domain.Room;
+using HotelManagementSystem.Domain.Rooms;
 using Microsoft.Extensions.Localization;
 
 namespace HotelManagementSystem.Web.ViewModels.Rooms;
