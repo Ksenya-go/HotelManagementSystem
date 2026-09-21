@@ -35,6 +35,7 @@ public sealed class ApplicationDbContext(DbContextOptions<ApplicationDbContext> 
             entity.Property(guest => guest.FirstName).HasMaxLength(100).IsRequired();
             entity.Property(guest => guest.LastName).HasMaxLength(100).IsRequired();
             entity.Property(guest => guest.Email).HasMaxLength(200).IsRequired();
+            entity.HasIndex(guest => guest.Email).IsUnique();
             entity.Property(guest => guest.Phone).HasMaxLength(40);
         });
 

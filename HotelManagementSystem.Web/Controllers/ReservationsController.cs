@@ -5,7 +5,7 @@ using HotelManagementSystem.Application.Common.Errors;
 using Microsoft.AspNetCore.Mvc;
 using CreateReservationCqrs = HotelManagementSystem.Application.Reservations.Commands.CreateReservationCommand;
 using UpdateReservationCqrs = HotelManagementSystem.Application.Reservations.Commands.UpdateReservationCommand;
-using HotelManagementSystem.Domain.Reservation;
+using HotelManagementSystem.Domain.Reservations;
 using HotelManagementSystem.Application.Reservations.Commands;
 using HotelManagementSystem.Application.Services;
 using HotelManagementSystem.Web.Extensions;
@@ -172,6 +172,19 @@ public sealed class ReservationsController(
             ModelState.AddModelError(
                 string.Empty,
                 sharedLocalizer["GuestDataInvalid"]);
+            await LoadSelectedRoomAsync(model, cancellationToken);
+            await LoadReservationTimesAsync(model, cancellationToken);
+            return View(model);
+        }
+        catch (PersistenceOperationException exception)
+        {
+            var errorKey = exception.ErrorCode == PersistenceErrorCode.DuplicateGuestEmail
+                ? "GuestDuplicateEmailError"
+                : "GuestDataInvalid";
+
+            ModelState.AddModelError(
+                nameof(model.NewGuestEmail),
+                sharedLocalizer[errorKey]);
             await LoadSelectedRoomAsync(model, cancellationToken);
             await LoadReservationTimesAsync(model, cancellationToken);
             return View(model);

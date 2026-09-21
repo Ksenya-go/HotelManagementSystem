@@ -1,6 +1,6 @@
 using System.ComponentModel.DataAnnotations;
 using HotelManagementSystem.Application.Reservations;
-using HotelManagementSystem.Domain.Reservation;
+using HotelManagementSystem.Domain.Reservations;
 
 namespace HotelManagementSystem.Web.ViewModels.Reservation;
 

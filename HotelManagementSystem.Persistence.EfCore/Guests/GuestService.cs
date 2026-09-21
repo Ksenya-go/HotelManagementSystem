@@ -1,9 +1,10 @@
+using HotelManagementSystem.Application.Common.Errors;
 using HotelManagementSystem.Application.Guests;
 using HotelManagementSystem.Application.Guests.Commands;
 using HotelManagementSystem.Application.Services;
+using HotelManagementSystem.Domain.Guests;
 using HotelManagementSystem.Persistence.EfCore.Identity;
 using Microsoft.EntityFrameworkCore;
-using HotelManagementSystem.Domain.Guests;
 
 namespace HotelManagementSystem.Persistence.EfCore.Guests;
 
@@ -37,15 +38,18 @@ public sealed class GuestService(ApplicationDbContext dbContext)
     }
 
     public async Task<GuestDto> CreateAsync(
-        CreateGuestCommand command,
-        CancellationToken cancellationToken = default)
+     CreateGuestCommand command,
+     CancellationToken cancellationToken = default)
     {
-        var guest = new Guest(
-            command.FirstName,
-            command.LastName,
-            command.Email,
-            command.Phone);
+        var emailExists = await dbContext.Guests
+            .AnyAsync(g => g.Email == command.Email, cancellationToken);
 
+        if (emailExists)
+        {
+            throw new PersistenceOperationException(PersistenceErrorCode.DuplicateGuestEmail);
+        }
+
+        var guest = new Guest(command.FirstName, command.LastName, command.Email, command.Phone);
         dbContext.Guests.Add(guest);
 
         await dbContext.SaveChangesAsync(cancellationToken);

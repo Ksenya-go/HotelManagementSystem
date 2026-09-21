@@ -1,5 +1,5 @@
 using System.ComponentModel.DataAnnotations;
-using HotelManagementSystem.Domain.Room;
+using HotelManagementSystem.Domain.Rooms;
 
 namespace HotelManagementSystem.Web.ViewModels.Rooms;
 
