@@ -1,22 +1,35 @@
 import { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { roomsApi } from "@/api/roomsApi";
-import { useAuth } from "@/context/AuthContext";
-import type { RoomListItem, RoomListQuery } from "@/types/room";
-import { roomStatusLabels } from "@/utils/roomStatus";
-export default function RoomsIndex() {
-  const { hasRole } = useAuth();
-  const [rooms, setRooms] = useState<RoomListItem[]>([]);
+import type { RoomPeriodStatusDto, RoomPeriodStatusQuery } from "@/types/room";
+
+const today = () => new Date().toISOString().slice(0, 10);
+const tomorrow = () => {
+  const d = new Date();
+  d.setDate(d.getDate() + 1);
+  return d.toISOString().slice(0, 10);
+};
+
+export default function RoomBooking() {
+  const { id } = useParams<{ id: string }>();
+  const navigate = useNavigate();
+
+  const [query, setQuery] = useState<RoomPeriodStatusQuery>({
+    startDate: today(),
+    endDate: tomorrow(),
+    pageNumber: 1,
+    pageSize: 30,
+  });
+  const [rooms, setRooms] = useState<RoomPeriodStatusDto[]>([]);
   const [floors, setFloors] = useState<number[]>([]);
   const [roomTypes, setRoomTypes] = useState<string[]>([]);
   const [totalPages, setTotalPages] = useState(1);
-  const [query, setQuery] = useState<RoomListQuery>({ pageNumber: 1, pageSize: 30 });
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     setLoading(true);
     roomsApi
-      .list(query)
+      .periodStatus(query)
       .then((data) => {
         setRooms(data.rooms);
         setFloors(data.floors);
@@ -26,23 +39,49 @@ export default function RoomsIndex() {
       .finally(() => setLoading(false));
   }, [query]);
 
-  const canManage = hasRole("Manager", "Admin");
-
-  const updateFilter = (patch: Partial<RoomListQuery>) =>
+  const updateFilter = (patch: Partial<RoomPeriodStatusQuery>) =>
     setQuery((prev) => ({ ...prev, ...patch, pageNumber: 1 }));
+
+  const goToBooking = (roomId: number) => {
+    navigate(
+      `/reservations/new?roomId=${roomId}&checkIn=${query.startDate}&checkOut=${query.endDate}`
+    );
+  };
 
   return (
     <div>
-      <div className="page-header">
-        <h1>Номери</h1>
-        {canManage && (
-          <Link to="/rooms/new" className="btn btn-primary">
-            Додати номер
-          </Link>
-        )}
-      </div>
+      <h1>Статус номерів на період{id ? ` (номер #${id})` : ""}</h1>
 
       <form className="filters" onSubmit={(e) => e.preventDefault()}>
+        <div className="form-group">
+          <label>Дата початку</label>
+          <input
+            type="date"
+            value={query.startDate}
+            onChange={(e) => updateFilter({ startDate: e.target.value })}
+          />
+        </div>
+        <div className="form-group">
+          <label>Дата закінчення</label>
+          <input
+            type="date"
+            value={query.endDate}
+            onChange={(e) => updateFilter({ endDate: e.target.value })}
+          />
+        </div>
+        <div className="form-group">
+          <label>Кількість гостей</label>
+          <input
+            type="number"
+            min={1}
+            max={20}
+            value={query.guestsCount ?? ""}
+            onChange={(e) =>
+              updateFilter({ guestsCount: e.target.value ? Number(e.target.value) : undefined })
+            }
+          />
+        </div>
+
         <select
           value={query.floor ?? ""}
           onChange={(e) =>
@@ -68,23 +107,6 @@ export default function RoomsIndex() {
             </option>
           ))}
         </select>
-
-        <input
-          type="number"
-          placeholder="Ціна від"
-          value={query.minPrice ?? ""}
-          onChange={(e) =>
-            updateFilter({ minPrice: e.target.value ? Number(e.target.value) : undefined })
-          }
-        />
-        <input
-          type="number"
-          placeholder="Ціна до"
-          value={query.maxPrice ?? ""}
-          onChange={(e) =>
-            updateFilter({ maxPrice: e.target.value ? Number(e.target.value) : undefined })
-          }
-        />
       </form>
 
       {loading ? (
@@ -98,7 +120,7 @@ export default function RoomsIndex() {
               <th>Тип</th>
               <th>Ціна/добу</th>
               <th>Місткість</th>
-              <th>Статус</th>
+              <th>Доступність</th>
               <th></th>
             </tr>
           </thead>
@@ -110,10 +132,15 @@ export default function RoomsIndex() {
                 <td>{room.type}</td>
                 <td>{room.pricePerDay} ₴</td>
                 <td>{room.capacity}</td>
-                <td>{roomStatusLabels[room.operationalStatus]}</td>
-                <td className="actions">
-                  <Link to={`/rooms/${room.id}/booking`}>Бронювання</Link>
-                  {canManage && <Link to={`/rooms/${room.id}/edit`}>Редагувати</Link>}
+                <td>
+                  <span className={room.isAvailable ? "badge-success" : "badge-danger"}>
+                    {room.isAvailable ? "Вільний" : "Зайнятий"}
+                  </span>
+                </td>
+                <td>
+                  {room.isAvailable && (
+                    <button onClick={() => goToBooking(room.id)}>Забронювати</button>
+                  )}
                 </td>
               </tr>
             ))}

@@ -5,6 +5,7 @@ const httpClient = axios.create({
   headers: { "Content-Type": "application/json" },
 });
 
+
 httpClient.interceptors.request.use((config) => {
   const token = localStorage.getItem("hms_token");
   if (token) {
@@ -16,7 +17,9 @@ httpClient.interceptors.request.use((config) => {
 httpClient.interceptors.response.use(
   (response) => response,
   (error) => {
-    if (error.response?.status === 401) {
+    const isLoginRequest = error.config?.url?.includes("/account/login");
+
+    if (error.response?.status === 401 && !isLoginRequest) {
       localStorage.removeItem("hms_token");
       localStorage.removeItem("hms_user");
       window.location.href = "/login";
