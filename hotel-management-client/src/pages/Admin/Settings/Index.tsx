@@ -2,13 +2,6 @@ import { useEffect, useState } from "react";
 import { settingsApi } from "@/api/settingsApi";
 import type { SystemSettingDto } from "@/types/settings";
 
-const settingNames: Record<string, string> = {
-  "hotel.checkInTime": "Час заселення",
-  "hotel.checkOutTime": "Час виселення",
-  "hotel.currency": "Валюта",
-  "hotel.name": "Назва готелю",
-};
-
 const MAX_LENGTH = 500;
 
 interface Message {
@@ -27,7 +20,7 @@ function SettingCard({
   const [saving, setSaving] = useState(false);
   const [fieldError, setFieldError] = useState<string | null>(null);
 
-  const displayName = settingNames[setting.key] ?? setting.description;
+  const displayName = setting.displayName;
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
