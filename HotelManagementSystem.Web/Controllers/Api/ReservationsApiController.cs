@@ -1,4 +1,5 @@
-﻿using HotelManagementSystem.Application.Guests.Commands;
+﻿using HotelManagementSystem.Application.Common.Errors;
+using HotelManagementSystem.Application.Guests.Commands;
 using HotelManagementSystem.Application.Reservations;
 using HotelManagementSystem.Application.Reservations.Commands;
 using HotelManagementSystem.Application.Reservations.Queries;
@@ -113,6 +114,13 @@ public sealed class ReservationsApiController(
         catch (ArgumentException)
         {
             return BadRequest(new { message = "Дані гостя некоректні." });
+        }
+        catch (PersistenceOperationException exception)
+        {
+            var message = exception.ErrorCode == PersistenceErrorCode.DuplicateGuestEmail
+                ? "Гість з такою електронною поштою вже існує."
+                : "Дані гостя некоректні.";
+            return BadRequest(new { message });
         }
 
         if (guestId is null)
