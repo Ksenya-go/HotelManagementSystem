@@ -15,7 +15,7 @@ export const reservationsApi = {
       .then((r) => r.data),
 
   getById: (id: number) =>
-    httpClient.get<ReservationEditInput>(`/reservations/${id}`).then((r) => r.data),
+    httpClient.get<ReservationDto>(`/reservations/${id}`).then((r) => r.data),
 
   create: (input: ReservationFormInput) =>
     httpClient.post<ReservationDto>("/reservations", input).then((r) => r.data),
@@ -26,5 +26,5 @@ export const reservationsApi = {
   remove: (id: number) => httpClient.delete<void>(`/reservations/${id}`),
 
   changeStatus: (input: ReservationStatusInput) =>
-    httpClient.patch<void>(`/reservations/${input.id}/status`, input),
+    httpClient.patch<void>(`/reservations/${input.id}/status`, { status: input.status }),
 };

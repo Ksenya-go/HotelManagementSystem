@@ -1,15 +1,24 @@
 import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useNavigate, useParams } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import { reservationsApi } from "@/api/reservationsApi";
 import { reservationSchema, type ReservationFormValues } from "@/schemas/reservationSchema";
+import { getApiError } from "@/utils/apiError";
+import { formatMoney } from "@/utils/format";
 
 export default function ReservationEdit() {
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
   const [serverError, setServerError] = useState<string | null>(null);
   const [loading, setLoading] = useState(true);
+  const [readOnlyInfo, setReadOnlyInfo] = useState<{
+    roomNumber: string;
+    roomFloor: number;
+    roomType: string;
+    roomPricePerDay: number;
+    roomCapacity: number;
+  } | null>(null);
 
   const {
     register,
@@ -20,20 +29,42 @@ export default function ReservationEdit() {
 
   useEffect(() => {
     if (!id) return;
-    reservationsApi.getById(Number(id)).then((data) => {
-      reset(data);
-      setLoading(false);
-    });
+    reservationsApi
+      .getById(Number(id))
+      .then((data) => {
+        reset({
+          guestId: data.guestId,
+          newGuestFirstName: data.guestFullName.split(" ")[0] ?? "",
+          newGuestLastName: data.guestFullName.split(" ").slice(1).join(" "),
+          newGuestEmail: data.guestEmail,
+          newGuestPhone: "",
+          roomId: 0,
+          checkIn: data.checkIn,
+          checkOut: data.checkOut,
+          guestsCount: data.guestsCount,
+        });
+        setReadOnlyInfo({
+          roomNumber: data.roomNumber,
+          roomFloor: data.roomFloor,
+          roomType: data.roomType,
+          roomPricePerDay: data.roomPricePerDay,
+          roomCapacity: data.roomCapacity,
+        });
+      })
+      .catch((err) => setServerError(getApiError(err, "Бронювання не знайдено.")))
+      .finally(() => setLoading(false));
   }, [id, reset]);
 
   const onSubmit = async (values: ReservationFormValues) => {
     if (!id) return;
     setServerError(null);
     try {
-      await reservationsApi.update(Number(id), { ...values, id: Number(id) } as any);
-      navigate("/reservations");
-    } catch {
-      setServerError("Не вдалося оновити бронювання. Перевірте дані.");
+      await reservationsApi.update(Number(id), { ...values, id: Number(id) });
+      navigate("/reservations", {
+        state: { flash: { type: "success", text: "Бронювання оновлено." } },
+      });
+    } catch (err) {
+      setServerError(getApiError(err, "Не вдалося оновити бронювання."));
     }
   };
 
@@ -41,64 +72,126 @@ export default function ReservationEdit() {
 
   return (
     <div>
-      <h1>Редагувати бронювання</h1>
-      <form onSubmit={handleSubmit(onSubmit)} noValidate>
-        {serverError && <div className="alert alert-danger">{serverError}</div>}
+      <div className="page-heading">
+        <div>
+          <h1>Редагувати бронювання</h1>
+        </div>
+      </div>
 
-        <div className="form-group">
-          <label htmlFor="newGuestFirstName">Ім'я</label>
-          <input id="newGuestFirstName" {...register("newGuestFirstName")} />
-        </div>
-        <div className="form-group">
-          <label htmlFor="newGuestLastName">Прізвище</label>
-          <input id="newGuestLastName" {...register("newGuestLastName")} />
-        </div>
-        <div className="form-group">
-          <label htmlFor="newGuestEmail">Електронна пошта</label>
-          <input id="newGuestEmail" type="email" {...register("newGuestEmail")} />
-          {errors.newGuestEmail && (
-            <span className="field-error">{errors.newGuestEmail.message}</span>
+      <section className="content-card form-card">
+        <form onSubmit={handleSubmit(onSubmit)} className="form-narrow">
+          {serverError && <div className="validation-summary">{serverError}</div>}
+
+          {readOnlyInfo && (
+            <>
+              <div className="form-field">
+                <label className="form-label">Номер</label>
+                <input
+                  className="form-control form-control-readonly"
+                  value={readOnlyInfo.roomNumber}
+                  readOnly
+                  tabIndex={-1}
+                />
+              </div>
+              <div className="form-field">
+                <label className="form-label">Поверх</label>
+                <input
+                  className="form-control form-control-readonly"
+                  value={readOnlyInfo.roomFloor}
+                  readOnly
+                  tabIndex={-1}
+                />
+              </div>
+              <div className="form-field">
+                <label className="form-label">Тип номера</label>
+                <input
+                  className="form-control form-control-readonly"
+                  value={readOnlyInfo.roomType}
+                  readOnly
+                  tabIndex={-1}
+                />
+              </div>
+              <div className="form-field">
+                <label className="form-label">Ціна за ніч (грн)</label>
+                <input
+                  className="form-control form-control-readonly"
+                  value={formatMoney(readOnlyInfo.roomPricePerDay)}
+                  readOnly
+                  tabIndex={-1}
+                />
+              </div>
+            </>
           )}
-        </div>
-        <div className="form-group">
-          <label htmlFor="newGuestPhone">Телефон</label>
-          <input id="newGuestPhone" {...register("newGuestPhone")} />
-        </div>
 
-        <div className="form-group">
-          <label htmlFor="checkIn">Дата заселення</label>
-          <input id="checkIn" type="date" {...register("checkIn")} />
-          {errors.checkIn && <span className="field-error">{errors.checkIn.message}</span>}
-        </div>
-        <div className="form-group">
-          <label htmlFor="checkInTime">Час заселення</label>
-          <input id="checkInTime" type="time" {...register("checkInTime")} />
-        </div>
+          <div className="form-field">
+            <label htmlFor="newGuestFirstName" className="form-label">Ім'я</label>
+            <input id="newGuestFirstName" className="form-control" required {...register("newGuestFirstName")} />
+            {errors.newGuestFirstName && (
+              <span className="text-danger">{errors.newGuestFirstName.message}</span>
+            )}
+          </div>
 
-        <div className="form-group">
-          <label htmlFor="checkOut">Дата виселення</label>
-          <input id="checkOut" type="date" {...register("checkOut")} />
-          {errors.checkOut && <span className="field-error">{errors.checkOut.message}</span>}
-        </div>
-        <div className="form-group">
-          <label htmlFor="checkOutTime">Час виселення</label>
-          <input id="checkOutTime" type="time" {...register("checkOutTime")} />
-        </div>
+          <div className="form-field">
+            <label htmlFor="newGuestLastName" className="form-label">Прізвище</label>
+            <input id="newGuestLastName" className="form-control" required {...register("newGuestLastName")} />
+            {errors.newGuestLastName && (
+              <span className="text-danger">{errors.newGuestLastName.message}</span>
+            )}
+          </div>
 
-        <div className="form-group">
-          <label htmlFor="guestsCount">Кількість гостей</label>
-          <input
-            id="guestsCount"
-            type="number"
-            {...register("guestsCount", { valueAsNumber: true })}
-          />
-          {errors.guestsCount && <span className="field-error">{errors.guestsCount.message}</span>}
-        </div>
+          <div className="form-field">
+            <label htmlFor="newGuestEmail" className="form-label">Електронна пошта</label>
+            <input id="newGuestEmail" type="email" className="form-control" required {...register("newGuestEmail")} />
+            {errors.newGuestEmail && <span className="text-danger">{errors.newGuestEmail.message}</span>}
+          </div>
 
-        <button type="submit" disabled={isSubmitting}>
-          {isSubmitting ? "Збереження..." : "Зберегти"}
-        </button>
-      </form>
+          <div className="form-field">
+            <label htmlFor="newGuestPhone" className="form-label">Телефон</label>
+            <input id="newGuestPhone" className="form-control" required {...register("newGuestPhone")} />
+            {errors.newGuestPhone && <span className="text-danger">{errors.newGuestPhone.message}</span>}
+          </div>
+
+          <div className="form-field">
+            <label htmlFor="checkIn" className="form-label">Дата заселення</label>
+            <input id="checkIn" type="date" className="form-control" required {...register("checkIn")} />
+            {errors.checkIn && <span className="text-danger">{errors.checkIn.message}</span>}
+          </div>
+
+          <div className="form-field">
+            <label htmlFor="checkOut" className="form-label">Дата виселення</label>
+            <input id="checkOut" type="date" className="form-control" required {...register("checkOut")} />
+            {errors.checkOut && <span className="text-danger">{errors.checkOut.message}</span>}
+          </div>
+
+          <div className="form-field">
+            <label htmlFor="guestsCount" className="form-label">Кількість гостей</label>
+            <input
+              id="guestsCount"
+              type="number"
+              min={1}
+              max={20}
+              className="form-control"
+              required
+              {...register("guestsCount", { valueAsNumber: true })}
+            />
+            {errors.guestsCount && <span className="text-danger">{errors.guestsCount.message}</span>}
+          </div>
+
+          <div className="form-field">
+            <label className="form-label">roomId (приховане поле)</label>
+            <input type="hidden" {...register("roomId", { valueAsNumber: true })} />
+          </div>
+
+          <div className="form-actions">
+            <button type="submit" className="btn btn-teal" disabled={isSubmitting}>
+              Зберегти зміни
+            </button>
+            <Link to="/reservations" className="btn btn-cancel">
+              Скасувати
+            </Link>
+          </div>
+        </form>
+      </section>
     </div>
   );
 }

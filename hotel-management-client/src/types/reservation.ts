@@ -7,15 +7,8 @@ export interface ReservationFormInput {
   newGuestEmail: string;
   newGuestPhone: string;
   roomId: number;
-  roomNumber: string;
-  roomFloor: number;
-  roomType: string;
-  roomPricePerDay: number;
-  roomCapacity: number;
   checkIn: string; // yyyy-MM-dd
-  checkInTime: string; // "14:00"
   checkOut: string;
-  checkOutTime: string; // "12:00"
   guestsCount: number;
 }
 
@@ -30,10 +23,15 @@ export interface ReservationStatusInput {
 
 export interface ReservationDto {
   id: number;
+  guestId: number;
   guestFullName: string;
   guestEmail: string;
+  guestPhone: string;
   roomNumber: string;
+  roomFloor: number;
   roomType: string;
+  roomPricePerDay: number;
+  roomCapacity: number;
   checkIn: string;
   checkOut: string;
   guestsCount: number;

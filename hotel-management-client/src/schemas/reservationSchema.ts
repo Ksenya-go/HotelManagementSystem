@@ -6,29 +6,26 @@ export const reservationSchema = z.object({
   newGuestFirstName: z
     .string()
     .trim()
+    .min(1, "Вкажіть ім'я.")
     .max(100, "Ім'я не може перевищувати 100 символів."),
   newGuestLastName: z
     .string()
     .trim()
+    .min(1, "Вкажіть прізвище.")
     .max(100, "Прізвище не може перевищувати 100 символів."),
   newGuestEmail: z
     .string()
     .trim()
-    .email("Вкажіть коректну електронну пошту.")
-    .or(z.literal("")),
+    .min(1, "Вкажіть електронну пошту.")
+    .email("Вкажіть коректну електронну пошту."),
   newGuestPhone: z
     .string()
     .trim()
-    .max(30, "Телефон не може перевищувати 30 символів."),
+    .max(40, "Телефон не може перевищувати 40 символів."),
 
-  roomId: z
-    .number({ error: "Вкажіть кімнату." })
-    .min(1, "Вкажіть коректний номер кімнати."),
-
+  roomId: z.number({ error: "Оберіть кімнату." }).min(1, "Оберіть кімнату."),
   checkIn: z.string().min(1, "Вкажіть дату заселення."),
-  checkInTime: z.string().min(1, "Вкажіть час заселення."),
   checkOut: z.string().min(1, "Вкажіть дату виселення."),
-  checkOutTime: z.string().min(1, "Вкажіть час виселення."),
 
   guestsCount: z
     .number({ error: "Вкажіть кількість гостей." })

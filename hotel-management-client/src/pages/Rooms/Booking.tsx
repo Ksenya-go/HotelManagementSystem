@@ -1,164 +1,204 @@
 import { useEffect, useState } from "react";
-import { useNavigate, useParams } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { roomsApi } from "@/api/roomsApi";
-import type { RoomPeriodStatusDto, RoomPeriodStatusQuery } from "@/types/room";
+import Pagination from "@/components/Pagination";
+import type { RoomPeriodStatusDto } from "@/types/room";
+import { addDays, todayInput } from "@/utils/date";
+import { formatMoney } from "@/utils/format";
 
-const today = () => new Date().toISOString().slice(0, 10);
-const tomorrow = () => {
-  const d = new Date();
-  d.setDate(d.getDate() + 1);
-  return d.toISOString().slice(0, 10);
-};
+const PAGE_SIZE = 30;
+const DATE_RANGE_ERROR = "Дата закінчення має бути пізнішою за дату початку.";
+const GENERIC_ERROR = "Не вдалося виконати операцію з номером.";
+
+interface Draft {
+  startDate: string;
+  endDate: string;
+  guestsCount: string;
+}
 
 export default function RoomBooking() {
-  const { id } = useParams<{ id: string }>();
-  const navigate = useNavigate();
+  const [draft, setDraft] = useState<Draft>(() => ({
+    startDate: todayInput(),
+    endDate: addDays(todayInput(), 1),
+    guestsCount: "1",
+  }));
+  const [applied, setApplied] = useState<Draft>(draft);
+  const [pageNumber, setPageNumber] = useState(1);
 
-  const [query, setQuery] = useState<RoomPeriodStatusQuery>({
-    startDate: today(),
-    endDate: tomorrow(),
-    pageNumber: 1,
-    pageSize: 30,
-  });
   const [rooms, setRooms] = useState<RoomPeriodStatusDto[]>([]);
-  const [floors, setFloors] = useState<number[]>([]);
-  const [roomTypes, setRoomTypes] = useState<string[]>([]);
-  const [totalPages, setTotalPages] = useState(1);
+  const [totalPages, setTotalPages] = useState(0);
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
+    if (applied.endDate <= applied.startDate) {
+      setRooms([]);
+      setTotalPages(0);
+      setError(DATE_RANGE_ERROR);
+      setLoading(false);
+      return;
+    }
+
+    let cancelled = false;
     setLoading(true);
+    setError(null);
+
     roomsApi
-      .periodStatus(query)
+      .periodStatus({
+        startDate: applied.startDate,
+        endDate: applied.endDate,
+        guestsCount: Math.max(1, Number(applied.guestsCount) || 1),
+        pageNumber,
+        pageSize: PAGE_SIZE,
+      })
       .then((data) => {
-        setRooms(data.rooms);
-        setFloors(data.floors);
-        setRoomTypes(data.roomTypes);
+        if (cancelled) return;
+        setRooms(data.rooms.filter((room) => room.canBook));
         setTotalPages(data.totalPages);
       })
-      .finally(() => setLoading(false));
-  }, [query]);
+      .catch(() => {
+        if (!cancelled) {
+          setRooms([]);
+          setError(GENERIC_ERROR);
+        }
+      })
+      .finally(() => {
+        if (!cancelled) setLoading(false);
+      });
 
-  const updateFilter = (patch: Partial<RoomPeriodStatusQuery>) =>
-    setQuery((prev) => ({ ...prev, ...patch, pageNumber: 1 }));
+    return () => {
+      cancelled = true;
+    };
+  }, [applied, pageNumber]);
 
-  const goToBooking = (roomId: number) => {
-    navigate(
-      `/reservations/new?roomId=${roomId}&checkIn=${query.startDate}&checkOut=${query.endDate}`
-    );
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    setApplied(draft);
+    setPageNumber(1);
   };
+
+  const guests = Math.max(1, Number(applied.guestsCount) || 1);
 
   return (
     <div>
-      <h1>Статус номерів на період{id ? ` (номер #${id})` : ""}</h1>
-
-      <form className="filters" onSubmit={(e) => e.preventDefault()}>
-        <div className="form-group">
-          <label>Дата початку</label>
-          <input
-            type="date"
-            value={query.startDate}
-            onChange={(e) => updateFilter({ startDate: e.target.value })}
-          />
+      <div className="page-heading">
+        <div>
+          <h1>Бронювання номерів</h1>
+          <p className="page-subtitle">
+            Оберіть дати та знайдіть доступні номери для бронювання.
+          </p>
         </div>
-        <div className="form-group">
-          <label>Дата закінчення</label>
-          <input
-            type="date"
-            value={query.endDate}
-            onChange={(e) => updateFilter({ endDate: e.target.value })}
-          />
-        </div>
-        <div className="form-group">
-          <label>Кількість гостей</label>
-          <input
-            type="number"
-            min={1}
-            max={20}
-            value={query.guestsCount ?? ""}
-            onChange={(e) =>
-              updateFilter({ guestsCount: e.target.value ? Number(e.target.value) : undefined })
-            }
-          />
-        </div>
-
-        <select
-          value={query.floor ?? ""}
-          onChange={(e) =>
-            updateFilter({ floor: e.target.value ? Number(e.target.value) : undefined })
-          }
-        >
-          <option value="">Всі поверхи</option>
-          {floors.map((f) => (
-            <option key={f} value={f}>
-              Поверх {f}
-            </option>
-          ))}
-        </select>
-
-        <select
-          value={query.roomType ?? ""}
-          onChange={(e) => updateFilter({ roomType: e.target.value || undefined })}
-        >
-          <option value="">Всі типи</option>
-          {roomTypes.map((t) => (
-            <option key={t} value={t}>
-              {t}
-            </option>
-          ))}
-        </select>
-      </form>
-
-      {loading ? (
-        <p>Завантаження...</p>
-      ) : (
-        <table className="table">
-          <thead>
-            <tr>
-              <th>№</th>
-              <th>Поверх</th>
-              <th>Тип</th>
-              <th>Ціна/добу</th>
-              <th>Місткість</th>
-              <th>Доступність</th>
-              <th></th>
-            </tr>
-          </thead>
-          <tbody>
-            {rooms.map((room) => (
-              <tr key={room.id}>
-                <td>{room.roomNumber}</td>
-                <td>{room.floor}</td>
-                <td>{room.type}</td>
-                <td>{room.pricePerDay} ₴</td>
-                <td>{room.capacity}</td>
-                <td>
-                  <span className={room.isAvailable ? "badge-success" : "badge-danger"}>
-                    {room.isAvailable ? "Вільний" : "Зайнятий"}
-                  </span>
-                </td>
-                <td>
-                  {room.isAvailable && (
-                    <button onClick={() => goToBooking(room.id)}>Забронювати</button>
-                  )}
-                </td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
-      )}
-
-      <div className="pagination">
-        {Array.from({ length: totalPages }, (_, i) => i + 1).map((page) => (
-          <button
-            key={page}
-            className={page === query.pageNumber ? "active" : ""}
-            onClick={() => setQuery((prev) => ({ ...prev, pageNumber: page }))}
-          >
-            {page}
-          </button>
-        ))}
       </div>
+
+      <section className="content-card form-card mb-4">
+        <form onSubmit={handleSubmit}>
+          {error && <div className="validation-summary">{error}</div>}
+          <div className="row g-3 align-items-end">
+            <div className="col-12 col-md-3">
+              <label htmlFor="startDate" className="form-label">Дата початку</label>
+              <input
+                id="startDate"
+                type="date"
+                className="form-control"
+                required
+                value={draft.startDate}
+                onChange={(e) => setDraft({ ...draft, startDate: e.target.value })}
+              />
+            </div>
+            <div className="col-12 col-md-3">
+              <label htmlFor="endDate" className="form-label">Дата закінчення</label>
+              <input
+                id="endDate"
+                type="date"
+                className="form-control"
+                required
+                value={draft.endDate}
+                onChange={(e) => setDraft({ ...draft, endDate: e.target.value })}
+              />
+            </div>
+            <div className="col-12 col-md-3">
+              <label htmlFor="guestsCount" className="form-label">Кількість гостей</label>
+              <input
+                id="guestsCount"
+                type="number"
+                min={1}
+                max={20}
+                className="form-control"
+                placeholder="Необов’язково"
+                value={draft.guestsCount}
+                onChange={(e) => setDraft({ ...draft, guestsCount: e.target.value })}
+              />
+            </div>
+            <div className="col-12 col-md-3">
+              <button type="submit" className="btn btn-teal w-100">
+                Показати доступні номери
+              </button>
+            </div>
+          </div>
+        </form>
+      </section>
+
+      <section className="content-card table-card mb-4">
+        <div className="card-heading">
+          <div>
+            <h2>Доступні номери</h2>
+            <p>{rooms.length} номерів</p>
+          </div>
+        </div>
+
+        <div className="table-responsive">
+          <table className="hotel-table">
+            <thead className="text-center">
+              <tr>
+                <th>Номер кімнати</th>
+                <th>Поверх</th>
+                <th>Тип номера</th>
+                <th>Опис</th>
+                <th>Ціна за ніч (грн)</th>
+                <th>Місткість</th>
+                <th>Кількість кімнат</th>
+                <th>Статус кімнати</th>
+                <th>Дії</th>
+              </tr>
+            </thead>
+            <tbody className="text-center">
+              {loading && (
+                <tr>
+                  <td colSpan={9}>Завантаження...</td>
+                </tr>
+              )}
+              {!loading &&
+                rooms.map((room) => (
+                  <tr key={room.id}>
+                    <td><strong>{room.roomNumber}</strong></td>
+                    <td>{room.floor}</td>
+                    <td>{room.type}</td>
+                    <td>{room.description?.trim() ? room.description : "—"}</td>
+                    <td>{formatMoney(room.pricePerDay)}</td>
+                    <td>{room.capacity}</td>
+                    <td>{room.roomCount}</td>
+                    <td>{room.operationalStatus}</td>
+                    <td>
+                      <Link
+                        to={`/reservations/new?roomId=${room.id}&checkIn=${applied.startDate}&checkOut=${applied.endDate}&guestsCount=${guests}`}
+                        className="btn btn-teal"
+                      >
+                        Забронювати
+                      </Link>
+                    </td>
+                  </tr>
+                ))}
+            </tbody>
+          </table>
+        </div>
+
+        <Pagination
+          pageNumber={pageNumber}
+          totalPages={totalPages}
+          ariaLabel="Навігація сторінками доступних номерів"
+          onChange={setPageNumber}
+        />
+      </section>
     </div>
   );
 }
