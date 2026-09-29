@@ -37,7 +37,7 @@ export default function ReservationEdit() {
           newGuestFirstName: data.guestFullName.split(" ")[0] ?? "",
           newGuestLastName: data.guestFullName.split(" ").slice(1).join(" "),
           newGuestEmail: data.guestEmail,
-          newGuestPhone: "",
+          newGuestPhone: data.guestPhone,
           roomId: 0,
           checkIn: data.checkIn,
           checkOut: data.checkOut,
@@ -175,11 +175,6 @@ export default function ReservationEdit() {
               {...register("guestsCount", { valueAsNumber: true })}
             />
             {errors.guestsCount && <span className="text-danger">{errors.guestsCount.message}</span>}
-          </div>
-
-          <div className="form-field">
-            <label className="form-label">roomId (приховане поле)</label>
-            <input type="hidden" {...register("roomId", { valueAsNumber: true })} />
           </div>
 
           <div className="form-actions">

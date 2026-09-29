@@ -5,8 +5,6 @@ using HotelManagementSystem.Application.RoomTypes.Commands;
 using HotelManagementSystem.Application.Rooms.Commands;
 using HotelManagementSystem.Application.SystemSettings.Commands;
 using HotelManagementSystem.Application.Common.Errors;
-using HotelManagementSystem.Domain.Reservation;
-using HotelManagementSystem.Domain.Room;
 using HotelManagementSystem.Persistence.EfCore.Guests;
 using HotelManagementSystem.Persistence.EfCore.Identity;
 using HotelManagementSystem.Persistence.EfCore.Rooms;
@@ -15,7 +13,8 @@ using HotelManagementSystem.Web.Tests.Admin;
 using HotelManagementSystem.Web.Tests.Rooms;
 using Microsoft.Extensions.DependencyInjection;
 using Xunit;
-
+using HotelManagementSystem.Domain.Reservations;
+using HotelManagementSystem.Domain.Rooms;
 namespace HotelManagementSystem.Web.Tests;
 
 public sealed class EdgeCasesTests
@@ -327,27 +326,6 @@ public sealed class EdgeCasesTests
         Assert.NotNull(await fixture.FindUserAsync(user.Id));
     }
 
-    [Fact]
-    public async Task AdminUser_WhenFullNameExceedsViewModelLimit_ShouldHaveValidationError()
-    {
-        var model = new HotelManagementSystem.Web.ViewModels.Admin.
-            CreateEmployeeViewModel
-        {
-            FullName = new string('N', 121),
-            Email = "long-name@example.com",
-            Password = "Password123",
-            Role = "Employee"
-        };
-        var context = new System.ComponentModel.DataAnnotations.ValidationContext(model);
-        var errors = new List<System.ComponentModel.DataAnnotations.ValidationResult>();
-
-        var valid = System.ComponentModel.DataAnnotations.Validator.TryValidateObject
-            (model, context, errors, true);
-
-        Assert.False(valid);
-        Assert.Contains(errors, error => error.MemberNames.Contains(nameof
-            (model.FullName)));
-    }
 
     private sealed class RoomTypeEdgeFixture : IAsyncDisposable
     {

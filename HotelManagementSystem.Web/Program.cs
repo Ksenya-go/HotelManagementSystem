@@ -28,8 +28,6 @@ using HotelManagementSystem.Persistence.EfCore.Reservations;
 using HotelManagementSystem.Persistence.EfCore.Rooms;
 using HotelManagementSystem.Persistence.EfCore.SystemSettings;
 using HotelManagementSystem.Web;
-using HotelManagementSystem.Web.ViewModels.Admin;
-using HotelManagementSystem.Web.ViewModels.Rooms;
 using Mediator;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Localization;
@@ -97,8 +95,6 @@ builder.Services.AddCors(options =>
 
 
 builder.Services.AddControllersWithViews()
-    .AddViewLocalization()
-    .AddDataAnnotationsLocalization()
     .AddJsonOptions(options =>
         options.JsonSerializerOptions.Converters.Add(
             new System.Text.Json.Serialization.JsonStringEnumConverter()));
@@ -111,8 +107,6 @@ builder.Services.AddScoped<IRoomService, RoomService>();
 builder.Services.AddScoped<IRoomAvailabilityService, RoomAvailabilityService>();
 builder.Services.AddScoped<IReservationService, ReservationService>();
 builder.Services.AddScoped<IManagerReportingService, ManagerReportingService>();
-builder.Services.AddScoped<RoomListItemViewModelFactory>();
-builder.Services.AddScoped<SystemSettingItemViewModelFactory>();
 builder.Services.AddScoped<ICommandHandler<CreateGuestCommand, Result<GuestDto>>, GuestCommandHandler>();
 builder.Services.AddScoped<ICommandHandler<UpdateGuestCommand, Result<Unit>>, GuestCommandHandler>();
 builder.Services.AddScoped<ICommandHandler<CreateReservationCommand, Result<ReservationDto>>, ReservationCommandHandler>();
@@ -140,22 +134,6 @@ builder.Services.AddApplicationMediator();
 
 var app = builder.Build();
 
-
-
-var supportedCultures = new[] { new CultureInfo("uk-UA") };
-app.UseRequestLocalization(new RequestLocalizationOptions
-{
-    DefaultRequestCulture = new RequestCulture("uk-UA"),
-    SupportedCultures = supportedCultures,
-    SupportedUICultures = supportedCultures,
-    RequestCultureProviders = new IRequestCultureProvider[]
-    {
-        new CookieRequestCultureProvider(),
-        new QueryStringRequestCultureProvider(),
-        new AcceptLanguageHeaderRequestCultureProvider()
-    }
-});
-
 // Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())
 {
@@ -171,11 +149,11 @@ app.Use(async (context, next) =>
     context.Response.Headers["X-Content-Type-Options"] = "nosniff";
     context.Response.Headers["X-Frame-Options"] = "DENY";
     context.Response.Headers["Content-Security-Policy"] =
-        "default-src 'self'; " +
-        "script-src 'self' 'unsafe-inline'; " +
-        "style-src 'self' 'unsafe-inline'; " +
-        "img-src 'self' data:; " +
-        "font-src 'self';";
+     "default-src 'self'; " +
+     "script-src 'self' 'unsafe-inline'; " +
+     "style-src 'self' 'unsafe-inline'; " +
+     "img-src 'self' data:; " +
+     "font-src 'self';";
     context.Response.Headers["Referrer-Policy"] = "strict-origin-when-cross-origin";
     await next();
 });
