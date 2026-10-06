@@ -3,7 +3,10 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import { reservationsApi } from "@/api/reservationsApi";
-import { reservationSchema, type ReservationFormValues } from "@/schemas/reservationSchema";
+import {
+  reservationEditSchema,
+  type ReservationEditFormValues,
+} from "@/schemas/reservationSchema";
 import { getApiError } from "@/utils/apiError";
 import { formatMoney } from "@/utils/format";
 
@@ -25,7 +28,7 @@ export default function ReservationEdit() {
     handleSubmit,
     reset,
     formState: { errors, isSubmitting },
-  } = useForm<ReservationFormValues>({ resolver: zodResolver(reservationSchema) });
+  } = useForm<ReservationEditFormValues>({ resolver: zodResolver(reservationEditSchema) });
 
   useEffect(() => {
     if (!id) return;
@@ -37,8 +40,7 @@ export default function ReservationEdit() {
           newGuestFirstName: data.guestFullName.split(" ")[0] ?? "",
           newGuestLastName: data.guestFullName.split(" ").slice(1).join(" "),
           newGuestEmail: data.guestEmail,
-          newGuestPhone: data.guestPhone,
-          roomId: 0,
+          newGuestPhone: data.guestPhone ?? "",
           checkIn: data.checkIn,
           checkOut: data.checkOut,
           guestsCount: data.guestsCount,
@@ -55,11 +57,15 @@ export default function ReservationEdit() {
       .finally(() => setLoading(false));
   }, [id, reset]);
 
-  const onSubmit = async (values: ReservationFormValues) => {
+  const onSubmit = async (values: ReservationEditFormValues) => {
     if (!id) return;
     setServerError(null);
     try {
-      await reservationsApi.update(Number(id), { ...values, id: Number(id) });
+      await reservationsApi.update(Number(id), {
+        ...values,
+        id: Number(id),
+        roomId: 0, // сервер це поле ігнорує — кімнату при редагуванні змінити не можна
+      });
       navigate("/reservations", {
         state: { flash: { type: "success", text: "Бронювання оновлено." } },
       });
