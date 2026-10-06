@@ -28,14 +28,15 @@ using HotelManagementSystem.Persistence.EfCore.Reservations;
 using HotelManagementSystem.Persistence.EfCore.Rooms;
 using HotelManagementSystem.Persistence.EfCore.SystemSettings;
 using HotelManagementSystem.Web;
-using HotelManagementSystem.Web.ViewModels.Admin;
-using HotelManagementSystem.Web.ViewModels.Rooms;
 using Mediator;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Localization;
 using Microsoft.EntityFrameworkCore;
 using System.Globalization;
-
+using HotelManagementSystem.Web.Auth;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.IdentityModel.Tokens;
+using System.Text;
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddLocalization();
@@ -58,9 +59,47 @@ builder.Services.AddIdentity<ApplicationUser, IdentityRole>(options =>
     .AddEntityFrameworkStores<ApplicationDbContext>()
     .AddDefaultTokenProviders();
 
+builder.Services.AddScoped<JwtTokenService>();
+
+var jwtKey = builder.Configuration["Jwt:Key"]
+    ?? throw new InvalidOperationException("Jwt:Key не налаштовано.");
+
+builder.Services.AddAuthentication(options =>
+{
+    options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+    options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+})
+    .AddJwtBearer(options =>
+    {
+        options.TokenValidationParameters = new TokenValidationParameters
+        {
+            ValidateIssuer = true,
+            ValidIssuer = builder.Configuration["Jwt:Issuer"],
+            ValidateAudience = true,
+            ValidAudience = builder.Configuration["Jwt:Audience"],
+            ValidateIssuerSigningKey = true,
+            IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtKey)),
+            ValidateLifetime = true,
+            ClockSkew = TimeSpan.FromMinutes(1),
+        };
+    });
+
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("ReactClient", policy =>
+        policy.WithOrigins("http://localhost:5173")
+              .AllowAnyHeader()
+              .AllowAnyMethod());
+});
+
+
+
 builder.Services.AddControllersWithViews()
-    .AddViewLocalization()
-    .AddDataAnnotationsLocalization();
+    .AddJsonOptions(options =>
+        options.JsonSerializerOptions.Converters.Add(
+            new System.Text.Json.Serialization.JsonStringEnumConverter()));
+
+builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddScoped<IRoomTypeService, RoomTypeService>();
 builder.Services.AddScoped<ISystemSettingService, SystemSettingService>();
 builder.Services.AddScoped<IGuestService, GuestService>();
@@ -68,8 +107,6 @@ builder.Services.AddScoped<IRoomService, RoomService>();
 builder.Services.AddScoped<IRoomAvailabilityService, RoomAvailabilityService>();
 builder.Services.AddScoped<IReservationService, ReservationService>();
 builder.Services.AddScoped<IManagerReportingService, ManagerReportingService>();
-builder.Services.AddScoped<RoomListItemViewModelFactory>();
-builder.Services.AddScoped<SystemSettingItemViewModelFactory>();
 builder.Services.AddScoped<ICommandHandler<CreateGuestCommand, Result<GuestDto>>, GuestCommandHandler>();
 builder.Services.AddScoped<ICommandHandler<UpdateGuestCommand, Result<Unit>>, GuestCommandHandler>();
 builder.Services.AddScoped<ICommandHandler<CreateReservationCommand, Result<ReservationDto>>, ReservationCommandHandler>();
@@ -97,22 +134,6 @@ builder.Services.AddApplicationMediator();
 
 var app = builder.Build();
 
-
-
-var supportedCultures = new[] { new CultureInfo("uk-UA") };
-app.UseRequestLocalization(new RequestLocalizationOptions
-{
-    DefaultRequestCulture = new RequestCulture("uk-UA"),
-    SupportedCultures = supportedCultures,
-    SupportedUICultures = supportedCultures,
-    RequestCultureProviders = new IRequestCultureProvider[]
-    {
-        new CookieRequestCultureProvider(),
-        new QueryStringRequestCultureProvider(),
-        new AcceptLanguageHeaderRequestCultureProvider()
-    }
-});
-
 // Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())
 {
@@ -128,11 +149,11 @@ app.Use(async (context, next) =>
     context.Response.Headers["X-Content-Type-Options"] = "nosniff";
     context.Response.Headers["X-Frame-Options"] = "DENY";
     context.Response.Headers["Content-Security-Policy"] =
-        "default-src 'self'; " +
-        "script-src 'self' 'unsafe-inline'; " +
-        "style-src 'self' 'unsafe-inline'; " +
-        "img-src 'self' data:; " +
-        "font-src 'self';";
+     "default-src 'self'; " +
+     "script-src 'self' 'unsafe-inline'; " +
+     "style-src 'self' 'unsafe-inline'; " +
+     "img-src 'self' data:; " +
+     "font-src 'self';";
     context.Response.Headers["Referrer-Policy"] = "strict-origin-when-cross-origin";
     await next();
 });
@@ -140,7 +161,7 @@ app.Use(async (context, next) =>
 
 app.UseRouting();
 
-
+app.UseCors("ReactClient");
 app.UseAuthentication();
 app.UseAuthorization();
 

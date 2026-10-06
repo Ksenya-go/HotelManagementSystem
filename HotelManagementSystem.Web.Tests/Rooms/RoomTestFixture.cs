@@ -1,6 +1,6 @@
-using HotelManagementSystem.Domain.Guest;
-using HotelManagementSystem.Domain.Reservation;
-using HotelManagementSystem.Domain.Room;
+using HotelManagementSystem.Domain.Guests;
+using HotelManagementSystem.Domain.Reservations;
+using HotelManagementSystem.Domain.Rooms;
 using HotelManagementSystem.Persistence.EfCore.Identity;
 using HotelManagementSystem.Persistence.EfCore.Rooms;
 using Microsoft.Data.Sqlite;

@@ -1,7 +1,7 @@
 using HotelManagementSystem.Application.Common.Errors;
 using HotelManagementSystem.Application.Rooms.Commands;
-using HotelManagementSystem.Domain.Reservation;
-using HotelManagementSystem.Domain.Room;
+using HotelManagementSystem.Domain.Reservations;
+using HotelManagementSystem.Domain.Rooms;
 using Microsoft.EntityFrameworkCore;
 using Xunit;
 
