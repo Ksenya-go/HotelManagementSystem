@@ -1,10 +1,11 @@
 import { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useSearchParams } from "react-router-dom";
 import { roomsApi } from "@/api/roomsApi";
 import Pagination from "@/components/Pagination";
 import type { RoomPeriodStatusDto } from "@/types/room";
 import { addDays, todayInput } from "@/utils/date";
 import { formatMoney } from "@/utils/format";
+import { roomStatusLabels } from "@/utils/roomStatus";
 
 const PAGE_SIZE = 30;
 const DATE_RANGE_ERROR = "Дата закінчення має бути пізнішою за дату початку.";
@@ -17,11 +18,14 @@ interface Draft {
 }
 
 export default function RoomBooking() {
-  const [draft, setDraft] = useState<Draft>(() => ({
-    startDate: todayInput(),
-    endDate: addDays(todayInput(), 1),
-    guestsCount: "1",
-  }));
+  const [searchParams] = useSearchParams();
+
+  const [draft, setDraft] = useState<Draft>(() => {
+    const startDate = searchParams.get("startDate") || todayInput();
+    const endDate = searchParams.get("endDate") || addDays(startDate, 1);
+    const guestsCount = searchParams.get("guestsCount") || "1";
+    return { startDate, endDate, guestsCount };
+  });
   const [applied, setApplied] = useState<Draft>(draft);
   const [pageNumber, setPageNumber] = useState(1);
 
@@ -177,7 +181,7 @@ export default function RoomBooking() {
                     <td>{formatMoney(room.pricePerDay)}</td>
                     <td>{room.capacity}</td>
                     <td>{room.roomCount}</td>
-                    <td>{room.operationalStatus}</td>
+                    <td>{roomStatusLabels[room.operationalStatus] ?? room.operationalStatus}</td>
                     <td>
                       <Link
                         to={`/reservations/new?roomId=${room.id}&checkIn=${applied.startDate}&checkOut=${applied.endDate}&guestsCount=${guests}`}

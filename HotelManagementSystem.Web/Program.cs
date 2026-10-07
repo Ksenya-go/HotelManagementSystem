@@ -82,6 +82,19 @@ builder.Services.AddAuthentication(options =>
             ValidateLifetime = true,
             ClockSkew = TimeSpan.FromMinutes(1),
         };
+
+        options.Events = new JwtBearerEvents
+        {
+            OnMessageReceived = context =>
+            {
+                if (context.Request.Cookies.TryGetValue(AuthCookie.Name, out var token))
+                {
+                    context.Token = token;
+                }
+                return Task.CompletedTask;
+            }
+        };
+
     });
 
 builder.Services.AddCors(options =>
@@ -89,9 +102,9 @@ builder.Services.AddCors(options =>
     options.AddPolicy("ReactClient", policy =>
         policy.WithOrigins("http://localhost:5173")
               .AllowAnyHeader()
-              .AllowAnyMethod());
+              .AllowAnyMethod()
+              .AllowCredentials());
 });
-
 
 
 builder.Services.AddControllersWithViews()
