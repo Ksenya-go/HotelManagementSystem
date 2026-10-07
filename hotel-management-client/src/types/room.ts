@@ -66,8 +66,8 @@ export interface RoomPeriodStatusDto {
   pricePerDay: number;
   capacity: number;
   roomCount: number;
-  operationalStatus: string;
-  availabilityStatus: string;
+   operationalStatus: RoomOperationalStatus;
+  availabilityStatus: RoomAvailabilityStatus;
   canBook: boolean;
   isAvailable: boolean;
 }

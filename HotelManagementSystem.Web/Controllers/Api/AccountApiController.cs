@@ -9,7 +9,7 @@ public sealed record LoginRequest(string Email, string Password, bool RememberMe
 
 public sealed record AuthUserResponse(string Id, string Email, string FullName, string Role);
 
-public sealed record LoginResponse(string Token, DateTime ExpiresAt, AuthUserResponse User);
+public sealed record LoginResponse(DateTime ExpiresAt, AuthUserResponse User);
 
 [ApiController]
 [Route("api/account")]
@@ -48,10 +48,21 @@ public sealed class AccountApiController(
         var role = roles.FirstOrDefault() ?? string.Empty;
         var (token, expiresAt) = tokenService.CreateToken(user, roles);
 
-        return Ok(new LoginResponse(
+        Response.Cookies.Append(
+            AuthCookie.Name,
             token,
+            AuthCookie.Options(Request, request.RememberMe ? (DateTime?)expiresAt : null));
+
+        return Ok(new LoginResponse(
             expiresAt,
             new AuthUserResponse(user.Id, user.Email ?? string.Empty, user.FullName, role)));
+    }
+
+    [HttpPost("logout")]
+    public IActionResult Logout()
+    {
+        Response.Cookies.Delete(AuthCookie.Name, AuthCookie.Options(Request, null));
+        return NoContent();
     }
 
     [HttpGet("me")]

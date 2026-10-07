@@ -6,8 +6,12 @@ interface ProtectedRouteProps {
 }
 
 export default function ProtectedRoute({ roles }: ProtectedRouteProps) {
-  const { isAuthenticated, hasRole } = useAuth();
+  const { isAuthenticated, isLoading, hasRole } = useAuth();
   const location = useLocation();
+
+  if (isLoading) {
+    return <p>Завантаження...</p>;
+  }
 
   if (!isAuthenticated) {
     return <Navigate to="/login" state={{ from: location }} replace />;

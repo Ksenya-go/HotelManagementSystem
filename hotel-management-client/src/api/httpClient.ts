@@ -3,25 +3,17 @@ import axios from "axios";
 const httpClient = axios.create({
   baseURL: import.meta.env.VITE_API_BASE_URL ?? "/api",
   headers: { "Content-Type": "application/json" },
-});
-
-
-httpClient.interceptors.request.use((config) => {
-  const token = localStorage.getItem("hms_token");
-  if (token) {
-    config.headers.Authorization = `Bearer ${token}`;
-  }
-  return config;
+  withCredentials: true, 
 });
 
 httpClient.interceptors.response.use(
   (response) => response,
   (error) => {
-    const isLoginRequest = error.config?.url?.includes("/account/login");
+    const url: string = error.config?.url ?? "";
+   
+    const isAuthProbe = url.includes("/account/login") || url.includes("/account/me");
 
-    if (error.response?.status === 401 && !isLoginRequest) {
-      localStorage.removeItem("hms_token");
-      localStorage.removeItem("hms_user");
+    if (error.response?.status === 401 && !isAuthProbe) {
       window.location.href = "/login";
     }
     return Promise.reject(error);

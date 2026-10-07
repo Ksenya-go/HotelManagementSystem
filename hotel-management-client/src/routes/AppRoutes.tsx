@@ -1,7 +1,7 @@
 import { Navigate, Route, Routes } from "react-router-dom";
 import ProtectedRoute from "@/components/ProtectedRoute";
 import MainLayout from "@/layouts/MainLayout";
-
+import NotFound from "@/pages/NotFound";
 import Login from "@/pages/Account/Login";
 import RoomsIndex from "@/pages/Rooms/Index";
 import RoomCreate from "@/pages/Rooms/Create";
@@ -17,15 +17,6 @@ import AdminUserEdit from "@/pages/Admin/Users/Edit";
 import AdminSettingsIndex from "@/pages/Admin/Settings/Index";
 
 const STAFF = ["Employee", "Admin"];
-
-function NotFound() {
-  return (
-    <div>
-      <h1>404</h1>
-      <p>Сторінку не знайдено.</p>
-    </div>
-  );
-}
 
 export default function AppRoutes() {
   return (

@@ -1,37 +1,60 @@
-import { createContext, useContext, useState, useCallback, type ReactNode } from "react";
+import {
+  createContext,
+  useCallback,
+  useContext,
+  useEffect,
+  useState,
+  type ReactNode,
+} from "react";
 import httpClient from "@/api/httpClient";
 import type { AuthUser, LoginRequest, LoginResponse } from "@/types/auth";
 
 interface AuthContextValue {
   user: AuthUser | null;
   isAuthenticated: boolean;
+  isLoading: boolean;
   login: (data: LoginRequest) => Promise<void>;
-  logout: () => void;
+  logout: () => Promise<void>;
   hasRole: (...roles: string[]) => boolean;
 }
 
 const AuthContext = createContext<AuthContextValue | undefined>(undefined);
 
-function readStoredUser(): AuthUser | null {
-  const raw = localStorage.getItem("hms_user");
-  return raw ? (JSON.parse(raw) as AuthUser) : null;
-}
-
 export function AuthProvider({ children }: { children: ReactNode }) {
-  const [user, setUser] = useState<AuthUser | null>(readStoredUser());
+  const [user, setUser] = useState<AuthUser | null>(null);
+  const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    let cancelled = false;
+
+    httpClient
+      .get<AuthUser>("/account/me")
+      .then((response) => {
+        if (!cancelled) setUser(response.data);
+      })
+      .catch(() => {
+        if (!cancelled) setUser(null);
+      })
+      .finally(() => {
+        if (!cancelled) setIsLoading(false);
+      });
+
+    return () => {
+      cancelled = true;
+    };
+  }, []);
 
   const login = useCallback(async (data: LoginRequest) => {
     const response = await httpClient.post<LoginResponse>("/account/login", data);
-    const { token, user: loggedInUser } = response.data;
-    localStorage.setItem("hms_token", token);
-    localStorage.setItem("hms_user", JSON.stringify(loggedInUser));
-    setUser(loggedInUser);
+    setUser(response.data.user); // токен сервер поклав у cookie сам
   }, []);
 
-  const logout = useCallback(() => {
-    localStorage.removeItem("hms_token");
-    localStorage.removeItem("hms_user");
-    setUser(null);
+  const logout = useCallback(async () => {
+    try {
+      await httpClient.post("/account/logout");
+    } finally {
+      setUser(null);
+    }
   }, []);
 
   const hasRole = useCallback(
@@ -40,7 +63,9 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   );
 
   return (
-    <AuthContext.Provider value={{ user, isAuthenticated: !!user, login, logout, hasRole }}>
+    <AuthContext.Provider
+      value={{ user, isAuthenticated: !!user, isLoading, login, logout, hasRole }}
+    >
       {children}
     </AuthContext.Provider>
   );

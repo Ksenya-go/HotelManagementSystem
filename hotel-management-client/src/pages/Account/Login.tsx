@@ -1,14 +1,11 @@
 import { useState } from "react";
 import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
 import { Navigate, useLocation, useNavigate } from "react-router-dom";
 import { useAuth } from "@/context/AuthContext";
+import { loginSchema, type LoginFormValues } from "@/schemas/loginSchema";
 import { getApiError } from "@/utils/apiError";
 
-interface LoginFormValues {
-  email: string;
-  password: string;
-  rememberMe: boolean;
-}
 
 export default function Login() {
   const { login, isAuthenticated } = useAuth();
@@ -23,6 +20,7 @@ export default function Login() {
     handleSubmit,
     formState: { errors, isSubmitting },
   } = useForm<LoginFormValues>({
+    resolver: zodResolver(loginSchema),
     defaultValues: { email: "", password: "", rememberMe: false },
   });
 
@@ -60,32 +58,22 @@ export default function Login() {
 
           <div className="form-field">
             <label htmlFor="email" className="form-label">Електронна пошта</label>
-            <input
+           <input
               id="email"
               type="email"
               className="form-control"
-              autoComplete="username"
-              placeholder="Введіть електронну пошту"
-              {...register("email", {
-                required: "Вкажіть електронну пошту.",
-                pattern: {
-                  value: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
-                  message: "Вкажіть коректну електронну пошту.",
-                },
-              })}
+              {...register("email")}
             />
             {errors.email && <span className="text-danger">{errors.email.message}</span>}
           </div>
 
           <div className="form-field">
             <label htmlFor="password" className="form-label">Пароль</label>
-            <input
+           <input
               id="password"
               type="password"
               className="form-control"
-              autoComplete="current-password"
-              placeholder="Введіть пароль"
-              {...register("password", { required: "Вкажіть пароль." })}
+              {...register("password")}
             />
             {errors.password && <span className="text-danger">{errors.password.message}</span>}
           </div>
